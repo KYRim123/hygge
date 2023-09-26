@@ -1,8 +1,12 @@
 //  home page
- export default function HomePage() {
+export default function HomePage() {
   return (
-    <div className="text-red-400">
-      home
+    <div
+      className=""
+      title={"You are visitor number "}
+      id="dasd"
+    >
+      homeddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
     </div>
-  )
+  );
 }
