@@ -1,12 +1,12 @@
-const Button = ({ className, children, onClick, type }) => {
+const Button = ({ className, children, onClick, props }) => {
   return (
-    <div
-      className={`${className} text-center font-bold cursor-pointer rounded-3xl px-[40px] py-[17px]`}
+    <button
+      className={`${className} text-center font-bold cursor-pointer rounded-full px-[40px] py-[20px]`}
       onClick={onClick || null}
-      type={type}
+      {...props}
     >
       {children}
-    </div>
+    </button>
   );
 };
 
