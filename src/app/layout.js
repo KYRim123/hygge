@@ -1,4 +1,5 @@
 import Header from "./components/Header";
+import MarginY from "./components/MarginY";
 import Wrapper from "./components/Wrapper";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
@@ -16,7 +17,7 @@ export default function RootLayout({ children }) {
       <body className={montserrat.className}>
         <Wrapper>
           <Header />
-          {children}
+          <MarginY>{children}</MarginY>
         </Wrapper>
       </body>
     </html>

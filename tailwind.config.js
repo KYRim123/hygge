@@ -11,10 +11,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "color-main": "#cc005e",
-        "color-light": "#ffffff",
-        "color-gray": "#f6f7fb",
-        "color-pink": "rgb(255, 102, 160)",
+        main: {
+          100: "#cc005e",
+        },
+        light: {
+          100: "#ffffff",
+        },
+        gray: {
+          100: "#f6f7fb",
+        },
+        pink: { 500: "rgb(255, 102, 160)" },
         black: {
           100: "#1A202C",
         },
@@ -32,7 +38,7 @@ module.exports = {
         showInput: {
           from: {
             transform: " translateX(50%)",
-            opacity: "0",
+            opacity: "0.5",
           },
           to: {
             transform: "translateX(0)",
@@ -41,7 +47,10 @@ module.exports = {
         },
       },
       animation: {
-        showInput: "showInput .3s linear",
+        showInput: "showInput .4s linear",
+      },
+      textColor: {
+        button: "#F7FAFC",
       },
     },
   },

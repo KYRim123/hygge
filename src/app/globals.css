@@ -6,3 +6,10 @@
 }
 @tailwind components;
 @tailwind utilities;
+
+.label-1 {
+  @apply text-blue-500 italic font-semibold;
+}
+.title-1 {
+  @apply text-4xl font-bold my-4;
+}
