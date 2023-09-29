@@ -1,24 +1,24 @@
-import Header from './components/Header'
-import Wrapper from './components/Wrapper'
-import './globals.css'
-import { Inter } from 'next/font/google'
+import Header from "./components/Header";
+import Wrapper from "./components/Wrapper";
+import "./globals.css";
+import { Montserrat } from "next/font/google";
 
-const inter = Inter({ subsets: ['latin'] })
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'Hygee',
-  description: 'website Hygee',
-}
+  title: "Hygee",
+  description: "website Hygee",
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={montserrat.className}>
         <Wrapper>
           <Header />
           {children}
         </Wrapper>
       </body>
     </html>
-  )
+  );
 }
