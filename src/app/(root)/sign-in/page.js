@@ -76,7 +76,7 @@ const SignIn = () => {
       </div>
       {/* form */}
       <form>
-        <div className="flex flex-wrap gap-4 dadada">
+        <div className="flex flex-wrap gap-4">
           {inputs?.map((input) => (
             <Input
               key={input.id}
