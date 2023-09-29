@@ -1,0 +1,7 @@
+.formInput > span {
+  opacity: 0;
+}
+.formInput > input[show="false"] ~ span {
+  opacity: 1;
+}
+

@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import Header from "./components/Header";
 import MarginY from "./components/MarginY";
 import Wrapper from "./components/Wrapper";
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
         <Wrapper>
           <Header />
           <MarginY>{children}</MarginY>
+          <Toaster />
         </Wrapper>
       </body>
     </html>
