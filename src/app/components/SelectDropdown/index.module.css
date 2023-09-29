@@ -1,32 +1,38 @@
 .dropdown {
     position: relative;
-    width: 30%;
-    height: 40px;
-    border-radius: 4px;
-    box-shadow: 0px 2px 4px #999;
+    width: 190px;
+    height: 50px;
+    border-radius: 26px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #999;
   
   }
-  
+  .drop_open {
+    border-radius: 26px 26px 0px 0px;
+  }
   .dropdown_selected_item {
+    font-size: 20px;
     cursor: pointer;
     align-items: center;
-    line-height: 40px;
-    padding: 0px 16px;
+    line-height: 50px;
+    padding: 0px 20px;
   }
   
   .dropdown_menu {
     position: absolute;
-    width: 100%;
-    top: 105%;
-    left: 0;
+    width: calc(100% + 2px);
+    top: 100%;
+    right: -1px;
     margin: 0;
     padding: 0;
     list-style: none;
     background-color: white;
     border: 1px solid #ccc;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 0 24px 24px;
     animation: fade-in 0.5s forwards;
-    z-index: 1;
+    border-top: 0px white;
+    z-index: 3;
+    box-shadow: 1px 1px 1px #999;
   }
   
   .dropdown_menu_item {
@@ -50,10 +56,12 @@
   
   .icon_drop {
     position: absolute;
-    top: 13px;
-    right: 12px;
-    width: 16px;
-    height: 16px;
+    top: 15px;
+    right: 18px;
+    width: 20px;
+    height: 20px;
+    text-align: right;
+    margin-left:auto;
     cursor: pointer;
   }
   
