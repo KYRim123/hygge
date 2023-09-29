@@ -2,9 +2,10 @@
 import { useState , useRef} from "react";
 import ClickOutSide from "../hook/ClickOutSide";
 import style from "./index.module.css"
+import { BsChevronDown , BsChevronUp} from "react-icons/bs";
 
-export default function SelectDropdown({ items, className, styleDrop, handleSelect }){
-    const [selectedItem, setSelectedItem] = useState(items?.[0]?.name || null);
+export default function SelectDropdown({ items, className, styleDrop, handleSelect ,title_select}){
+    const [selectedItem, setSelectedItem] = useState(null);
 	const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 	const selectRef = useRef(null);
 
@@ -23,7 +24,7 @@ export default function SelectDropdown({ items, className, styleDrop, handleSele
 
     return(
             <div
-			className={`${style.dropdown} ${style.className}`}
+			className={`${style.dropdown} ${style.className} ${isOpenDropdown == true ? style.drop_open : ''}`}
 			style={styleDrop}
 		>
 			<div
@@ -31,11 +32,15 @@ export default function SelectDropdown({ items, className, styleDrop, handleSele
 				ref={selectRef}
 				onClick={OpenDropDown}
 			>
-				{selectedItem}
+				{selectedItem == null ? title_select : selectedItem}
 				{isOpenDropdown ? (
-				'+'
+					
+				 <BsChevronDown className={style.icon_drop}/> 
+			
 				) : (
-				'-'
+			
+					<BsChevronUp className={style.icon_drop}/>
+				
 				)}
 			</div>
 			{isOpenDropdown && (
