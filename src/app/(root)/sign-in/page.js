@@ -18,7 +18,8 @@ const SignIn = () => {
     so_dien_thoai: "0378925111",
   });
 
-  const handleOnLogin = () => {
+  const handleOnLogin = (e) => {
+    e.preventDefault();
     router.push("/login");
   };
   const handleSubmit = (e) => {

@@ -39,10 +39,10 @@ const Input = (props) => {
       <input
         name={name}
         value={value}
-        {...inputProps}
         className="outline-main-100 border-2 border-gray-200 py-3 px-4  rounded-full text-xl"
         onChange={onChange}
         show={validateInput(name, value)}
+        {...inputProps}
       />
       <span className="text-red-500">{errorMessage}</span>
     </div>

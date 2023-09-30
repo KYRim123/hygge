@@ -8,12 +8,16 @@ import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import BoxCategory from "./components/BoxCategory";
 import { FaShoppingBag } from "react-icons/fa";
 import { SlGraph } from "react-icons/sl";
-import { MdOutlineMasks } from "react-icons/md";
+import { MdOutlineMasks, MdOutlinePolicy } from "react-icons/md";
 import { GiEyelashes } from "react-icons/gi";
 import { IoWaterOutline } from "react-icons/io5";
-import { AiFillSafetyCertificate } from "react-icons/ai";
+import { AiFillSafetyCertificate, AiOutlineStar } from "react-icons/ai";
 import { BiSolidMoon } from "react-icons/bi";
-import { BsSun } from "react-icons/bs";
+import { BsPerson, BsSun } from "react-icons/bs";
+// componet
+import ListProduct from "./components/ListProduct";
+import MarginY from "./components/MarginY";
+import Review from "./components/Reviews";
 
 //  home page
 export default function HomePage() {
@@ -33,6 +37,44 @@ export default function HomePage() {
     { link: "/", icon: AiFillSafetyCertificate, text: "Treatments" },
     { link: "/", icon: BiSolidMoon, text: "Night Care" },
     { link: "/", icon: BsSun, text: "Sun Care" },
+  ];
+
+  const items_search = [
+    {
+      name: "Name 1",
+      img: "",
+      sale: 20,
+      type: "EYE CARE",
+      price: 25,
+    },
+    {
+      name: "Name 2",
+      img: "",
+      sale: 10,
+      type: "SUN CARE",
+      price: 30,
+    },
+    {
+      name: "Name 3",
+      img: "",
+      sale: 15,
+      type: "TREATMENTS",
+      price: 20,
+    },
+    {
+      name: "Name 4",
+      img: "",
+      sale: 10,
+      type: "MOISTURIZERS",
+      price: 40,
+    },
+    {
+      name: "Name 5",
+      img: "",
+      sale: 0,
+      type: "FEATURED",
+      price: 60,
+    },
   ];
 
   return (
@@ -72,14 +114,12 @@ export default function HomePage() {
         <div className="flex items-center justify-between">
           <h1 className="title-1">Browse by Category</h1>
           <div className="flex items-center gap-2">
-            <GrFormPrevious
-              size={26}
-              className="cursor-pointer hover:opacity-50"
-            />
-            <GrFormNext
-              size={26}
-              className="cursor-pointer hover:opacity-50"
-            />
+            <div className="wrapper-icon--1 hover-icon">
+              <GrFormPrevious size={26} />
+            </div>
+            <div className="wrapper-icon--1 hover-icon">
+              <GrFormNext size={26} />
+            </div>
           </div>
         </div>
         {/* list category */}
@@ -93,6 +133,47 @@ export default function HomePage() {
             />
           ))}
         </div>
+        {/* our products */}
+        <MarginY>
+          <span className="label-1">- our products</span>
+          <h1 className="title-1">Explore out Products</h1>
+          <ListProduct prop_items={items_search}></ListProduct>
+          <div className="w-full text-center">
+            <Button className={"bg-main-100 text-white"}>View All</Button>
+          </div>
+        </MarginY>
+        {/* why us */}
+        <div className="my-28">
+          <span className="label-1 text-center w-full block">- why us</span>
+          <h1 className="title-1 text-center">why people choose us</h1>
+          <div className="flex justify-between mt-20">
+            <div className="flex items-center flex-col flex-grow">
+              <div className="wrapper-icon--1 w-20 h-20">
+                <MdOutlinePolicy size={45} />
+              </div>
+              <h1 className="title-1">Easy Returns</h1>
+              <p className="text-xl">Our return policy is simple and that is why customers love our shop.</p>
+            </div>
+            <div className="flex items-center flex-col flex-grow">
+              <div className="wrapper-icon--1 w-20 h-20">
+                <BsPerson size={45} />
+              </div>
+              <h1 className="title-1">Customer Service</h1>
+              <p className="text-xl">We offer amazing customer service no matter what happens.</p>
+            </div>
+            <div className="flex items-center flex-col flex-grow">
+              <div className="wrapper-icon--1 w-20 h-20">
+                <AiOutlineStar size={45} />
+              </div>
+              <h1 className="title-1">High Quality</h1>
+              <p className="text-xl">
+                All of our products go through very strict inspection before we dispatch them.
+              </p>
+            </div>
+          </div>
+        </div>
+        {/*cmt people*/}
+        <Review />
       </div>
     </>
   );

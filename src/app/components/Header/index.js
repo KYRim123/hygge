@@ -6,34 +6,24 @@ import { LuShoppingCart } from "react-icons/lu";
 import { GoPerson } from "react-icons/go";
 import { useState } from "react";
 import { iconLogo } from "../../../../public/assets";
+import Navbar from "../Navbar";
+import { usePathname } from "next/navigation";
+import LogoLink from "../LogoLink";
 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
+  const pathname = usePathname();
 
   const handleShowInput = () => {
     setShowInput(!showInput);
   };
 
   return (
-    <div className="relative flex items-center justify-between">
+    <header className="relative flex items-center justify-between">
       {/* logo */}
-      <div>
-        <Link href={"/"}>
-          <Image
-            src={iconLogo}
-            width={150}
-            height={50}
-            alt="logo"
-            style={{ objectFit: "contain", width: "auto", height: "auto" }}
-            priority={false}
-          />
-        </Link>
-      </div>
-      {/* menu */}
-      <div className="flex flex-col gap-1 bg-gray-100 h-[50px] w-[50px] items-center justify-center rounded-full cursor-pointer">
-        <span className="w-7 h-[3px] bg-black-100 "></span>
-        <span className="w-7 h-[3px] bg-black-100 "></span>
-      </div>
+      <LogoLink />
+      {/* navbar */}
+      {!showInput && <Navbar pathname={pathname} />}
       {/* button */}
       <div className="flex items-center gap-5">
         {/* search */}
@@ -72,6 +62,6 @@ export default function Header() {
           </Link>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
