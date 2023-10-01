@@ -4,6 +4,7 @@ import MarginY from "./components/MarginY";
 import Wrapper from "./components/Wrapper";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
+import Footer from "./components/Footer";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -19,8 +20,9 @@ export default function RootLayout({ children }) {
         <Wrapper>
           <Header />
           <MarginY>{children}</MarginY>
-          <Toaster />
+          <Footer />
         </Wrapper>
+        <Toaster />
       </body>
     </html>
   );

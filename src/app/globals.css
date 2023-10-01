@@ -1,15 +1,24 @@
 @tailwind base;
 @layer base {
-    html {
-      @apply text-black-100;
-    }
+  html {
+    @apply text-black-100;
+  }
 }
 @tailwind components;
 @tailwind utilities;
 
 .label-1 {
-  @apply text-blue-500 italic font-semibold;
+  @apply text-blue-500 italic font-semibold capitalize;
 }
 .title-1 {
-  @apply text-4xl font-bold my-4;
+  @apply text-4xl font-bold my-4 capitalize;
+}
+.wrapper-icon--1 {
+  @apply bg-gray-100 p-2 rounded-full flex items-center justify-center;
+}
+.wrapper-icon--2 {
+  @apply bg-transparent border-black-100 border-2 p-2 rounded-full flex items-center justify-center;
+}
+.hover-icon {
+  @apply hover:bg-gray-200 cursor-pointer transition-colors;
 }
