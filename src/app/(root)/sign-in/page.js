@@ -11,7 +11,7 @@ const SignIn = () => {
   const router = useRouter();
   const [data, setData] = useState({
     tai_khoan: "luong12345",
-    mat_khau: "12345luongaA",
+    mat_khau: "123456aA",
     ten_nguoi_dung: "nguyen thanh luong",
     email: "luong7002351@gmail.com",
     dia_chi: "dien hoa, dien ban, quang nam",

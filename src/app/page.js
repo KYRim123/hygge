@@ -14,14 +14,16 @@ import { IoWaterOutline } from "react-icons/io5";
 import { AiFillSafetyCertificate, AiOutlineStar } from "react-icons/ai";
 import { BiSolidMoon } from "react-icons/bi";
 import { BsPerson, BsSun } from "react-icons/bs";
-// componet
+// component
 import ListProduct from "./components/ListProduct";
 import MarginY from "./components/MarginY";
 import Review from "./components/Reviews";
+import { useSession } from "next-auth/react";
 
 //  home page
 export default function HomePage() {
   const router = useRouter();
+
   const handleShopNow = () => {
     router.push("/cart");
   };

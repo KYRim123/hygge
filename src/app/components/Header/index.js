@@ -1,17 +1,18 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { FiSearch } from "react-icons/fi";
 import { LuShoppingCart } from "react-icons/lu";
 import { GoPerson } from "react-icons/go";
 import { useState } from "react";
-import { iconLogo } from "../../../../public/assets";
 import Navbar from "../Navbar";
 import { usePathname } from "next/navigation";
 import LogoLink from "../LogoLink";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
+  const { data: session } = useSession();
   const pathname = usePathname();
 
   const handleShowInput = () => {
@@ -52,14 +53,26 @@ export default function Header() {
         </div>
         {/* cart */}
         <div className="cursor-pointer relative">
-          <span className="absolute -right-1 bg-pink-500 p-[6.5px] rounded-full"></span>
-          <LuShoppingCart size={25} />
+          <Link href={"/cart"}>
+            <span className="absolute -right-1 bg-pink-500 p-[6.5px] rounded-full"></span>
+            <LuShoppingCart size={25} />
+          </Link>
         </div>
         {/* account */}
         <div className="cursor-pointer">
-          <Link href={"/sign-in"}>
-            <GoPerson size={25} />
-          </Link>
+          {session ? (
+            <button
+              onClick={() => {
+                signOut();
+              }}
+            >
+              sigout
+            </button>
+          ) : (
+            <Link href={"/login"}>
+              <GoPerson size={25} />
+            </Link>
+          )}
         </div>
       </div>
     </header>
