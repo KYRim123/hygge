@@ -5,6 +5,7 @@ import Wrapper from "./components/Wrapper";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
 import Footer from "./components/Footer";
+import Providers from "./components/Provider";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -17,12 +18,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <Wrapper>
-          <Header />
-          <MarginY>{children}</MarginY>
-          <Footer />
-        </Wrapper>
-        <Toaster />
+        <Providers>
+          <Wrapper>
+            <Header />
+            <MarginY>{children}</MarginY>
+            <Footer />
+          </Wrapper>
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
