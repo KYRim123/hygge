@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { NAME_TK, NAME_TND, NAME_EMAIL, NAME_MK, NAME_DC, NAME_SDT } from "../../../app/lib/constants";
 
-const SignIn = () => {
+const SignInPage = () => {
   const router = useRouter();
   const [data, setData] = useState({
     tai_khoan: "luong12345",
@@ -124,4 +124,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignInPage;

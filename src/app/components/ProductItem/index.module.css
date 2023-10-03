@@ -90,6 +90,7 @@
     opacity: 0;
     visibility: hidden;
     transition: visibility 0s, opacity 0.5s linear;
+    font-weight: 600;
 }
 .product_item:hover .add_to_cart,
 .add_to_cart:hover {

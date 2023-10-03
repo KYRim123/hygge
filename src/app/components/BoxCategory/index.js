@@ -4,7 +4,7 @@ export default function BoxCategory({ text, link, Icon }) {
   return (
     <Link
       href={link}
-      className="w-[150px] p-5 bg-gray-100 rounded-lg block"
+      className="w-[150px] p-5 bg-gray-100 rounded-lg block hover:translate-y-1"
     >
       <div className="flex flex-col items-center gap-1">
         <Icon

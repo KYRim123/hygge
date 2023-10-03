@@ -27,6 +27,9 @@ module.exports = {
         blue: {
           500: "#2975FF",
         },
+        red: {
+          500: "#ff0000",
+        },
       },
       maxWidth: {
         pc: "1200px",
@@ -45,12 +48,24 @@ module.exports = {
             opacity: "1",
           },
         },
+        rotate_main: {
+          from: {
+            transform: "translate(-50%, -50%) rotate(0deg)",
+          },
+          to: {
+            transform: "translate(-50%, -50%) rotate(360deg)",
+          },
+        },
       },
       animation: {
         showInput: "showInput .4s linear",
+        loadingMain: "rotate_main 1.2s linear infinite",
       },
       textColor: {
         button: "#F7FAFC",
+      },
+      backgroundImage: {
+        "loading-main": "linear-gradient(#9b59b6, #84cdfa, #5ad1cd)",
       },
     },
   },

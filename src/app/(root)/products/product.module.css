@@ -1,0 +1,19 @@
+.pagination_wrapper {
+  @apply w-full;
+}
+.pagination_container {
+  @apply max-w-lg mx-auto;
+}
+.pagination_container .pagination {
+  @apply flex justify-around items-center;
+}
+
+.pagination_container .pageNumber,
+.pagination_container .prev,
+.pagination_container .next {
+  @apply px-5 py-2 rounded-xl cursor-pointer bg-gray-100 text-black-100 font-semibold;
+}
+
+.pagination_container .activeClick {
+  @apply px-5 p-2 rounded-xl cursor-pointer bg-main-100 text-white font-semibold;
+}

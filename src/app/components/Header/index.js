@@ -8,8 +8,7 @@ import Navbar from "../Navbar";
 import { usePathname } from "next/navigation";
 import LogoLink from "../LogoLink";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-
+ 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
   const { data: session } = useSession();
