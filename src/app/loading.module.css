@@ -1,0 +1,27 @@
+.wrapperLoading {
+  @apply fixed inset-0 bg-slate-100;
+}
+.loadingComponent {
+  @apply absolute top-2/4 left-2/4 rounded-[50%] h-24 w-24 bg-[#9b59b6] animate-loadingMain bg-loading-main;
+  @apply after:content-[""] after:absolute after:inset-[10px] after:bg-[#fff] after:border-[5px] after:border-white after:rounded-[50%];
+}
+
+.loadingComponent span {
+  @apply absolute rounded-[50%] h-full w-full bg-[#9b59b6] bg-loading-main;
+}
+
+.loadingComponent span:nth-of-type(1) {
+  @apply blur-[5px];
+}
+
+.loadingComponent span:nth-of-type(2) {
+  @apply blur-[10px];
+}
+
+.loadingComponent span:nth-of-type(3) {
+  @apply blur-[25px];
+}
+
+.loadingComponent span:nth-of-type(4) {
+  @apply blur-[50px];
+}

@@ -1,13 +1,16 @@
 "use client";
-import ListProduct from "../../components/ListProduct/index";
+import ListProduct from "@/app/components/ListProduct";
+import SelectDropdown from "@/app/components/SelectDropdown";
 import { useState } from "react";
-import SelectDropdown from "../../components/SelectDropdown/index";
-import style from "./index.module.css";
+import ReactPaginate from "react-paginate";
+import styles from "./product.module.css";
 
-export default function PageSearch() {
+export default function ProductPage() {
+  const [currentPage, setCurrentPage] = useState("1");
   const handleSelectColor = (id, name) => {
     console.log(id, name);
   };
+
   const text_search = "Eye Care Products for Tired Eyes";
   const items_search = [
     {
@@ -123,7 +126,12 @@ export default function PageSearch() {
       name: "Sale",
     },
   ];
+  const countPage = "5";
 
+  // handle
+  const handlePageClick = (e) => {
+    setCurrentPage(e.selected + 1);
+  };
   return (
     <div>
       <span className="label-1">- Search Results -</span>
@@ -131,7 +139,7 @@ export default function PageSearch() {
       <div>
         <b>{count_items_search}</b> products found
       </div>
-      <div className={style.list_select_dropdown}>
+      <div className="flex justify-around m-5">
         <SelectDropdown
           items={list_color}
           title_select="Color"
@@ -154,6 +162,25 @@ export default function PageSearch() {
         ></SelectDropdown>
       </div>
       <ListProduct prop_items={items_search}></ListProduct>
+      {/* phan trang */}
+      <div className={styles.pagination_wrapper}>
+        <div className={styles.pagination_container}>
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel=">"
+            previousLabel="<"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={3}
+            pageCount={countPage}
+            renderOnZeroPageCount={null}
+            activeClassName={styles.activeClick}
+            previousClassName={styles.prev}
+            nextClassName={styles.next}
+            className={styles.pagination}
+            pageClassName={styles.pageNumber}
+          />
+        </div>
+      </div>
     </div>
   );
 }

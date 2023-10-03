@@ -18,7 +18,10 @@ import { BsPerson, BsSun } from "react-icons/bs";
 import ListProduct from "./components/ListProduct";
 import MarginY from "./components/MarginY";
 import Review from "./components/Reviews";
-import { useSession } from "next-auth/react";
+// others
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Controller, Navigation } from "swiper/modules";
+import "swiper/css";
 
 //  home page
 export default function HomePage() {
@@ -116,25 +119,31 @@ export default function HomePage() {
         <div className="flex items-center justify-between">
           <h1 className="title-1">Browse by Category</h1>
           <div className="flex items-center gap-2">
-            <div className="wrapper-icon--1 hover-icon">
+            <div className="wrapper-icon--1 hover-icon swiper-prev--categoryBtn">
               <GrFormPrevious size={26} />
             </div>
-            <div className="wrapper-icon--1 hover-icon">
+            <div className="wrapper-icon--1 hover-icon swiper-next--categoryBtn">
               <GrFormNext size={26} />
             </div>
           </div>
         </div>
         {/* list category */}
-        <div className="inline-flex gap-3 mt-5">
+        <Swiper
+          modules={[Controller, Navigation]}
+          spaceBetween={10}
+          slidesPerView={7}
+          navigation={{ nextEl: ".swiper-next--categoryBtn", prevEl: ".swiper-prev--categoryBtn" }}
+        >
           {listCategory?.map((item, index) => (
-            <BoxCategory
-              key={index}
-              Icon={item.icon}
-              text={item.text}
-              link={item.link}
-            />
+            <SwiperSlide key={index}>
+              <BoxCategory
+                Icon={item.icon}
+                text={item.text}
+                link={item.link}
+              />
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
         {/* our products */}
         <MarginY>
           <span className="label-1">- our products</span>

@@ -3,7 +3,7 @@ import Link from "next/link";
 const Navbar = ({ pathname }) => {
   const navLink = [
     { name: "home", href: "/" },
-    { name: "categories", href: "/category" },
+    { name: "products", href: "/products" },
     { name: "blog", href: "/blog" },
     { name: "about", href: "/about" },
     { name: "contact", href: "/contact" },

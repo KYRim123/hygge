@@ -2,7 +2,12 @@
 const imageSlide = require("./image/imageSlide.png");
 const avaReview1 = require("./image/ava-1.jpg");
 
-export { imageSlide, avaReview1 };
+const listImageDetails = [
+  require("./image/card-pic-1.png"),
+  require("./image/card-pic-2.png"),
+  require("./image/card-pic-3.png"),
+];
+export { imageSlide, avaReview1, listImageDetails };
 // icons
 const iconLogo = require("./icons/logo.svg");
 

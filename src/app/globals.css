@@ -14,7 +14,7 @@
   @apply text-4xl font-bold my-4 capitalize;
 }
 .wrapper-icon--1 {
-  @apply bg-gray-100 p-2 rounded-full flex items-center justify-center;
+  @apply flex items-center justify-center border-2 p-2 bg-gray-100 rounded-full;
 }
 .wrapper-icon--2 {
   @apply bg-transparent border-black-100 border-2 p-2 rounded-full flex items-center justify-center;

@@ -4,9 +4,12 @@ import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import Input from "../Input";
 import Button from "../Button";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Review() {
   const router = useRouter();
+  const { data: session } = useSession();
+
   const gotopageSignIn = () => {
     router.push("/sign-in");
   };
@@ -43,22 +46,24 @@ export default function Review() {
           </div>
         </div>
       </div>
-      <div className="p-20 text-center">
-        <span className="label-1">- Our Newsletter</span>
-        <h1 className="title-1">Sign Up to our Newsletter</h1>
-        <div className="flex items-center gap-6 mt-20">
-          <Input
-            placeholder={"Your email"}
-            className="outline-main-100 text-xl py-5 px-5 rounded-full"
-          />
-          <Button
-            className={"bg-main-100 text-white"}
-            onClick={gotopageSignIn}
-          >
-            Sign Up
-          </Button>
+      {!session && (
+        <div className="p-20 text-center">
+          <span className="label-1">- Our Newsletter</span>
+          <h1 className="title-1">Sign Up to our Newsletter</h1>
+          <div className="flex items-center gap-6 mt-20">
+            <Input
+              placeholder={"Your email"}
+              className="outline-main-100 text-xl py-5 px-5 rounded-full"
+            />
+            <Button
+              className={"bg-main-100 text-white"}
+              onClick={gotopageSignIn}
+            >
+              Sign Up
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
