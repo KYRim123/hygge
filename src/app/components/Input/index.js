@@ -2,7 +2,7 @@ import styles from "./input.module.css";
 import { NAME_TK, NAME_TND, NAME_EMAIL, NAME_MK, NAME_DC, NAME_SDT } from "@/app/lib/constants";
 
 const Input = (props) => {
-  const { label, value, name, errorMessage, onChange, ...inputProps } = props;
+  const { label, value, name, errorMessage, onChange, width, ...inputProps } = props;
 
   function validateInput(name, value) {
     switch (name) {
@@ -34,7 +34,7 @@ const Input = (props) => {
   }
 
   return (
-    <div className={`${styles.formInput} flex flex-col w-[350px] flex-grow`}>
+    <div className={`${styles.formInput} flex flex-col flex-grow ${width}`}>
       <label htmlFor="email">{label}</label>
       <input
         name={name}

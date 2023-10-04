@@ -52,7 +52,7 @@ export default function Header() {
         </div>
         {/* cart */}
         <div className="cursor-pointer relative">
-          <Link href={"/cart"}>
+          <Link href={"/shoppingCart"}>
             <span className="absolute -right-1 bg-pink-500 p-[6.5px] rounded-full"></span>
             <LuShoppingCart size={25} />
           </Link>
