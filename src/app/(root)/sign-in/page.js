@@ -99,6 +99,7 @@ const SignInPage = () => {
           {inputs?.map((input) => (
             <Input
               key={input.id}
+              width={"w-[350px]"}
               {...input}
               onChange={onChange}
             />

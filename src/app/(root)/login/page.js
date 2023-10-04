@@ -44,6 +44,7 @@ const LoginPage = () => {
       toast.error("User name or password incorrect!");
     } else {
       router.push("/");
+      router.refresh();
     }
   };
 
@@ -61,6 +62,7 @@ const LoginPage = () => {
             {inputs.map((input) => (
               <Input
                 key={input.id}
+                width={"w-[350px]"}
                 {...input}
                 onChange={onChange}
               />
