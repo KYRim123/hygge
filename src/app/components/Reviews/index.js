@@ -1,18 +1,8 @@
 import Image from "next/image";
 import { avaReview1 } from "../../../../public/assets";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import Input from "../Input";
-import Button from "../Button";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 export default function Review() {
-  const router = useRouter();
-  const { data: session } = useSession();
-
-  const gotopageSignIn = () => {
-    router.push("/sign-in");
-  };
   return (
     <div className="rounded-3xl  bg-gray-100">
       <div className="flex items-center gap-4 p-20">
@@ -26,6 +16,7 @@ export default function Review() {
             height={80}
             src={avaReview1}
             className="p-1 rounded-full border-main-100 border-2"
+            alt="adas"
           />
           <h3 className="title-1">amy smith</h3>
           <p>
@@ -46,24 +37,6 @@ export default function Review() {
           </div>
         </div>
       </div>
-      {!session && (
-        <div className="p-20 text-center">
-          <span className="label-1">- Our Newsletter</span>
-          <h1 className="title-1">Sign Up to our Newsletter</h1>
-          <div className="flex items-center gap-6 mt-20">
-            <Input
-              placeholder={"Your email"}
-              className="outline-main-100 text-xl py-5 px-5 rounded-full"
-            />
-            <Button
-              className={"bg-main-100 text-white"}
-              onClick={gotopageSignIn}
-            >
-              Sign Up
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

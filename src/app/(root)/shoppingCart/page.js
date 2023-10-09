@@ -94,7 +94,7 @@ export default function PagesShoppingCart(){
                     {list_shopping_cart.map((item, index) => (
                         <div className={style.item_cart} key={index}>
                             <div className={style.img_item_cart}>
-                                <img src="https://ui8-hygge.herokuapp.com/hugge/img/card-pic-2.png" alt="" />
+                                <img src="https://ui8-hygge.herokuapp.com/hugge/img/card-pic-2.png" alt="aa" />
                             </div>
                             <div className={style.info_item_cart}>
                                 <b className="text-2xl">{item.name}</b>
