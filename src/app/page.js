@@ -22,14 +22,18 @@ import Review from "./components/Reviews";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Controller, Navigation } from "swiper/modules";
 import "swiper/css";
+import NewLetter from "./components/Newletter";
+// 
+import { useSession } from "next-auth/react";
 
 //  home page
 export default function HomePage() {
   const router = useRouter();
-
+  const { data: session } = useSession();
   const handleShopNow = () => {
     router.push("/cart");
   };
+
   const listCategory = [
     { link: "/", icon: FaShoppingBag, text: "On sale" },
     { link: "/", icon: SlGraph, text: "Featured" },
@@ -185,6 +189,8 @@ export default function HomePage() {
         </div>
         {/*cmt people*/}
         <Review />
+        {/* new letter */}
+        {!session && <NewLetter />}
       </div>
     </>
   );

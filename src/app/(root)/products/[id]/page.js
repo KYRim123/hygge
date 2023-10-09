@@ -144,6 +144,7 @@ export default function DetailProduct() {
                 height={300}
                 src={item}
                 className="object-cover w-full h-full"
+                alt="imgProduct"
               />
             </div>
           ))}

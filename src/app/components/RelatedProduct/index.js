@@ -48,6 +48,7 @@ export default function RelatedProduct({ listProduct }) {
                 height={500}
                 src={item.img}
                 className="w-full h-full object-cover"
+                alt="mm"
               />
               {item.sale && (
                 <span className="absolute top-11 -right-10 bg-red-500 text-white font-semibold text-lg py-2 px-4 rounded-full">
