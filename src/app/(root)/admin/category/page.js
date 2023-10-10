@@ -18,26 +18,24 @@ export default function PageAdminCategory() {
   const [show_modal_edit_category, set_show_modal_edit_category] = useState(false);
   const [show_modal_edit_child_category, set_show_modal_edit_child_category] = useState(false);
 
-
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/product-types/list")
-      .then((response) => {
-        set_categories(response.data.data);
-      })
-      .catch((error) => {
-        console.error("Lỗi khi gọi API: ", error);
-      });
-
-    axios
-      .get("http://127.0.0.1:8000/api/category-types/list")
-      .then((response) => {
-        set_categories_children(response.data.data);
-      })
-      .catch((error) => {
-        console.error("Lỗi khi gọi API: ", error);
-      });
+    const fetchData = async () => {
+      
+      try {
+        const response1 = await axios.get("http://xuantuyen1207.website/api/product-types/list");
+        set_categories(response1.data.data);
+  
+        const response2 = await axios.get("http://xuantuyen1207.website/api/category-types/list");
+        set_categories_children(response2.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("An error occurred while fetching data.");
+      }
+    };
+  
+    fetchData();
   }, []);
+  
   const [title_children_category, set_title_children_category] = useState(
     categories[0]?.ten_dong_san_pham || "Child Category",
   );
@@ -49,9 +47,9 @@ export default function PageAdminCategory() {
     set_title_children_category(item.ten_dong_san_pham);
   };
 
-  const handleAddNewCategoryChild = (name_new_category_child, id_dong_san_pham ,name) => {
-    axios
-      .post("http://127.0.0.1:8000/api/category-types/create", {
+  const handleAddNewCategoryChild = async (name_new_category_child, id_dong_san_pham ,name) => {
+    await axios
+      .post("http://xuantuyen1207.website/api/category-types/create", {
         ten_loai_san_pham: name_new_category_child,
         id_dong_san_pham: id_dong_san_pham,
       })
@@ -72,9 +70,9 @@ export default function PageAdminCategory() {
       });
   };
 
-  const handleEditChildCategory = (ten_loai_san_pham , id_dong_san_pham,name) => {
-    axios
-      .post("http://127.0.0.1:8000/api/category-types/edit", { id : data_edit_child_category.id ,ten_loai_san_pham ,id_dong_san_pham})
+  const handleEditChildCategory = async (ten_loai_san_pham , id_dong_san_pham,name) => {
+    await axios
+      .post("http://xuantuyen1207.website/api/category-types/edit", { id : data_edit_child_category.id ,ten_loai_san_pham ,id_dong_san_pham})
       .then((response) => {
         if (response.data.status == true) {
           set_categories_children(response.data.data);
@@ -92,9 +90,9 @@ export default function PageAdminCategory() {
       });
   };
 
-  const handleRemoveChildCategory = (id) => {
-    axios
-    .post("http://127.0.0.1:8000/api/category-types/destroy", {id})
+  const handleRemoveChildCategory = async (id) => {
+    await axios
+    .post("http://xuantuyen1207.website/api/category-types/destroy", {id})
     .then((response) => {
       if (response.data.status == true) {
         set_categories_children(response.data.data);
@@ -108,9 +106,9 @@ export default function PageAdminCategory() {
     });
   };
 
-  const handleAddNewCategory = (ten_dong_san_pham) => {
-    axios
-      .post("http://127.0.0.1:8000/api/product-types/create", { ten_dong_san_pham })
+  const handleAddNewCategory = async (ten_dong_san_pham) => {
+    await axios
+      .post("http://xuantuyen1207.website/api/product-types/create", { ten_dong_san_pham })
       .then((response) => {
         if (response.data.status == true) {
           set_categories(response.data.data);
@@ -124,12 +122,15 @@ export default function PageAdminCategory() {
       });
   };
 
-  const handleEditCategory = (ten_dong_san_pham) => {
-    axios
-      .post("http://127.0.0.1:8000/api/product-types/edit", { id : data_edit_category.id ,ten_dong_san_pham })
+  const handleEditCategory = async (ten_dong_san_pham) => {
+    await axios
+      .post("http://xuantuyen1207.website/api/product-types/edit", { id : data_edit_category.id ,ten_dong_san_pham })
       .then((response) => {
         if (response.data.status == true) {
           set_categories(response.data.data);
+          if(data_edit_category.id == id_category){
+            set_title_children_category(ten_dong_san_pham);
+          }
           toast.success("EDIT SUCCESSFUL");
         } else {
           toast.error("EDIT ERROR");
@@ -140,9 +141,9 @@ export default function PageAdminCategory() {
       });
   };
 
-  const handleRemoveCategory = (id) => {
-    axios
-      .post("http://127.0.0.1:8000/api/product-types/destroy", { id })
+  const handleRemoveCategory = async (id) => {
+    await axios
+      .post("http://xuantuyen1207.website/api/product-types/destroy", { id })
       .then((response) => {
         if (response.data.status == true) {
           set_categories(response.data.data);
@@ -273,7 +274,7 @@ export default function PageAdminCategory() {
           </div>
           <div className={style.body_category}>
             {categories_children
-              .filter((category) => category.id_dong_san_pham === id_category)
+              .filter((category) => category.id_dong_san_pham == id_category)
               .map((category) => (
                 <div
                   key={category.id}
