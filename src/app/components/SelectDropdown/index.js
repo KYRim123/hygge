@@ -4,8 +4,8 @@ import ClickOutSide from "../hook/ClickOutSide";
 import style from "./index.module.css";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 
-export default function SelectDropdown({ items, className, styleDrop, handleSelect, title_select }) {
-  const [selectedItem, setSelectedItem] = useState(null);
+export default function SelectDropdown({ items, className, styleDrop, handleSelect, title_select ,selectedItemProp,styleDropBox}) {
+  const [selectedItem, setSelectedItem] = useState(selectedItemProp || null);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const [firstLoadPage, setFirstLoadPage] = useState(true);
   const selectRef = useRef(null);
@@ -46,6 +46,7 @@ export default function SelectDropdown({ items, className, styleDrop, handleSele
           className={style.dropdown_menu}
           selectRef={selectRef}
           closeBox={handleCloseBox}
+          style={styleDropBox}
         >
           {items?.map((item, index) => (
             <li
