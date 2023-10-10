@@ -1,5 +1,6 @@
 import WrapperAdmin from "@/app/components/WrapperAdmin";
 import { Montserrat } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -13,6 +14,7 @@ export default function AdminLayout({ children }) {
     <html lang="en">
       <body className={montserrat.className}>
         <WrapperAdmin>{children}</WrapperAdmin>
+        <Toaster />
       </body>
     </html>
   );

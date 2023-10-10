@@ -1,0 +1,16 @@
+.body_category{
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.icon_edit{
+    opacity: 0;
+}
+.open_icon {
+    width: 100%;
+    line-height: 36px;
+}
+.open_icon:hover ~ .icon_edit,
+.icon_edit:hover{
+    opacity: 1;
+}

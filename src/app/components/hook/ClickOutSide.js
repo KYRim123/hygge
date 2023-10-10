@@ -16,7 +16,7 @@ function useOutsideAlerter(ref, closeBox, selectRef) {
 	}, [ref]);
 }
 
-export default function ClickOutSide({ className, children, closeBox, selectRef }) {
+export default function ClickOutSide({ className, children, closeBox, selectRef ,style}) {
 	const wrapperRef = useRef(null);
 	useOutsideAlerter(wrapperRef, closeBox, selectRef || null);
 
@@ -24,6 +24,7 @@ export default function ClickOutSide({ className, children, closeBox, selectRef 
 		<div
 			ref={wrapperRef}
 			className={className}
+			style={style}
 		>
 			{children}
 		</div>
