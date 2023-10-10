@@ -89,6 +89,7 @@ const SignInPage = () => {
 
   return (
     <div>
+      <Input />
       <div>
         <span className="label-1">- Sign Up</span>
         <h1 className="title-1">Create Account</h1>

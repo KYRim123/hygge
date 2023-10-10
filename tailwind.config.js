@@ -56,10 +56,28 @@ module.exports = {
             transform: "translate(-50%, -50%) rotate(360deg)",
           },
         },
+        spin0to180: {
+          from: {
+            transform: "rotate(180deg)",
+          },
+          to: {
+            transform: "rotate(0deg)",
+          },
+        },
+        spin180to0: {
+          from: {
+            transform: "rotate(-180deg)",
+          },
+          to: {
+            transform: "rotate(0deg)",
+          },
+        },
       },
       animation: {
         showInput: "showInput .4s linear",
         loadingMain: "rotate_main 1.2s linear infinite",
+        spin0to180: "spin0to180 0.3s ease-in-out",
+        spin180to0: "spin180to0 0.3s ease-in-out",
       },
       textColor: {
         button: "#F7FAFC",

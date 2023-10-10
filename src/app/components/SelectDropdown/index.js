@@ -7,6 +7,7 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 export default function SelectDropdown({ items, className, styleDrop, handleSelect, title_select }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
+  const [firstLoadPage, setFirstLoadPage] = useState(true);
   const selectRef = useRef(null);
 
   const handleItemClick = (id, name) => {
@@ -20,6 +21,7 @@ export default function SelectDropdown({ items, className, styleDrop, handleSele
 
   const OpenDropDown = () => {
     setIsOpenDropdown(!isOpenDropdown);
+    setFirstLoadPage(false);
   };
 
   return (
@@ -34,9 +36,9 @@ export default function SelectDropdown({ items, className, styleDrop, handleSele
       >
         {selectedItem == null ? title_select : selectedItem}
         {isOpenDropdown ? (
-          <BsChevronDown className={style.icon_drop} />
+          <BsChevronDown className={`${style.icon_drop}  animate-spin0to180`} />
         ) : (
-          <BsChevronUp className={style.icon_drop} />
+          <BsChevronUp className={`${style.icon_drop} ${firstLoadPage || "animate-spin180to0"}`} />
         )}
       </div>
       {isOpenDropdown && (
