@@ -1,10 +1,7 @@
 import { Toaster } from "react-hot-toast";
-import Header from "./components/Header";
-import MarginY from "./components/MarginY";
 import Wrapper from "./components/Wrapper";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
-import Footer from "./components/Footer";
 import Providers from "./components/Provider";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -19,11 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={montserrat.className}>
         <Providers>
-          <Wrapper>
-            <Header />
-            <MarginY>{children}</MarginY>
-            <Footer />
-          </Wrapper>
+          <Wrapper>{children}</Wrapper>
           <Toaster />
         </Providers>
       </body>

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { avaReview1 } from "../../../../public/assets";
+import { avaReview1 } from "../../../public/assets";
 
 export default function Home() {
   const [nameUser, setName] = useState("luong");

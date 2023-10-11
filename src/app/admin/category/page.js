@@ -1,6 +1,6 @@
 "use client";
 import { AiOutlineCloseCircle, AiOutlinePlusCircle } from "react-icons/ai";
-import style from "./index.module.css";
+import style from "./category.module.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ModalAddCategory from "@/app/components/ModalAddCategory";
@@ -159,8 +159,7 @@ export default function PageAdminCategory() {
         console.error("Lỗi khi gọi API: ", error);
       });
   };
-
-  return (
+   return (
     <div className="px-1">
       {show_modal_add_category ? (
         <ModalAddCategory
