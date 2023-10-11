@@ -1,0 +1,74 @@
+.input_create{
+    outline: none;
+    width: 200px;
+    margin: 2px;
+    padding: 6px 8px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    width: 100%;
+    
+}
+.input_create:focus{
+    box-shadow: 0px 0px 2px blue;
+}
+.input_create::-webkit-inner-spin-button,
+.input_create::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.list_img{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+}
+.image_product{
+    width: 140px;
+    height: 140px;
+}
+.img_body_list{
+    width:140px;
+    position: relative;
+}
+.icon_remove_img{
+    display: none;
+}
+.img_name{
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.image_product:hover ~ .icon_remove_img,
+.icon_remove_img:hover{
+    display: block;
+}
+
+.footer_btn{
+    margin: 32px auto;
+    display: flex;
+    width: 450px;
+    justify-content: space-between;
+}
+.btn_save,.btn_close{
+    font-weight: 600;
+    color:white;
+    width: 150px;
+    padding: 12px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+.btn_save{
+    background-color: #00cc96;
+    border-radius: 24px;
+}
+.btn_close{
+    background-color: #ccc;
+    border-radius: 24px;
+}
+.btn_save:hover{
+    box-shadow: 0px 0px 12px #00cc96;
+}
+.btn_close:hover{
+    box-shadow: 0px 0px 12px #ccc;
+}

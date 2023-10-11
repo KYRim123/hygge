@@ -1,0 +1,81 @@
+.dropdown {
+    position: relative;
+    height: 38px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 1px #999;
+  
+  }
+  .drop_open {
+    border-radius: 12px 12px 0px 0px;
+  }
+  .dropdown_selected_item {
+    cursor: pointer;
+    align-items: center;
+    line-height: 38px;
+    padding: 0px 6px;
+  }
+  
+  .dropdown_menu {
+    position: absolute;
+    width: calc(100% + 2px);
+    top: 100%;
+    right: -1px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0 0 12px 12px;
+    animation: fade-in 0.5s forwards;
+    border-top: 0px white;
+    z-index: 3;
+  }
+  
+  .dropdown_menu_item {
+    padding: 5px 6px;
+    cursor: pointer;
+  }
+  
+  .dropdown_menu_item:hover {
+    background: var(--border-color);
+    color: var(--white-color);
+  }
+  
+  .is_select {
+    background: var(--border-color);
+    color: var(--white-color);
+  }
+  
+  .dropdown_menu-item:hover {
+    background-color: var(--white-color);
+  }
+  
+  .icon_drop {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    text-align: right;
+    margin-left:auto;
+    cursor: pointer;
+  }
+  
+  .cancel_modal_status_button {
+    outline: none;
+    border: none;
+    background-color: none;
+  }
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
