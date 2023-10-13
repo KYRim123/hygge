@@ -5,9 +5,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import '@/app/ckeditor-custom.css'
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "@/app/ckeditor-custom.css";
 
 export default function CreateProduct() {
   const [name_product, set_name_product] = useState("");
@@ -20,26 +20,26 @@ export default function CreateProduct() {
   const [list_category, set_list_category] = useState([]);
 
   const dataPost = {
-    name : name_product,
-    price : price_product,
-    sale : sale,
-    short_description : short_description,
-    description : description,
-    id_category : id_category_product,
-    image : image_product
-  }
+    name: name_product,
+    price: price_product,
+    sale: sale,
+    short_description: short_description,
+    description: description,
+    id_category: id_category_product,
+    image: image_product,
+  };
 
   const type_img = [
-    'image/png',
-    'image/jpeg',
-    'image/webp',
-    'image/gif',
-    'image/tif',
-    'image/bmp',
-    'image/ico',
-    'image/psd',
-    'image/WebP',
-    'image/jpg'
+    "image/png",
+    "image/jpeg",
+    "image/webp",
+    "image/gif",
+    "image/tif",
+    "image/bmp",
+    "image/ico",
+    "image/psd",
+    "image/WebP",
+    "image/jpg",
   ];
 
   useEffect(() => {
@@ -59,11 +59,8 @@ export default function CreateProduct() {
         toast.error("An error occurred while fetching data.");
       }
     };
-
     fetchData();
   }, []);
-
-
   const chooseImage = (e) => {
     const files = Array.from(e.target.files);
     const areAllImages = files.every((file) => {
@@ -72,7 +69,7 @@ export default function CreateProduct() {
     if (areAllImages) {
       set_image_product([...image_product, ...files]);
     } else {
-      toast.error('Error: Some files are not in the allowed format.');
+      toast.error("Error: Some files are not in the allowed format.");
     }
   };
 
@@ -92,13 +89,21 @@ export default function CreateProduct() {
     set_id_category_product(id);
   };
 
-  const handleClickClose = () => {
+  const handleClickClose = () => {};
 
-  }
 
   const handleClickAddNew = async () => {
-    console.log(dataPost);
-  }
+    try {
+      const response = await axios.post("http://xuantuyen1207.website/api/product/create",dataPost, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Dữ liệu đã được gửi thành công: ", response.data);
+    } catch (error) {
+      console.error("Lỗi khi gửi dữ liệu: ", error);
+    }
+  };
 
   return (
     <div className="px-6">
@@ -199,15 +204,23 @@ export default function CreateProduct() {
               onChange={chooseImage}
             />
             <div className={style.list_img}>
-            {image_product.map((item, index) => (
-              <div className={style.img_body_list} key={index}>
-                <p className={style.img_name}>{item.name}</p>
-                <img className={style.image_product} src={link_img(item)} />
-                <AiOutlineCloseCircle
-                    className={`${"absolute right-0 top-6 w-7 h-7 hover:text-red-600  cursor-pointer text-red-400"} ${style.icon_remove_img}`}  
+              {image_product.map((item, index) => (
+                <div
+                  className={style.img_body_list}
+                  key={index}
+                >
+                  <p className={style.img_name}>{item.name}</p>
+                  <img
+                    className={style.image_product}
+                    src={link_img(item)}
+                  />
+                  <AiOutlineCloseCircle
+                    className={`${"absolute right-0 top-6 w-7 h-7 hover:text-red-600  cursor-pointer text-red-400"} ${
+                      style.icon_remove_img
+                    }`}
                   ></AiOutlineCloseCircle>
-              </div>
-            ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -220,27 +233,27 @@ export default function CreateProduct() {
               Description
             </label>
             <CKEditor
-                editor={ClassicEditor}
-                data={description}
-                onChange={handleCKEditorChange}
+              editor={ClassicEditor}
+              data={description}
+              onChange={handleCKEditorChange}
             />
           </div>
         </div>
       </div>
       <div className={style.footer_btn}>
-              <div
-                className={style.btn_close}
-                onClick={handleClickClose}
-              >
-                Close
-              </div>
-              <div
-                className={style.btn_save}
-                onClick={handleClickAddNew}
-              >
-                Add New
-              </div>
-            </div>
+        <div
+          className={style.btn_close}
+          onClick={handleClickClose}
+        >
+          Close
+        </div>
+        <div
+          className={style.btn_save}
+          onClick={handleClickAddNew}
+        >
+          Add New
+        </div>
+      </div>
     </div>
   );
 }
