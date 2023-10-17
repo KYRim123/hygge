@@ -67,7 +67,7 @@ export default function ListProduct() {
     }
   };
   useEffect(() => {
-    const url = "http://localhost:8000/api/product/list-all";
+    const url = "http://xuantuyen1207.website/api/product/list-all";
     fetchData(url);
   }, [pre_page]);
 
@@ -90,7 +90,7 @@ export default function ListProduct() {
   };
 
   const onClickSearch = () => {
-    const url = "http://localhost:8000/api/product/list-all";
+    const url = "http://xuantuyen1207.website/api/product/list-all";
     fetchData(url);
   };
 
@@ -102,7 +102,7 @@ export default function ListProduct() {
 
   const handleDeleteProduct = async (id) => {
     try {
-      const response = await axios.post("http://localhost:8000/api/product/destroy", { id: id });
+      const response = await axios.post("http://xuantuyen1207.website/api/product/destroy", { id: id });
       if (response.data.status === true) {
         fetchData(url_pre);
         console.log(response.data.status);
