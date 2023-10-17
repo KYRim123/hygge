@@ -45,7 +45,7 @@ const generatePDF = () => {
 
 export default function ListProduct() {
   const [data, set_data] = useState();
-  const [pre_page, set_pre_page] = useState(5);
+  const [pre_page, set_pre_page] = useState(20);
   const [search, set_search] = useState("");
   const [pre_search, set_pre_search] = useState("");
   const [short_description,set_short_description] = useState('');
