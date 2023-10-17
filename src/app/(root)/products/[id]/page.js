@@ -46,7 +46,7 @@ export default function DetailProduct() {
       sale: 20,
       type: "EYE CARE",
       price: 25,
-      img: listImages[0],
+      img: "169721623927.png",
     },
     {
       name: "Name 2",
@@ -54,7 +54,7 @@ export default function DetailProduct() {
       sale: 10,
       type: "SUN CARE",
       price: 30,
-      img: listImages[0],
+      img: "169721623927.png",
     },
     {
       name: "Name 3",
@@ -62,7 +62,7 @@ export default function DetailProduct() {
       sale: 15,
       type: "TREATMENTS",
       price: 20,
-      img: listImages[0],
+      img: "169721623927.png",
     },
     {
       name: "Name 4",
@@ -70,7 +70,7 @@ export default function DetailProduct() {
       sale: 10,
       type: "MOISTURIZERS",
       price: 40,
-      img: listImages[0],
+      img: "169721623927.png",
     },
     {
       name: "Name 5",
@@ -78,7 +78,7 @@ export default function DetailProduct() {
       sale: 0,
       type: "FEATURED",
       price: 60,
-      img: listImages[0],
+      img: "169721623927.png",
     },
     {
       name: "Name 6",
@@ -86,7 +86,7 @@ export default function DetailProduct() {
       sale: 10,
       type: "MOISTURIZERS",
       price: 40,
-      img: listImages[0],
+      img: "169721623927.png",
     },
     {
       name: "Name 7",
@@ -94,7 +94,7 @@ export default function DetailProduct() {
       sale: 0,
       type: "FEATURED",
       price: 60,
-      img: listImages[0],
+      img: "169721623927.png",
     },
     {
       name: "Name 8",
@@ -102,7 +102,7 @@ export default function DetailProduct() {
       sale: 10,
       type: "MOISTURIZERS",
       price: 40,
-      img: listImages[0],
+      img: "169721623927.png",
     },
     {
       name: "Name 9",
@@ -110,7 +110,7 @@ export default function DetailProduct() {
       sale: 0,
       type: "FEATURED",
       price: 60,
-      img: listImages[0],
+      img: "169721623927.png",
     },
   ];
 
@@ -230,7 +230,7 @@ export default function DetailProduct() {
         <Review />
       </div>
       {/* related  */}
-      <RelatedProduct listProduct={listProductRelated}/>
+      <RelatedProduct listProduct={listProductRelated} />
     </>
   );
 }

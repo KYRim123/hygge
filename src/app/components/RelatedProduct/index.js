@@ -9,6 +9,7 @@ import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import TypeProduct from "../TypeProduct";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import ProductItem from "../ProductItem";
 
 export default function RelatedProduct({ listProduct }) {
   const router = useRouter();
@@ -39,33 +40,7 @@ export default function RelatedProduct({ listProduct }) {
       >
         {listProduct.map((item, index) => (
           <SwiperSlide key={index}>
-            <div
-              onClick={handleClickProductRelated}
-              className="relative bg-gray-100 w-[250px] h-[250px] rounded-3xl cursor-pointer"
-            >
-              <Image
-                width={500}
-                height={500}
-                src={item.img}
-                className="w-full h-full object-cover"
-                alt="mm"
-              />
-              {item.sale && (
-                <span className="absolute top-11 -right-10 bg-red-500 text-white font-semibold text-lg py-2 px-4 rounded-full">
-                  {item.sale}% off
-                </span>
-              )}
-            </div>
-            <div className="">
-              <div className="text-lg font-bold">{item.name}</div>
-              <div className="flex gap-2 justify-between items-center mt-5">
-                <TypeProduct type={item.type} />
-                <div className="mr-9">
-                  <span className="text-gray-400 line-through mr-5 text-base">$30</span>
-                  <span className="font-bold text-xl">$20</span>
-                </div>
-              </div>
-            </div>
+            <ProductItem {...item} />
           </SwiperSlide>
         ))}
       </Swiper>

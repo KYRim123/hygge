@@ -9,11 +9,23 @@ import LoadingA from "@/app/components/LoadingA";
 export default function ProductPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchData, setFetchData] = useState();
+  const [productTypes, setProductTypes] = useState();
+  const [category, setCategory] = useState({ id_category: "", price: "", gia_tien: [] });
 
   useEffect(() => {
-    const api = `${process.env.HTTP_URL}/api/product/list?page=${currentPage}`;
-    axios.get(api).then((res) => setFetchData(res.data.data));
-  }, [currentPage]);
+    const api = `${process.env.HTTP_URL}/api/product/list`;
+    const api2 = `${process.env.HTTPS_URL}/api/product-types/list`;
+    axios.post(api, { page: currentPage, ...category }).then((res) => setFetchData(res.data.data));
+    axios.get(api2).then((res) => {
+      const formattedData = res.data.data.map((item) => ({
+        id: item.id,
+        name: item.ten_dong_san_pham,
+      }));
+      setProductTypes(formattedData);
+    });
+  }, [currentPage, category]);
+
+  // loading
 
   if (!fetchData) {
     return <LoadingA />;
@@ -27,52 +39,7 @@ export default function ProductPage() {
     setCurrentPage(e.selected + 1);
   };
 
-  // aa
-  const handleSelectColor = (id, name) => {
-    console.log(id, name);
-  };
-
   // category
-  const list_color = [
-    {
-      id: 1,
-      name: "Red",
-    },
-    {
-      id: 2,
-      name: "Blue",
-    },
-    {
-      id: 3,
-      name: "Green",
-    },
-    {
-      id: 4,
-      name: "Black",
-    },
-  ];
-  const list_category = [
-    {
-      id: 1,
-      name: "SUN CARE",
-    },
-    {
-      id: 2,
-      name: "EYE CARE",
-    },
-    {
-      id: 3,
-      name: "TREATMENTS",
-    },
-    {
-      id: 4,
-      name: "MOISTURIZERS",
-    },
-    {
-      id: 5,
-      name: "FEATURED",
-    },
-  ];
   const list_price_range = [
     {
       id: 1,
@@ -92,23 +59,50 @@ export default function ProductPage() {
     },
     {
       id: 5,
-      name: "$100 +",
+      name: "$100+",
     },
   ];
   const list_sort_by = [
     {
       id: 1,
-      name: "Name",
+      name: "ASC",
     },
     {
       id: 2,
-      name: "Price",
-    },
-    {
-      id: 3,
-      name: "Sale",
+      name: "DESC",
     },
   ];
+
+  // handle category
+  const handleSelectColor = (id, name, title_select) => {
+    if (title_select === "Category") {
+      setCategory({ ...category, id_category: id });
+    }
+    if (title_select === "Price Range") {
+      let gia_tien = [];
+      switch (id) {
+        case 1:
+          gia_tien = [0, 10];
+          break;
+        case 2:
+          gia_tien = [10, 20];
+          break;
+        case 3:
+          gia_tien = [20, 40];
+          break;
+        case 4:
+          gia_tien = [40, 100];
+          break;
+        case 5:
+          gia_tien = [100, 0];
+          break;
+      }
+      setCategory({ ...category, gia_tien });
+    }
+    if (title_select === "Sort By") {
+      setCategory({ ...category, price: name });
+    }
+  };
 
   return (
     <div>
@@ -119,12 +113,7 @@ export default function ProductPage() {
       </div> */}
       <div className="flex justify-around m-5">
         <SelectDropdown
-          items={list_color}
-          title_select="Color"
-          handleSelect={handleSelectColor}
-        ></SelectDropdown>
-        <SelectDropdown
-          items={list_category}
+          items={productTypes}
           title_select="Category"
           handleSelect={handleSelectColor}
         ></SelectDropdown>

@@ -1,13 +1,11 @@
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import style from "./index.module.css";
-import { IoMdInformationCircleOutline } from "react-icons/io";
 import TypeProduct from "../TypeProduct";
 import Link from "next/link";
 import { BG_BLUE, BG_GREEN, BG_ORANGE } from "../../lib/constants";
 import Image from "next/image";
 
 export default function ProductItem({ name, img, sale, type, price }) {
-  const ChiLayDu = (number) => {
+  const priceNew = price - (price * sale) / 100;
+  const handleType = (number) => {
     const x = number % 5;
     if (x == 1) {
       return BG_BLUE;
@@ -21,39 +19,35 @@ export default function ProductItem({ name, img, sale, type, price }) {
   };
 
   return (
-    <div className={style.product_item}>
-      <div className={style.body_product}>
-        <div className={style.img_product}>
-          <Image
-            src={`${process.env.HTTPS_URL}/upload/${img}`}
-            alt="aa"
-            width={500}
-            height={500}
-          />
-          <div className={`${style.add_to_cart} flex gap-5`}>
-            <div>
-              <AiOutlineShoppingCart
-                size={26}
-                className="text-white hover:opacity-50"
-              />
-            </div>
-            <Link href={`http://localhost:3000/products/1`}>
-              <IoMdInformationCircleOutline
-                size={26}
-                className="text-white hover:opacity-50"
-              />
-            </Link>
-          </div>
-        </div>
-        <div className={style.footer_product}>
-          <div className={style.name_product}>{name}</div>
-          <div className={style.price_body}>
-            <TypeProduct type={ChiLayDu(type)} />
-            <div className={`${style.price_product} font-semibold`}>${price}</div>
+    <div className="w-[250px] mt-10 border-[2px] border-gray-200 rounded-3xl">
+      <Link
+        href={`http://localhost:3000/products/1`}
+        className="relative block bg-gray-100 w-full rounded-3xl hover:opacity-80"
+      >
+        <Image
+          width={300}
+          height={250}
+          src={`${process.env.HTTPS_URL}/upload/${img}`}
+          className="w-full h-[250px] object-cover rounded-3xl"
+          alt="mm"
+        />
+        {sale !== 0 && (
+          <span className="absolute top-11 -right-10 bg-red-500 text-white font-semibold text-lg py-2 px-4 rounded-full">
+            {sale}% off
+          </span>
+        )}
+      </Link>
+
+      <div className="flex flex-col gap-3 p-2">
+        <div className="text-lg font-bold capitalize">{name}</div>
+        <div className="flex gap-2 justify-between items-center">
+          <TypeProduct type={handleType(type)} />
+          <div>
+            <span className="text-gray-500 line-through mr-5 text-base">${price}</span> <br />
+            <span className="font-bold text-xl">$ {priceNew}</span>
           </div>
         </div>
       </div>
-      {sale != 0 ? <div className={style.product_sale}>{sale}% OFF</div> : ""}
     </div>
   );
 }
