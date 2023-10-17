@@ -8,8 +8,9 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@/app/ckeditor-custom.css";
+import { useParams } from "next/navigation";
 
-export default function CreateProduct() {
+export default function EditProduct() {
   const [name_product, set_name_product] = useState("");
   const [price_product, set_price_product] = useState(null);
   const [id_category_product, set_id_category_product] = useState(null);
@@ -18,8 +19,39 @@ export default function CreateProduct() {
   const [sale, set_sale] = useState(null);
   const [image_product, set_image_product] = useState([]);
   const [list_category, set_list_category] = useState([]);
+  const [list_delete_img, set_list_delete_img] = useState([]);
+  const [list_image_api, set_list_image_api] = useState([]);
+  const [selected_category, set_selected_category] = useState("");
 
+  const PARAMS = useParams().id;
+  console.log(selected_category);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://xuantuyen1207.website/api/product/" + PARAMS + "/edit");
+        if (response.data.status == true) {
+          const product = response.data.data;
+          set_name_product(product.ten_san_pham);
+          set_price_product(product.gia);
+          set_id_category_product(product.id_loai_san_pham);
+          set_short_description(product.mo_ta_ngan);
+          set_description(product.mo_ta);
+          set_sale(product.khuyen_mai);
+          set_selected_category(response.data.category.ten_loai_san_pham);
+          set_list_image_api(response.data.img);
+        } else {
+          toast.error("An error occurred while fetching data.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("An error occurred while fetching data.");
+      }
+    };
+    fetchData();
+  }, [PARAMS]);
+  console.log(image_product);
   const dataPost = {
+    id_product: PARAMS,
     name: name_product,
     price: price_product,
     sale: sale,
@@ -27,6 +59,7 @@ export default function CreateProduct() {
     description: description,
     id_category: id_category_product,
     image: image_product,
+    del_img: list_delete_img,
   };
 
   const type_img = [
@@ -80,7 +113,6 @@ export default function CreateProduct() {
     }
   };
 
-
   const handleCKEditorChange = (event, editor) => {
     const data = editor.getData();
     set_description(data);
@@ -94,29 +126,40 @@ export default function CreateProduct() {
     const new_image_product = [...image_product];
     new_image_product.splice(index, 1);
     set_image_product(new_image_product);
-  }
+  };
 
+  const handleRemoveImgApi = (index) => {
+    const new_list_image_api = [...list_image_api];
+    new_list_image_api.splice(index, 1);
+    set_list_image_api(new_list_image_api);
+  };
+
+  const handleDeleteImg = (id) => {
+    const new_list_delete_img = [...list_delete_img];
+    new_list_delete_img.push(id);
+    set_list_delete_img(new_list_delete_img);
+  };
+  console.log(list_delete_img);
   const handleClickClose = () => {};
 
-
-  const handleClickAddNew = async () => {
+  const handleClickEdit = async () => {
     try {
-      const response = await axios.post("http://xuantuyen1207.website/api/product/create",dataPost, {
+      const response = await axios.post("http://xuantuyen1207.website/api/product/update", dataPost, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      if(response.data.status == true){
-        location.href="/admin/products/list";
-      }
-      else {
-
+      if (response.data.status == true) {
+        toast.success("Successfully");
+      } else {
+        toast.error("Error");
       }
     } catch (error) {
       console.error("Lỗi khi gửi dữ liệu: ", error);
     }
   };
 
+  // console.log(list_delete_img);
   return (
     <div className="px-6">
       <div className={style.body_create_product}>
@@ -147,7 +190,6 @@ export default function CreateProduct() {
             </label>
             <input
               id="price_product"
-              inputmode="numeric"
               type="number"
               className={style.input_create}
               value={price_product}
@@ -163,7 +205,6 @@ export default function CreateProduct() {
             </label>
             <input
               id="sale"
-              inputmode="numeric"
               type="number"
               className={style.input_create}
               value={sale}
@@ -179,7 +220,7 @@ export default function CreateProduct() {
             </label>
             <SelectDropdownAdmin
               items={list_category}
-              title_select=""
+              selectedItemProp={selected_category}
               handleSelect={handleSelectCategory}
             ></SelectDropdownAdmin>
           </div>
@@ -216,21 +257,42 @@ export default function CreateProduct() {
               onChange={chooseImage}
             />
             <div className={style.list_img}>
+              {list_image_api.map((item,index)=>(
+                <div
+                className={style.img_body_list}
+                key={index}
+              >
+                <p className={style.img_name}>{item.hinh_anh_san_pham}</p>
+                <img
+                  className={style.image_product}
+                  src={"http://xuantuyen1207.website/upload/"+item.hinh_anh_san_pham+""}
+                  alt=''
+                />
+                <AiOutlineCloseCircle
+                  className={`${"absolute right-0 top-6 w-7 h-7 hover:text-red-600  cursor-pointer text-red-400"} ${
+                    style.icon_remove_img
+                  }`}
+                  onClick={() => {handleRemoveImgApi(index);handleDeleteImg(item.id)}}
+                ></AiOutlineCloseCircle>{" "}
+                </div>
+              ))}
               {image_product.map((item, index) => (
                 <div
                   className={style.img_body_list}
                   key={index}
                 >
-                  {index}<p className={style.img_name}>{item.name}</p>
+                  <p className={style.img_name}>{item.name}</p>
                   <img
                     className={style.image_product}
                     src={link_img(item)}
+                    alt=""
                   />
                   <AiOutlineCloseCircle
                     className={`${"absolute right-0 top-6 w-7 h-7 hover:text-red-600  cursor-pointer text-red-400"} ${
                       style.icon_remove_img
-                    }`} onClick={()=>handleRemoveImg(index)}
-                  ></AiOutlineCloseCircle>
+                    }`}
+                    onClick={() => handleRemoveImg(index)}
+                  ></AiOutlineCloseCircle>{" "}
                 </div>
               ))}
             </div>
@@ -261,9 +323,9 @@ export default function CreateProduct() {
         </div>
         <div
           className={style.btn_save}
-          onClick={handleClickAddNew}
+          onClick={handleClickEdit}
         >
-          Add New
+          Save
         </div>
       </div>
     </div>

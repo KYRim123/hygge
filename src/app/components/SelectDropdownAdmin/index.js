@@ -1,15 +1,29 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ClickOutSide from "../hook/ClickOutSide";
 import style from "./index.module.css";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 
-export default function SelectDropdownAdmin({ items, className, styleDrop, handleSelect, title_select ,selectedItemProp,styleDropBox}) {
+export default function SelectDropdownAdmin({
+  items,
+  className,
+  styleDrop,
+  handleSelect,
+  title_select,
+  selectedItemProp,
+  styleDropBox,
+}) {
   const [selectedItem, setSelectedItem] = useState(selectedItemProp || null);
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const [firstLoadPage, setFirstLoadPage] = useState(true);
   const selectRef = useRef(null);
-  
+
+  useEffect(() => {
+    if (selectedItemProp != null) {
+      setSelectedItem(selectedItemProp);
+    }
+  }, [selectedItemProp]);
+
   const handleItemClick = (id, name) => {
     setSelectedItem(name);
     handleSelect(id, name);
