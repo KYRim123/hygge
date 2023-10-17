@@ -17,7 +17,7 @@ const Sidebar = () => {
   const listSideBar = [
     { name: "Bảng điều khiển", link: "/admin", Icon: BiSolidDashboard },
     { name: "QL danh mục sản phẩm", link: "/admin/category", Icon: BiSolidCategory },
-    { name: "QL sản phẩm", link: "/admin/products", Icon: BiSitemap },
+    { name: "QL sản phẩm", link: "/admin/products/list", Icon: BiSitemap },
     { name: "QL hóa đơn", link: "/admin/bill", Icon: RiBillLine },
     { name: "QL nhân viên", link: "/admin/staffs", Icon: BsFillFilePersonFill },
     { name: "QL chức vụ và quyền hạn", link: "/admin/abc", Icon: RiAdminFill },
