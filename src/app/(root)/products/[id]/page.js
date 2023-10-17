@@ -12,6 +12,8 @@ import { SlGraph } from "react-icons/sl";
 import TypeProduct from "@/app/components/TypeProduct";
 import Review from "@/app/components/Reviews";
 import RelatedProduct from "@/app/components/RelatedProduct";
+import ReactImageMagnify from "react-image-magnify";
+import style from "./index.module.css";
 
 export default function DetailProduct() {
   const [currentImage, setCurrentImage] = useState(0);
@@ -126,10 +128,10 @@ export default function DetailProduct() {
   const addToCard = async () => {
     return null;
   };
-
+  console.log(listImageDetails[currentImage].default.src,333);
   return (
     <>
-      <div className="flex items-center gap-10 h-[500px] w-full">
+      <div className={`${"flex items-center gap-10 h-[500px] w-full"} ${style.body_detail_product}`}>
         <div className="flex flex-col gap-5 w-40 items-center">
           {listImages.map((item, index) => (
             <div
@@ -150,13 +152,25 @@ export default function DetailProduct() {
           ))}
         </div>
         <div className={"relative h-full w-[300] bg-gray-100 rounded-3xl transition-all"}>
-          <Image
-            width={1920}
-            height={1024}
-            src={listImageDetails[currentImage]}
-            className="object-cover w-full h-full"
-            priority
-          />
+        <ReactImageMagnify
+              {...{
+                smallImage: {
+                  alt: 'Wristwatch by Ted Baker London',
+                  isFluidWidth: true,
+                  src:listImageDetails[currentImage].default.src,
+                },
+                largeImage: {
+                  className:style.class_img,
+                  src: listImageDetails[currentImage].default.src,
+                  width: 1500,
+                  height: 1500,
+                },
+                enlargedImageContainerStyle: {
+                  backgroundColor: 'rgb(235, 235, 235)',
+                },
+              }}
+            />
+          
           <span className="absolute top-11 -right-10 bg-red-500 text-white font-semibold text-lg py-2 px-4 rounded-full">
             {salePersent} off
           </span>
