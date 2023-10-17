@@ -30,6 +30,9 @@ module.exports = {
         red: {
           500: "#ff0000",
         },
+        Neutral: {
+          50: "#F6F7FB",
+        },
       },
       maxWidth: {
         pc: "1200px",
