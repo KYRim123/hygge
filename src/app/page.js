@@ -23,8 +23,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Controller, Navigation } from "swiper/modules";
 import "swiper/css";
 import NewLetter from "./components/Newletter";
-// 
+//
 import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import axios from "axios";
+import LoadingA from "./components/LoadingA";
 
 //  home page
 export default function HomePage() {
@@ -48,43 +51,21 @@ export default function HomePage() {
     { link: "/", icon: BsSun, text: "Sun Care" },
   ];
 
-  const items_search = [
-    {
-      name: "Name 1",
-      img: "",
-      sale: 20,
-      type: "EYE CARE",
-      price: 25,
-    },
-    {
-      name: "Name 2",
-      img: "",
-      sale: 10,
-      type: "SUN CARE",
-      price: 30,
-    },
-    {
-      name: "Name 3",
-      img: "",
-      sale: 15,
-      type: "TREATMENTS",
-      price: 20,
-    },
-    {
-      name: "Name 4",
-      img: "",
-      sale: 10,
-      type: "MOISTURIZERS",
-      price: 40,
-    },
-    {
-      name: "Name 5",
-      img: "",
-      sale: 0,
-      type: "FEATURED",
-      price: 60,
-    },
-  ];
+  // fetch listProduct
+  const fetchProducts = async (api) => {
+    const res = await axios.get(api);
+    const result = await res.data;
+    return result.data;
+  };
+  const { data: fetchData, isLoading } = useSWR(
+    `${process.env.HTTP_URL}/api/product/list?page=1}`,
+    fetchProducts,
+  );
+
+  if (isLoading) {
+    return <LoadingA />;
+  }
+
 
   return (
     <>
@@ -152,7 +133,7 @@ export default function HomePage() {
         <MarginY>
           <span className="label-1">- our products</span>
           <h1 className="title-1">Explore out Products</h1>
-          <ListProduct prop_items={items_search}></ListProduct>
+          <ListProduct prop_items={fetchData.data}></ListProduct>
           <div className="w-full text-center">
             <Button className={"bg-main-100 text-white"}>View All</Button>
           </div>

@@ -1,55 +1,38 @@
 "use client";
 import ListProduct from "@/app/components/ListProduct";
 import SelectDropdown from "@/app/components/SelectDropdown";
-import { useState } from "react";
-import ReactPaginate from "react-paginate";
-import styles from "./product.module.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Pagination from "@/app/components/Pagination";
+import LoadingA from "@/app/components/LoadingA";
 
 export default function ProductPage() {
-  const [currentPage, setCurrentPage] = useState("1");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [fetchData, setFetchData] = useState();
+
+  useEffect(() => {
+    const api = `${process.env.HTTP_URL}/api/product/list?page=${currentPage}`;
+    axios.get(api).then((res) => setFetchData(res.data.data));
+  }, [currentPage]);
+
+  if (!fetchData) {
+    return <LoadingA />;
+  }
+
+  // pagination
+  const count_product = fetchData?.total;
+  const pageCount = Math.ceil(count_product / 12);
+  // handle change page
+  const onPageChange = (e) => {
+    setCurrentPage(e.selected + 1);
+  };
+
+  // aa
   const handleSelectColor = (id, name) => {
     console.log(id, name);
   };
 
-  const text_search = "Eye Care Products for Tired Eyes";
-  const items_search = [
-    {
-      name: "Name 1",
-      img: "",
-      sale: 20,
-      type: "EYE CARE",
-      price: 25,
-    },
-    {
-      name: "Name 2",
-      img: "",
-      sale: 10,
-      type: "SUN CARE",
-      price: 30,
-    },
-    {
-      name: "Name 3",
-      img: "",
-      sale: 15,
-      type: "TREATMENTS",
-      price: 20,
-    },
-    {
-      name: "Name 4",
-      img: "",
-      sale: 10,
-      type: "MOISTURIZERS",
-      price: 40,
-    },
-    {
-      name: "Name 5",
-      img: "",
-      sale: 0,
-      type: "FEATURED",
-      price: 60,
-    },
-  ];
-  const count_items_search = items_search.length;
+  // category
   const list_color = [
     {
       id: 1,
@@ -126,19 +109,14 @@ export default function ProductPage() {
       name: "Sale",
     },
   ];
-  const countPage = "5";
 
-  // handle
-  const handlePageClick = (e) => {
-    setCurrentPage(e.selected + 1);
-  };
   return (
     <div>
-      <span className="label-1">- Search Results -</span>
-      <h1 className="title-1">{text_search}</h1>
-      <div>
-        <b>{count_items_search}</b> products found
-      </div>
+      <span className="label-1">- List Products -</span>
+      <h1 className="title-1">our products</h1>
+      {/* <div>
+        <b>{count_product}</b> products found
+      </div> */}
       <div className="flex justify-around m-5">
         <SelectDropdown
           items={list_color}
@@ -161,26 +139,12 @@ export default function ProductPage() {
           handleSelect={handleSelectColor}
         ></SelectDropdown>
       </div>
-      <ListProduct prop_items={items_search}></ListProduct>
+      {fetchData && <ListProduct prop_items={fetchData.data}></ListProduct>}
       {/* phan trang */}
-      <div className={styles.pagination_wrapper}>
-        <div className={styles.pagination_container}>
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel=">"
-            previousLabel="<"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={3}
-            pageCount={countPage}
-            renderOnZeroPageCount={null}
-            activeClassName={styles.activeClick}
-            previousClassName={styles.prev}
-            nextClassName={styles.next}
-            className={styles.pagination}
-            pageClassName={styles.pageNumber}
-          />
-        </div>
-      </div>
+      <Pagination
+        onPageChange={onPageChange}
+        pageCount={pageCount}
+      />
     </div>
   );
 }
