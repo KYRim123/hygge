@@ -68,13 +68,6 @@ export default function Header() {
         {/* account */}
         <div>
           {session ? (
-            // <button
-            //   onClick={() => {
-            //     signOut();
-            //   }}
-            // >
-            //   sigout
-            // </button>
             <div
               className="flex items-center w-12 h-12 cursor-pointer relative"
               onClick={handleShowMenu}
@@ -85,6 +78,7 @@ export default function Header() {
                 height={35}
                 alt="avatar"
                 className="object-cover"
+                priority={true}
               />
               {showMenu && (
                 <div className="w-32 py-2 bg-gray-100 text-black-100 absolute -bottom-[132%] rounded-xl transition-all">

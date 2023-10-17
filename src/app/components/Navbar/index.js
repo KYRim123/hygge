@@ -4,7 +4,7 @@ const Navbar = ({ pathname }) => {
   const navLink = [
     { name: "home", href: "/" },
     { name: "products", href: "/products" },
-    { name: "blog", href: "/blog" },
+    { name: "FAQ", href: "/faq" },
     { name: "about", href: "/about" },
     { name: "contact", href: "/contact" },
   ];

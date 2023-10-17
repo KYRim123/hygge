@@ -53,19 +53,18 @@ export default function HomePage() {
 
   // fetch listProduct
   const fetchProducts = async (api) => {
-    const res = await axios.get(api);
+    const res = await axios.post(api, { page: "1" });
     const result = await res.data;
     return result.data;
   };
-  const { data: fetchData, isLoading } = useSWR(
-    `${process.env.HTTP_URL}/api/product/list?page=1}`,
-    fetchProducts,
-  );
+  const { data: fetchData, isLoading } = useSWR(`${process.env.HTTP_URL}/api/product/list`, fetchProducts);
 
   if (isLoading) {
     return <LoadingA />;
   }
-
+  const handleViewAll = () => {
+    router.push("/products");
+  };
 
   return (
     <>
@@ -134,8 +133,13 @@ export default function HomePage() {
           <span className="label-1">- our products</span>
           <h1 className="title-1">Explore out Products</h1>
           <ListProduct prop_items={fetchData.data}></ListProduct>
-          <div className="w-full text-center">
-            <Button className={"bg-main-100 text-white"}>View All</Button>
+          <div className="w-full text-center mt-10">
+            <Button
+              className={"bg-main-100 text-white"}
+              onClick={handleViewAll}
+            >
+              View All
+            </Button>
           </div>
         </MarginY>
         {/* why us */}

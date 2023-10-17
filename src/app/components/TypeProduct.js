@@ -9,7 +9,7 @@ export default function TypeProduct({ type }) {
       : type === BG_GREEN
       ? "bg-green-100"
       : "bg-purple-100";
-      
+
   const textColor =
     type === BG_BLUE
       ? "text-blue-600"
@@ -20,8 +20,8 @@ export default function TypeProduct({ type }) {
       : "text-purple-600";
 
   return (
-    <div className={`${bgColor} rounded-full text-center px-4 py-4`}>
-      <span className={`${textColor} font-semibold`}>{type}</span>
+    <div className={`${bgColor} rounded-full text-center px-3 py-2`}>
+      <span className={`${textColor} font-bold`}>{type}</span>
     </div>
   );
 }

@@ -1,10 +1,9 @@
 import React from "react";
-import style from "./index.module.css";
 import ProductItem from "../ProductItem/index";
 
 export default function ListProduct({ prop_items }) {
   return (
-    <div className={style.list_product}>
+    <div className="grid grid-cols-4 gap-4">
       {prop_items.map((item, index) => (
         <ProductItem
           id={item.id}
