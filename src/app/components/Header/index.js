@@ -8,14 +8,22 @@ import Navbar from "../Navbar";
 import { usePathname } from "next/navigation";
 import LogoLink from "../LogoLink";
 import { signOut, useSession } from "next-auth/react";
- 
+import Image from "next/image";
+import { avaReview1 } from "../../../../public/assets";
+import { AiOutlineProfile } from "react-icons/ai";
+import { IoLogOutOutline } from "react-icons/io5";
+
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();
 
   const handleShowInput = () => {
     setShowInput(!showInput);
+  };
+  const handleShowMenu = () => {
+    setShowMenu(!showMenu);
   };
 
   return (
@@ -25,7 +33,7 @@ export default function Header() {
       {/* navbar */}
       {!showInput && <Navbar pathname={pathname} />}
       {/* button */}
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-3">
         {/* search */}
         <div className="absolute right-24">
           {!showInput && (
@@ -58,15 +66,46 @@ export default function Header() {
           </Link>
         </div>
         {/* account */}
-        <div className="cursor-pointer">
+        <div>
           {session ? (
-            <button
-              onClick={() => {
-                signOut();
-              }}
+            // <button
+            //   onClick={() => {
+            //     signOut();
+            //   }}
+            // >
+            //   sigout
+            // </button>
+            <div
+              className="flex items-center w-12 h-12 cursor-pointer relative"
+              onClick={handleShowMenu}
             >
-              sigout
-            </button>
+              <Image
+                src={avaReview1}
+                width={35}
+                height={35}
+                alt="avatar"
+                className="object-cover"
+              />
+              {showMenu && (
+                <div className="w-32 py-2 bg-gray-100 text-black-100 absolute -bottom-[132%] rounded-xl transition-all">
+                  <Link
+                    href={"/profile"}
+                    className="flex gap-2 hover:bg-gray-200"
+                  >
+                    <AiOutlineProfile size={25} />
+                    <span>Profile</span>
+                  </Link>
+
+                  <div
+                    className="flex gap-2 hover:bg-gray-200"
+                    onClick={signOut}
+                  >
+                    <IoLogOutOutline size={25} />
+                    <span>Sign out</span>
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <Link href={"/login"}>
               <GoPerson size={25} />

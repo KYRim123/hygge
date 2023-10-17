@@ -4,7 +4,7 @@ const NAME_EMAIL = "email";
 const NAME_MK = "mat_khau";
 const NAME_DC = "dia_chi";
 const NAME_SDT = "so_dien_thoai";
-//
+//type product
 const BG_BLUE = "FEATURED";
 const BG_ORANGE = "SUN CARE";
 const BG_GREEN = "MOISTURIZERS";

@@ -1,7 +1,6 @@
+import { BG_BLUE, BG_GREEN, BG_ORANGE } from "../lib/constants";
+
 export default function TypeProduct({ type }) {
-  const BG_BLUE = "FEATURED";
-  const BG_ORANGE = "SUN CARE";
-  const BG_GREEN = "MOISTURIZERS";
   const bgColor =
     type === BG_BLUE
       ? "bg-blue-100"
@@ -10,6 +9,7 @@ export default function TypeProduct({ type }) {
       : type === BG_GREEN
       ? "bg-green-100"
       : "bg-purple-100";
+      
   const textColor =
     type === BG_BLUE
       ? "text-blue-600"

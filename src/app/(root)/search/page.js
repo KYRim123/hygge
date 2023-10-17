@@ -3,50 +3,16 @@ import ListProduct from "../../components/ListProduct/index";
 import { useState } from "react";
 import SelectDropdown from "../../components/SelectDropdown/index";
 import style from "./index.module.css";
+import axios from "axios";
+import useSWR from "swr";
+import LoadingA from "@/app/components/LoadingA";
 
 export default function PageSearch() {
   const handleSelectColor = (id, name) => {
     console.log(id, name);
   };
   const text_search = "Eye Care Products for Tired Eyes";
-  const items_search = [
-    {
-      name: "Name 1",
-      img: "",
-      sale: 20,
-      type: "EYE CARE",
-      price: 25,
-    },
-    {
-      name: "Name 2",
-      img: "",
-      sale: 10,
-      type: "SUN CARE",
-      price: 30,
-    },
-    {
-      name: "Name 3",
-      img: "",
-      sale: 15,
-      type: "TREATMENTS",
-      price: 20,
-    },
-    {
-      name: "Name 4",
-      img: "",
-      sale: 10,
-      type: "MOISTURIZERS",
-      price: 40,
-    },
-    {
-      name: "Name 5",
-      img: "",
-      sale: 0,
-      type: "FEATURED",
-      price: 60,
-    },
-  ];
-  const count_items_search = items_search.length;
+
   const list_color = [
     {
       id: 1,
@@ -124,6 +90,23 @@ export default function PageSearch() {
     },
   ];
 
+  // fetch listProduct
+  const fetchProducts = async (api) => {
+    const res = await axios.get(api);
+    const result = await res.data;
+    return result.data;
+  };
+  const { data: fetchData, isLoading } = useSWR(
+    `${process.env.HTTP_URL}/api/product/list?page=1`,
+    fetchProducts,
+  );
+
+  if (isLoading) {
+    return <LoadingA />;
+  }
+
+    const count_items_search = fetchData.total;
+
   return (
     <div>
       <span className="label-1">- Search Results -</span>
@@ -153,7 +136,7 @@ export default function PageSearch() {
           handleSelect={handleSelectColor}
         ></SelectDropdown>
       </div>
-      <ListProduct prop_items={items_search}></ListProduct>
+      <ListProduct prop_items={fetchData.data}></ListProduct>
     </div>
   );
 }
