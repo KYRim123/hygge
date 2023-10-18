@@ -1,0 +1,17 @@
+.list_product_cart{
+  position:absolute;
+  width: 180px;
+  height: 260px;
+  background-color:rgb(239, 239, 239);
+  box-shadow: 0px 0px 3px rgb(100, 100, 100);
+  right: 10px;
+  z-index:10;
+  border-radius: 12px 0px 12px 12px;
+  display: none;
+}
+.link_shopping_cart:hover ~ .list_product_cart,
+.list_product_cart:hover{
+  display: block;
+  opacity: 1;
+}
+
