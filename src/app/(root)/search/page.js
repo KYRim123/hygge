@@ -1,58 +1,37 @@
 "use client";
-import ListProduct from "../../components/ListProduct/index";
-import { useState } from "react";
-import SelectDropdown from "../../components/SelectDropdown/index";
-import style from "./index.module.css";
+import ListProduct from "@/app/components/ListProduct";
+import SelectDropdown from "@/app/components/SelectDropdown";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import useSWR from "swr";
+import Pagination from "@/app/components/Pagination";
 import LoadingA from "@/app/components/LoadingA";
 
-export default function PageSearch() {
-  const handleSelectColor = (id, name) => {
-    console.log(id, name);
-  };
-  const text_search = "Eye Care Products for Tired Eyes";
+export default function ProductPage() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [fetchData, setFetchData] = useState();
+  const [category, setCategory] = useState({ gia_tien: [] });
 
-  const list_color = [
-    {
-      id: 1,
-      name: "Red",
-    },
-    {
-      id: 2,
-      name: "Blue",
-    },
-    {
-      id: 3,
-      name: "Green",
-    },
-    {
-      id: 4,
-      name: "Black",
-    },
-  ];
-  const list_category = [
-    {
-      id: 1,
-      name: "SUN CARE",
-    },
-    {
-      id: 2,
-      name: "EYE CARE",
-    },
-    {
-      id: 3,
-      name: "TREATMENTS",
-    },
-    {
-      id: 4,
-      name: "MOISTURIZERS",
-    },
-    {
-      id: 5,
-      name: "FEATURED",
-    },
-  ];
+  useEffect(() => {
+    const api = `${process.env.HTTP_URL}/api/product/list`;
+    axios.post(api, { page: currentPage, ...category }).then((res) => setFetchData(res.data.data));
+  }, [currentPage, category]);
+
+  // loading
+
+  if (!fetchData) {
+    return <LoadingA />;
+  }
+
+  // pagination
+  const count_product = fetchData?.total;
+  const pageCount = Math.ceil(count_product / 12);
+
+  // handle change page
+  const onPageChange = (e) => {
+    setCurrentPage(e.selected + 1);
+  };
+
+  // category
   const list_price_range = [
     {
       id: 1,
@@ -72,71 +51,56 @@ export default function PageSearch() {
     },
     {
       id: 5,
-      name: "$100 +",
-    },
-  ];
-  const list_sort_by = [
-    {
-      id: 1,
-      name: "Name",
-    },
-    {
-      id: 2,
-      name: "Price",
-    },
-    {
-      id: 3,
-      name: "Sale",
+      name: "$100+",
     },
   ];
 
-  // fetch listProduct
-  const fetchProducts = async (api) => {
-    const res = await axios.get(api);
-    const result = await res.data;
-    return result.data;
+  // handle category
+  const handleSelectColor = (id, name, title_select) => {
+    if (title_select === "Price Range") {
+      let gia_tien = [];
+      switch (id) {
+        case 1:
+          gia_tien = [0, 10];
+          break;
+        case 2:
+          gia_tien = [10, 20];
+          break;
+        case 3:
+          gia_tien = [20, 40];
+          break;
+        case 4:
+          gia_tien = [40, 100];
+          break;
+        case 5:
+          gia_tien = [100, 0];
+          break;
+      }
+      console.log("adsa");
+      setCategory({ ...category, gia_tien });
+    }
   };
-  const { data: fetchData, isLoading } = useSWR(
-    `${process.env.HTTP_URL}/api/product/list?page=1`,
-    fetchProducts,
-  );
-
-  if (isLoading) {
-    return <LoadingA />;
-  }
-
-    const count_items_search = fetchData.total;
 
   return (
     <div>
-      <span className="label-1">- Search Results -</span>
-      <h1 className="title-1">{text_search}</h1>
-      <div>
-        <b>{count_items_search}</b> products found
+      <span className="label-1">- Search result -</span>
+      <h1 className="title-1">Eye Care Products for Tired Eyes</h1>
+      <div className="my-14">
+        <b>{count_product}</b> products found
       </div>
-      <div className={style.list_select_dropdown}>
-        <SelectDropdown
-          items={list_color}
-          title_select="Color"
-          handleSelect={handleSelectColor}
-        ></SelectDropdown>
-        <SelectDropdown
-          items={list_category}
-          title_select="Category"
-          handleSelect={handleSelectColor}
-        ></SelectDropdown>
+      <div>
         <SelectDropdown
           items={list_price_range}
           title_select="Price Range"
           handleSelect={handleSelectColor}
         ></SelectDropdown>
-        <SelectDropdown
-          items={list_sort_by}
-          title_select="Sort By"
-          handleSelect={handleSelectColor}
-        ></SelectDropdown>
       </div>
-      <ListProduct prop_items={fetchData.data}></ListProduct>
+      {fetchData && <ListProduct prop_items={fetchData.data}></ListProduct>}
+      {/* phan trang */}
+      <Pagination
+        onPageChange={onPageChange}
+        pageCount={pageCount}
+      />
     </div>
   );
 }

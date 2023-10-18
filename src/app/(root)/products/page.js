@@ -108,9 +108,6 @@ export default function ProductPage() {
     <div>
       <span className="label-1">- List Products -</span>
       <h1 className="title-1">our products</h1>
-      {/* <div>
-        <b>{count_product}</b> products found
-      </div> */}
       <div className="flex justify-around m-5">
         <SelectDropdown
           items={productTypes}
