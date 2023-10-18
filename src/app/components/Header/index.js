@@ -12,6 +12,7 @@ import Image from "next/image";
 import { avaReview1 } from "../../../../public/assets";
 import { AiOutlineProfile } from "react-icons/ai";
 import { IoLogOutOutline } from "react-icons/io5";
+import styles from "./input.module.css";
 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
@@ -59,11 +60,14 @@ export default function Header() {
           )}
         </div>
         {/* cart */}
-        <div className="cursor-pointer relative">
-          <Link href={"/shoppingCart"}>
+        <div className={`${"cursor-pointer relative"} ${styles.icon_shopping_cart}`}>
+          <Link href={"/shoppingCart"} className={styles.link_shopping_cart}>
             <span className="absolute -right-1 bg-pink-500 p-[6.5px] rounded-full"></span>
             <LuShoppingCart size={25} />
           </Link>
+          <div className={styles.list_product_cart}>
+
+          </div>
         </div>
         {/* account */}
         <div>
