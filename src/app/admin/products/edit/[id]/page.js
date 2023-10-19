@@ -266,7 +266,7 @@ export default function EditProduct() {
                   <p className={style.img_name}>{item.hinh_anh_san_pham}</p>
                   <Image
                     className={style.image_product}
-                    src={"http://xuantuyen1207.website/upload/" + item.hinh_anh_san_pham + ""}
+                    src={`${process.env.HTTPS_URL}/upload/${item.hinh_anh_san_pham}`}
                     alt="â"
                     width={300}
                     height={250}

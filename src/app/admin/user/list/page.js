@@ -53,7 +53,7 @@ export default function ListProduct() {
   const [description, set_description] = useState("");
   const [show_modal_description, set_show_modal_description] = useState(false);
   const [url_pre, set_url_pre] = useState("");
-  const fetchData = useCallback(async (url) => {
+  const fetchData = async (url) => {
     try {
       set_url_pre(url);
       const response = await axios.post(url, { pre_page: pre_page, search: search });
@@ -66,12 +66,11 @@ export default function ListProduct() {
       console.error("Error fetching data:", error);
       toast.error("An error occurred while fetching data.");
     }
-  });
-
+  };
   useEffect(() => {
     const url = "http://xuantuyen1207.website/api/product/list-all";
     fetchData(url);
-  }, [pre_page, fetchData]);
+  }, [pre_page, search]);
 
   const discountedPrice = (price, sale) => {
     return price - (price * sale) / 100;
@@ -208,7 +207,7 @@ export default function ListProduct() {
                     height={300}
                     className={style.img_product}
                     key={img.id}
-                    src={`${"http://xuantuyen1207.website/upload/" + img.hinh_anh_san_pham}`}
+                    src={`${process.env.HTTPS_URL}/upload/${img.hinh_anh_san_pham}`}
                     alt="a"
                   />
                 ))}

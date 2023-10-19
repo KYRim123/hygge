@@ -16,7 +16,6 @@ import axios from "axios";
 import useSWR from "swr";
 
 // cp
-import { listImageDetails } from "../../../../../public/assets";
 import TypeProduct from "@/app/components/TypeProduct";
 import Review from "@/app/components/Reviews";
 import RelatedProduct from "@/app/components/RelatedProduct";
@@ -188,7 +187,7 @@ function DetailProduct() {
         </div>
 
         <div className={"relative h-full w-[500px] bg-gray-100 rounded-3xl transition-all"}>
-          <ReactImageMagnify 
+          <ReactImageMagnify
             {...{
               smallImage: {
                 alt: "Wristwatch by Ted Baker London",
