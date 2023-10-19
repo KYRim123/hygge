@@ -1,5 +1,5 @@
 "use client";
-import BreadcrumbsList from "@/app/components/BreadcrumbsList/page";
+import BreadcrumbsList from "@/app/components/BreadcrumbsList";
 import { useState } from "react";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import NewLetter from "@/app/components/Newletter";
