@@ -1,11 +1,12 @@
 "use client";
 import style from "./index.module.css";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { BiFirstPage, BiLastPage } from "react-icons/bi";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import { AiOutlineFileSearch } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineFileSearch } from "react-icons/ai";
+import { MdDeleteForever } from "react-icons/md";
 import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { BsSearch } from "react-icons/bs";
 import jsPDF from "jspdf";
@@ -24,24 +25,24 @@ const list_size = [
 const generatePDF = () => {
   const pdf = new jsPDF();
   autoTable(pdf, {
-    html: "#list_user",
+    html: "#list_bill",
     theme: "grid",
     headStyles: { fillColor: [100, 100, 100] },
     columns: [
       { header: "#", dataKey: "#" },
       { header: "ID", dataKey: "id" },
-      { header: "Name User", dataKey: "name" },
-      { header: "Account", dataKey: "tai_khoan" },
-      { header: "Phone", dataKey: "so_dien_thoai" },
-      { header: "Email", dataKey: "email" },
-      { header: "Completed", dataKey: "completed" },
+      { header: "Account", dataKey: "account" },
+      { header: "Total Price", dataKey: "total_price" },
+      { header: "Purchase Date", dataKey: "purchase_date" },
+      { header: "Payment Status", dataKey: "payment_status" },
+      { header: "Order Status", dataKey: "order_status" },
     ],
   });
 
-  pdf.save("danh_sach_nguoi_dung.pdf");
+  pdf.save("danh_sach_hoa_don.pdf");
 };
 
-export default function ListUser() {
+export default function ListBill() {
   const [data, set_data] = useState();
   const [pre_page, set_pre_page] = useState(20);
   const [search, set_search] = useState("");
@@ -55,13 +56,14 @@ export default function ListUser() {
         set_pre_search(search);
       }
     } catch (error) {
+      console.error("Error fetching data:", error);
       toast.error("An error occurred while fetching data.");
     }
   };
   useEffect(() => {
-    const url = "http://xuantuyen1207.website/api/user/list-all";
+    const url = "http://xuantuyen1207.website/api/hoa-don/list-all";
     fetchData(url);
-  }, [pre_page, search]);
+  }, [pre_page]);
 
   const handleChangePage = (url) => {
     if (url != null) {
@@ -78,7 +80,7 @@ export default function ListUser() {
   };
 
   const onClickSearch = () => {
-    const url = "http://xuantuyen1207.website/api/user/list-all";
+    const url = "http://xuantuyen1207.website/api/hoa-don/list-all";
     fetchData(url);
   };
 
@@ -118,18 +120,18 @@ export default function ListUser() {
       </div>
       <div>- Total : {data?.total} Item</div> {pre_search != "" ? <div>- Search : {pre_search}</div> : ""}
       <table
-        className={style.table_list_user}
-        id="list_user"
+        className={style.table_list_bill}
+        id="list_bill"
       >
         <thead>
           <tr>
             <th>#</th>
             <th>ID</th>
-            <th>Name User</th>
             <th>Account</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Completed</th>
+            <th>Total Price</th>
+            <th>Purchase Date</th>
+            <th>Payment Status</th>
+            <th>Order Status</th>
             <th
               dataKey="action"
               className="remove-column"
@@ -143,15 +145,15 @@ export default function ListUser() {
             <tr key={index}>
               <td>{index + 1 + pre_page * (data.current_page - 1)}</td>
               <td>{item.id}</td>
-              <td>{item.ten_nguoi_dung}</td>
-              <td>{item.tai_khoan}</td>
-              <td>{item.so_dien_thoai}</td>
-              <td>{item.email}</td>
-              <td className={style.price}>$500</td>
+              <td>{item.nguoi_dung.tai_khoan}</td>
+              <td className={style.price}>{item.gia_tien_thanh_toan}</td>
+              <td>{item.ngay_mua}</td>
+              <td>{item.trang_thai_thanh_toan}</td>
+              <td>{item.trang_thai.trang_thai}</td>
               <td className="remove-column">
                 <div className={style.actions}>
-                  <Link href={`${"/admin/user/detail/" + item.id}`}>
-                    <AiOutlineFileSearch className={style.action}></AiOutlineFileSearch>
+                  <Link href={"/admin/bill/status/" + item.id}>
+                    <AiOutlineFileSearch className={style.action}></AiOutlineFileSearch>{" "}
                   </Link>
                 </div>
               </td>

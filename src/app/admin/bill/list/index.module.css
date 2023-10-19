@@ -26,7 +26,7 @@
     color: black;
 }
 
-.table_list_user {
+.table_list_bill {
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #ccc;
@@ -44,24 +44,24 @@
     text-align: end;
 }
 
-.table_list_user tr:nth-child(2n) {
+.table_list_bill tr:nth-child(2n) {
     background-color: rgb(232, 232, 232);
 }
 
-.table_list_user td {
+.table_list_bill td {
     padding: 6px 8px;
 }
 
-.table_list_user thead {
+.table_list_bill thead {
     border: 1px solid #ccc;
     height: 40px;
 }
 
-.table_list_user thead th:nth-child(2n) {
+.table_list_bill thead th:nth-child(2n) {
     background-color: rgb(232, 232, 232);
 }
 
-.table_list_user td {
+.table_list_bill td {
     border-right: 0.5px solid #ccc;
 }
 

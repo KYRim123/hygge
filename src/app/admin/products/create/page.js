@@ -144,7 +144,6 @@ export default function CreateProduct() {
             </label>
             <input
               id="price_product"
-              inputmode="numeric"
               type="number"
               className={style.input_create}
               value={price_product}
@@ -160,7 +159,6 @@ export default function CreateProduct() {
             </label>
             <input
               id="sale"
-              inputmode="numeric"
               type="number"
               className={style.input_create}
               value={sale}

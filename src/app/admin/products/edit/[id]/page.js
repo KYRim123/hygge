@@ -25,7 +25,7 @@ export default function EditProduct() {
   const [selected_category, set_selected_category] = useState("");
 
   const PARAMS = useParams().id;
-  console.log(selected_category);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,13 +44,12 @@ export default function EditProduct() {
           toast.error("An error occurred while fetching data.");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
         toast.error("An error occurred while fetching data.");
       }
     };
     fetchData();
   }, [PARAMS]);
-  console.log(image_product);
+
   const dataPost = {
     id_product: PARAMS,
     name: name_product,
@@ -140,7 +139,7 @@ export default function EditProduct() {
     new_list_delete_img.push(id);
     set_list_delete_img(new_list_delete_img);
   };
-  console.log(list_delete_img);
+
   const handleClickClose = () => {};
 
   const handleClickEdit = async () => {
@@ -160,7 +159,6 @@ export default function EditProduct() {
     }
   };
 
-  // console.log(list_delete_img);
   return (
     <div className="px-6">
       <div className={style.body_create_product}>
