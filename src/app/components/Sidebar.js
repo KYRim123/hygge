@@ -38,6 +38,7 @@ const Sidebar = () => {
           width={130}
           height={300}
           className="object-cover"
+          alt="aa"
         />
       </div>
       <div className="flex gap-3 flex-col">

@@ -8,6 +8,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@/app/ckeditor-custom.css";
+import Image from "next/image";
 
 export default function CreateProduct() {
   const [name_product, set_name_product] = useState("");
@@ -80,7 +81,6 @@ export default function CreateProduct() {
     }
   };
 
-
   const handleCKEditorChange = (event, editor) => {
     const data = editor.getData();
     set_description(data);
@@ -94,23 +94,20 @@ export default function CreateProduct() {
     const new_image_product = [...image_product];
     new_image_product.splice(index, 1);
     set_image_product(new_image_product);
-  }
+  };
 
   const handleClickClose = () => {};
 
-
   const handleClickAddNew = async () => {
     try {
-      const response = await axios.post("http://xuantuyen1207.website/api/product/create",dataPost, {
+      const response = await axios.post("http://xuantuyen1207.website/api/product/create", dataPost, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      if(response.data.status == true){
-        location.href="/admin/products/list";
-      }
-      else {
-
+      if (response.data.status == true) {
+        location.href = "/admin/products/list";
+      } else {
       }
     } catch (error) {
       console.error("Lỗi khi gửi dữ liệu: ", error);
@@ -221,15 +218,20 @@ export default function CreateProduct() {
                   className={style.img_body_list}
                   key={index}
                 >
-                  {index}<p className={style.img_name}>{item.name}</p>
-                  <img
+                  {index}
+                  <p className={style.img_name}>{item.name}</p>
+                  <Image
                     className={style.image_product}
+                    width={300}
+                    height={250}
                     src={link_img(item)}
+                    alt="aa"
                   />
                   <AiOutlineCloseCircle
                     className={`${"absolute right-0 top-6 w-7 h-7 hover:text-red-600  cursor-pointer text-red-400"} ${
                       style.icon_remove_img
-                    }`} onClick={()=>handleRemoveImg(index)}
+                    }`}
+                    onClick={() => handleRemoveImg(index)}
                   ></AiOutlineCloseCircle>
                 </div>
               ))}

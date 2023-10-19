@@ -14,6 +14,7 @@ export default function Home() {
           width={100}
           height={100}
           className="object-cover"
+          alt="aa"
         />
       </div>
     </div>

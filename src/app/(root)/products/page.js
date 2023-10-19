@@ -26,10 +26,11 @@ export default function ProductPage() {
   }, [currentPage, category]);
 
   // loading
-
   if (!fetchData) {
     return <LoadingA />;
   }
+
+  console.log(fetchData.data);
 
   // pagination
   const count_product = fetchData?.total;

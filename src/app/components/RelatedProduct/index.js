@@ -1,15 +1,10 @@
-// swiper
-import { Swiper } from "swiper/react";
-import { Controller, Navigation } from "swiper/modules";
-import { SwiperSlide } from "swiper/react";
-import "swiper/css";
 // icons
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 // aa
-import TypeProduct from "../TypeProduct";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ProductItem from "../ProductItem";
+import WrapperSwiper from "../WrapperSwiper";
+import { SwiperSlide } from "swiper/react";
 
 export default function RelatedProduct({ listProduct }) {
   const router = useRouter();
@@ -32,18 +27,14 @@ export default function RelatedProduct({ listProduct }) {
           </div>
         </div>
       </div>
-      <Swiper
-        modules={[Controller, Navigation]}
-        spaceBetween={10}
-        slidesPerView={4}
-        navigation={{ nextEl: ".btn-next--relatedProduct", prevEl: ".btn-prev--relatedProduct" }}
-      >
+      
+      <WrapperSwiper>
         {listProduct.map((item, index) => (
           <SwiperSlide key={index}>
             <ProductItem {...item} />
           </SwiperSlide>
         ))}
-      </Swiper>
+      </WrapperSwiper>
     </div>
   );
 }
