@@ -1,27 +1,15 @@
 import TypeProduct from "../TypeProduct";
 import Link from "next/link";
-import { BG_BLUE, BG_GREEN, BG_ORANGE } from "../../lib/constants";
 import Image from "next/image";
 
-export default function ProductItem({ name, img, sale, type, price }) {
+export default function ProductItem({ id, name, img, sale, price, loai_sp }) {
   const priceNew = price - (price * sale) / 100;
-  const handleType = (number) => {
-    const x = number % 5;
-    if (x == 1) {
-      return BG_BLUE;
-    } else if (x == 2) {
-      return BG_YELLOW;
-    } else if (x == 3) {
-      return BG_GREEN;
-    } else if (x == 4) {
-      return BG_ORANGE;
-    } else return BG_ORANGE;
-  };
+  const { ten_loai_san_pham } = loai_sp;
 
   return (
     <div className="w-[250px] mt-10 border-[2px] border-gray-200 rounded-3xl">
       <Link
-        href={`http://localhost:3000/products/1`}
+        href={`${process.env.URL}/products/${id}`}
         className="relative block bg-gray-100 w-full rounded-3xl hover:opacity-80"
       >
         <Image
@@ -41,7 +29,10 @@ export default function ProductItem({ name, img, sale, type, price }) {
       <div className="flex flex-col gap-3 p-2">
         <div className="text-lg font-bold capitalize">{name}</div>
         <div className="flex gap-2 justify-between items-center">
-          <TypeProduct type={handleType(type)} />
+          <TypeProduct
+            text={ten_loai_san_pham}
+            price={price}
+          />
           <div>
             <span className="text-gray-500 line-through mr-5 text-base">${price}</span> <br />
             <span className="font-bold text-xl">$ {priceNew}</span>

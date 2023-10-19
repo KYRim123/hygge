@@ -5,7 +5,6 @@ import Button from "./components/Button";
 import { useRouter } from "next/navigation";
 // icons
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import BoxCategory from "./components/BoxCategory";
 import { FaShoppingBag } from "react-icons/fa";
 import { SlGraph } from "react-icons/sl";
 import { MdOutlineMasks, MdOutlinePolicy } from "react-icons/md";
@@ -19,15 +18,15 @@ import ListProduct from "./components/ListProduct";
 import MarginY from "./components/MarginY";
 import Review from "./components/Reviews";
 // others
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Controller, Navigation } from "swiper/modules";
-import "swiper/css";
 import NewLetter from "./components/Newletter";
+import { SwiperSlide } from "swiper/react";
 //
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import axios from "axios";
 import LoadingA from "./components/LoadingA";
+import WrapperSwiper from "./components/WrapperSwiper";
+import BoxCategory from "./components/BoxCategory";
 
 //  home page
 export default function HomePage() {
@@ -112,11 +111,10 @@ export default function HomePage() {
           </div>
         </div>
         {/* list category */}
-        <Swiper
-          modules={[Controller, Navigation]}
-          spaceBetween={10}
+        <WrapperSwiper
+          prevClass=".swiper-prev--categoryBtn"
+          nextClass=".swiper-next--categoryBtn"
           slidesPerView={7}
-          navigation={{ nextEl: ".swiper-next--categoryBtn", prevEl: ".swiper-prev--categoryBtn" }}
         >
           {listCategory?.map((item, index) => (
             <SwiperSlide key={index}>
@@ -127,7 +125,7 @@ export default function HomePage() {
               />
             </SwiperSlide>
           ))}
-        </Swiper>
+        </WrapperSwiper>
         {/* our products */}
         <MarginY>
           <span className="label-1">- our products</span>

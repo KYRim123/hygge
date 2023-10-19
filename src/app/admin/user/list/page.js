@@ -1,6 +1,6 @@
 "use client";
 import style from "./index.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { BiFirstPage, BiLastPage } from "react-icons/bi";
@@ -13,6 +13,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Link from "next/link";
 import ModalViewDescription from "@/app/components/ModalViewDescription";
+import Image from "next/image";
 
 const list_size = [
   { id: 1, name: 10 },
@@ -48,13 +49,13 @@ export default function ListProduct() {
   const [pre_page, set_pre_page] = useState(20);
   const [search, set_search] = useState("");
   const [pre_search, set_pre_search] = useState("");
-  const [short_description,set_short_description] = useState('');
-  const [description,set_description] = useState('');
+  const [short_description, set_short_description] = useState("");
+  const [description, set_description] = useState("");
   const [show_modal_description, set_show_modal_description] = useState(false);
-  const [url_pre,set_url_pre] = useState('');
-  const fetchData = async (url) => {
+  const [url_pre, set_url_pre] = useState("");
+  const fetchData = useCallback(async (url) => {
     try {
-      set_url_pre(url)
+      set_url_pre(url);
       const response = await axios.post(url, { pre_page: pre_page, search: search });
       if (response.data.status == true) {
         set_data(response.data.data);
@@ -65,11 +66,12 @@ export default function ListProduct() {
       console.error("Error fetching data:", error);
       toast.error("An error occurred while fetching data.");
     }
-  };
+  });
+
   useEffect(() => {
     const url = "http://xuantuyen1207.website/api/product/list-all";
     fetchData(url);
-  }, [pre_page]);
+  }, [pre_page, fetchData]);
 
   const discountedPrice = (price, sale) => {
     return price - (price * sale) / 100;
@@ -94,7 +96,7 @@ export default function ListProduct() {
     fetchData(url);
   };
 
-  const handleShowModalDescription = (sh_des,des) => {
+  const handleShowModalDescription = (sh_des, des) => {
     set_short_description(sh_des);
     set_description(des);
     set_show_modal_description(true);
@@ -113,17 +115,16 @@ export default function ListProduct() {
       console.error("Lỗi xóa sản phẩm:", error);
     }
   };
-  
+
   console.log(data);
   return (
     <div className="px-6">
-      
       {show_modal_description ? (
-      <ModalViewDescription
-        setShowModal={set_show_modal_description}
-        description={description}
-        short_description={short_description}
-      ></ModalViewDescription>
+        <ModalViewDescription
+          setShowModal={set_show_modal_description}
+          description={description}
+          short_description={short_description}
+        ></ModalViewDescription>
       ) : (
         ""
       )}
@@ -199,18 +200,32 @@ export default function ListProduct() {
               <td className={style.price}>${item.gia}</td>
               <td className={style.sale}>{item.khuyen_mai}%</td>
               <td className={style.price}>${discountedPrice(item.gia, item.khuyen_mai)}</td>
-              <td >{item.loai_san_pham.ten_loai_san_pham}</td>
-              <td className={style.body_img}>{item.hinh_anh.map((img)=>(
-                <img className={style.img_product} key={img.id} src={`${"http://xuantuyen1207.website/upload/"+img.hinh_anh_san_pham}`} alt="" />
-              ))}
+              <td>{item.loai_san_pham.ten_loai_san_pham}</td>
+              <td className={style.body_img}>
+                {item.hinh_anh.map((img) => (
+                  <Image
+                    width={300}
+                    height={300}
+                    className={style.img_product}
+                    key={img.id}
+                    src={`${"http://xuantuyen1207.website/upload/" + img.hinh_anh_san_pham}`}
+                    alt="a"
+                  />
+                ))}
               </td>
               <td className="remove-column">
                 <div className={style.actions}>
-                  <AiOutlineFileSearch className={style.action} onClick={()=>handleShowModalDescription(item.mo_ta_ngan,item.mo_ta)}></AiOutlineFileSearch>{" "}
+                  <AiOutlineFileSearch
+                    className={style.action}
+                    onClick={() => handleShowModalDescription(item.mo_ta_ngan, item.mo_ta)}
+                  ></AiOutlineFileSearch>{" "}
                   <Link href={`${"/admin/products/edit/" + item.id}`}>
                     <AiOutlineEdit className={style.action}></AiOutlineEdit>{" "}
                   </Link>
-                  <MdDeleteForever className={style.action} onClick={()=>handleDeleteProduct(item.id)}></MdDeleteForever>
+                  <MdDeleteForever
+                    className={style.action}
+                    onClick={() => handleDeleteProduct(item.id)}
+                  ></MdDeleteForever>
                 </div>
               </td>
             </tr>

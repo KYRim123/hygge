@@ -9,6 +9,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@/app/ckeditor-custom.css";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 export default function EditProduct() {
   const [name_product, set_name_product] = useState("");
@@ -257,23 +258,28 @@ export default function EditProduct() {
               onChange={chooseImage}
             />
             <div className={style.list_img}>
-              {list_image_api.map((item,index)=>(
+              {list_image_api.map((item, index) => (
                 <div
-                className={style.img_body_list}
-                key={index}
-              >
-                <p className={style.img_name}>{item.hinh_anh_san_pham}</p>
-                <img
-                  className={style.image_product}
-                  src={"http://xuantuyen1207.website/upload/"+item.hinh_anh_san_pham+""}
-                  alt=''
-                />
-                <AiOutlineCloseCircle
-                  className={`${"absolute right-0 top-6 w-7 h-7 hover:text-red-600  cursor-pointer text-red-400"} ${
-                    style.icon_remove_img
-                  }`}
-                  onClick={() => {handleRemoveImgApi(index);handleDeleteImg(item.id)}}
-                ></AiOutlineCloseCircle>{" "}
+                  className={style.img_body_list}
+                  key={index}
+                >
+                  <p className={style.img_name}>{item.hinh_anh_san_pham}</p>
+                  <Image
+                    className={style.image_product}
+                    src={"http://xuantuyen1207.website/upload/" + item.hinh_anh_san_pham + ""}
+                    alt="â"
+                    width={300}
+                    height={250}
+                  />
+                  <AiOutlineCloseCircle
+                    className={`${"absolute right-0 top-6 w-7 h-7 hover:text-red-600  cursor-pointer text-red-400"} ${
+                      style.icon_remove_img
+                    }`}
+                    onClick={() => {
+                      handleRemoveImgApi(index);
+                      handleDeleteImg(item.id);
+                    }}
+                  ></AiOutlineCloseCircle>{" "}
                 </div>
               ))}
               {image_product.map((item, index) => (
@@ -282,10 +288,12 @@ export default function EditProduct() {
                   key={index}
                 >
                   <p className={style.img_name}>{item.name}</p>
-                  <img
+                  <Image
                     className={style.image_product}
                     src={link_img(item)}
-                    alt=""
+                    alt="â"
+                    width={300}
+                    height={300}
                   />
                   <AiOutlineCloseCircle
                     className={`${"absolute right-0 top-6 w-7 h-7 hover:text-red-600  cursor-pointer text-red-400"} ${

@@ -3,6 +3,7 @@ import style from "./index.module.css";
 import { AiOutlineRise } from "react-icons/ai";
 import { BsStar, BsPerson } from "react-icons/bs";
 import Button from "@/app/components/Button";
+import Image from "next/image";
 
 const page = () => {
   return (
@@ -12,20 +13,24 @@ const page = () => {
         <p className={style.title}>All About Us</p>
       </div>
       <div className={style.images_banner}>
-        <img
+        <Image
           className="w-full h-full rounded-[64px] object-cover"
-          src="https://ui8-hygge.herokuapp.com/hugge/img/company-bg.jpg"
-          alt=""
+          width={300}
+          height={250}
+          alt="aa"
+          src={`${process.env.HTTPS_URL}/upload/${"img"}`}
         />
       </div>
       <div className={style.content_body_1}>
         <div className={style.content_body_left}>
           <p className={style.stage}>- How it has Started</p>
           <p className={`${style.title} mb-24`}>How and When it has All Started</p>
-          <img
+          <Image
             className=" object-cover rounded-[56px] w-full h-[560px]"
-            src="https://ui8-hygge.herokuapp.com/hugge/img/company-photo.jpg"
-            alt=""
+            width={300}
+            height={250}
+            src={`${process.env.HTTPS_URL}/upload/${"img"}`}
+            alt="aa"
           />
         </div>
         <div className={style.content_body_right}>

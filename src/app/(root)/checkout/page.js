@@ -6,6 +6,7 @@ import style from "./index.module.css";
 import { GrClose } from "react-icons/gr";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoRemove } from "react-icons/io5";
+import Image from "next/image";
 
 export default function PageCheckOut() {
   const text_checkout = "Check out";
@@ -111,25 +112,17 @@ export default function PageCheckOut() {
           <div className={style.info_step_checkout}>
             <div className={style.title_step}>Confirm</div>
             <div className={style.confirm_checkout}>
-              <div className={`${"relative overflow-x-auto shadow-md sm:rounded-lg"} ${style.list_item_checkout}`}>
+              <div
+                className={`${"relative overflow-x-auto shadow-md sm:rounded-lg"} ${
+                  style.list_item_checkout
+                }`}
+              >
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead className={style.header_item_checkout}>
-                    <tr >
-                      <th
-                        scope="col"
-                      >
-                        Product name
-                      </th>
-                      <th
-                        scope="col"
-                      >
-                        Number
-                      </th>
-                      <th
-                        scope="col"
-                      >
-                        Image
-                      </th>
+                    <tr>
+                      <th scope="col">Product name</th>
+                      <th scope="col">Number</th>
+                      <th scope="col">Image</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -141,10 +134,15 @@ export default function PageCheckOut() {
                         Apple MacBook Pro
                       </td>
                       <td className={`${""} ${style.number_item}`}>2</td>
-                      <td className="p-2"><img className={style.image_item}
-                        src="https://ui8-hygge.herokuapp.com/hugge/img/card-pic-2.png"
-                        alt=""
-                      /></td>
+                      <td className="p-2">
+                        <Image
+                          alt="aa"
+                          className={style.image_item}
+                          width={300}
+                          height={250}
+                          src={`${process.env.HTTPS_URL}/upload/${"img"}`}
+                        />
+                      </td>
                     </tr>
                     <tr className={style.item_checkout}>
                       <td
@@ -154,10 +152,15 @@ export default function PageCheckOut() {
                         Apple MacBook Pro
                       </td>
                       <td className={`${""} ${style.number_item}`}>2</td>
-                      <td className="p-2"><img className={style.image_item}
-                        src="https://ui8-hygge.herokuapp.com/hugge/img/card-pic-2.png"
-                        alt=""
-                      /></td>
+                      <td className="p-2">
+                        <Image
+                          alt="aa"
+                          className={style.image_item}
+                          width={300}
+                          height={250}
+                          src={`${process.env.HTTPS_URL}/upload/${"img"}`}
+                        />
+                      </td>
                     </tr>
                     <tr className={style.item_checkout}>
                       <td
@@ -167,10 +170,15 @@ export default function PageCheckOut() {
                         Apple MacBook Pro
                       </td>
                       <td className={`${""} ${style.number_item}`}>2</td>
-                      <td className="p-2"><img className={style.image_item}
-                        src="https://ui8-hygge.herokuapp.com/hugge/img/card-pic-2.png"
-                        alt=""
-                      /></td>
+                      <td className="p-2">
+                        <Image
+                          alt="aa"
+                          className={style.image_item}
+                          width={300}
+                          height={250}
+                          src={`${process.env.HTTPS_URL}/upload/${"img"}`}
+                        />
+                      </td>
                     </tr>
                     <tr className={style.item_checkout}>
                       <td
@@ -180,10 +188,15 @@ export default function PageCheckOut() {
                         Apple MacBook Pro
                       </td>
                       <td className={`${""} ${style.number_item}`}>2</td>
-                      <td className="p-2"><img className={style.image_item}
-                        src="https://ui8-hygge.herokuapp.com/hugge/img/card-pic-2.png"
-                        alt=""
-                      /></td>
+                      <td className="p-2">
+                        <Image
+                          alt="aa"
+                          className={style.image_item}
+                          width={300}
+                          height={250}
+                          src={`${process.env.HTTPS_URL}/upload/${"img"}`}
+                        />
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -210,37 +223,40 @@ export default function PageCheckOut() {
             <div className={style.title_step}>Information</div>
             <div className={style.information_checkout}>
               <div className={style.form_input}>
-                <div className={style.title_form_input}>
-                  Recipient's Name
-                </div>
-                <input className={style.input_form_input} type="text" defaultValue={"Đinh Xuân Tuyển"}>
-                </input>
-              </div>
-              
-              <div className={style.form_input}>
-                <div className={style.title_form_input}>
-                  Recipient's Phone
-                </div>
-                <input className={style.input_form_input} type="text" defaultValue={"Đinh Xuân Tuyển"}>
-                </input>
+                <div className={style.title_form_input}>Recipient s Name</div>
+                <input
+                  className={style.input_form_input}
+                  type="text"
+                  defaultValue={"Đinh Xuân Tuyển"}
+                ></input>
               </div>
 
               <div className={style.form_input}>
-                <div className={style.title_form_input}>
-                  Shipping Address
-                </div>
-                <input className={style.input_form_input} type="text" defaultValue={"Đinh Xuân Tuyển"}>
-                </input>
+                <div className={style.title_form_input}>Recipient s Phone</div>
+                <input
+                  className={style.input_form_input}
+                  type="text"
+                  defaultValue={"Đinh Xuân Tuyển"}
+                ></input>
               </div>
 
               <div className={style.form_input}>
-                <div className={style.title_form_input}>
-                  Email
-                </div>
-                <input className={style.input_form_input} type="email" defaultValue={"Đinh Xuân Tuyển"}>
-                </input>
+                <div className={style.title_form_input}>Shipping Address</div>
+                <input
+                  className={style.input_form_input}
+                  type="text"
+                  defaultValue={"Đinh Xuân Tuyển"}
+                ></input>
               </div>
 
+              <div className={style.form_input}>
+                <div className={style.title_form_input}>Email</div>
+                <input
+                  className={style.input_form_input}
+                  type="email"
+                  defaultValue={"Đinh Xuân Tuyển"}
+                ></input>
+              </div>
             </div>
             <div className={style.footer_checkout}>
               <div

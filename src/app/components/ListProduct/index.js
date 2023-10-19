@@ -11,8 +11,8 @@ export default function ListProduct({ prop_items }) {
           name={item.ten_san_pham}
           img={item.hinh_anh[0].hinh_anh_san_pham}
           sale={item.khuyen_mai}
-          type={item.id_loai_san_pham}
           price={item.gia}
+          loai_sp={item.loai_san_pham}
         ></ProductItem>
       ))}
     </div>
