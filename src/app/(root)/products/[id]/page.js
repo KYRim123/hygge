@@ -32,6 +32,7 @@ import { SwiperSlide } from "swiper/react";
 import { MdOutlineDescription } from "react-icons/md";
 import { avaReview1 } from "../../../../../public/assets";
 import ReviewStar from "@/app/components/ReviewStar";
+import DisplayHTMLString from "@/app/components/hook/displayhtmlstring";
 
 function DetailProduct() {
   const [currentImage, setCurrentImage] = useState(0);
@@ -45,6 +46,7 @@ function DetailProduct() {
   async function fetchData(api) {
     const res = await axios.get(api);
     const result = await res.data;
+    console.log(result);
     return result;
   }
   const { data: dataProduct, isLoading } = useSWR(
@@ -352,12 +354,11 @@ function DetailProduct() {
             ))}
           </div>
           {/* content */}
-          <div className="border-gray-200 border-[2px] rounded-xl flex-grow overflow-y-scroll">
+          <div className="border-gray-200 border-[2px] rounded-xl flex-grow overflow-auto">
             {/* reviews */}
             {indexTab === indexTabRev && (
               <div className="w-full transition-all p-4">
-                <div>
-                  {/* cmt */}
+                {/* <div>
                   <div className="inline-flex items-center gap-2">
                     <div className="h-12 w-h-12">
                       <Image
@@ -378,9 +379,10 @@ function DetailProduct() {
                   <div className="w-full text-end mt-3">
                     <Button className={"bg-main-100 text-white py-[5px] px-2"}>Comment</Button>
                   </div>
-                </div>
+                </div> */}
                 {/* list reviews */}
-                {reviews &&
+                {(reviews &&
+                  reviews.length > 0 &&
                   reviews.map((review, index) => (
                     <div
                       key={index}
@@ -402,50 +404,16 @@ function DetailProduct() {
                           <span className="text-gray-300">2 years ago</span>
                         </div>
                       </div>
-                      <div className="py-4">
-                        Ôi e Trầm Cảm mất các mẹ ơi🥹🥹🥹 Mất 3 đêm thao thức, cả ngày lướt Review và Shopee
-                        để chọn ra em Robot lau cửa kính mà Rước Bực vào người, lại Trả Hàng. Cái WA50 nhiều
-                        shop bán có 2,7-3,4tr hàng trưng bày nhưng e sợ ko đảm bảo cố lên giá cao hơn chút là
-                        W920 Ecovact mà cuối cùng “Treo Đầu Dê Bán Thịt Chó” các mẹ ạh! E đưa lên đây để các
-                        Mẹ mua hàng tránh xa cái shop Mất Uy Tín này ra để đỡ bực như em. Hình 1 kiểu giao
-                        hàng 1 kiểu. May quá e chưa Bấm Nhận chứ tiền e ck ngay và luôn cho giao hàng rồi. E
-                        phản ánh ảnh shop còn nói khách thế này luôn. Bảo Hình Trên Mạng có thể Sai??? Ôi Làm
-                        Ăn Thế này à Shop ơi! Xin các mẹ Review giúp e cái Robot lau kính Có Khung và Không
-                        Khung, Cầu Thang nữa ạh🥹🥹🥹❤️❤️❤️
-                      </div>
+                      <div className="py-4">{review.binh_luan_danh_gia}</div>
                     </div>
+                  ))) ||
+                  (reviews.length == 0 && (
+                    <div className="text-center text-3xl mt-10 font-bold">Sản Phẩm Chưa Có Đánh Giá</div>
                   ))}
               </div>
             )}
             {/* des */}
-            {indexTab === indexTabDes && (
-              <div className="w-full transition-all p-4">
-                {listImages.map((img, index) => (
-                  <div key={index}>
-                    <div className="">
-                      <Image
-                        width={500}
-                        height={500}
-                        src={`${process.env.HTTPS_URL}/upload/${img.hinh_anh_san_pham}`}
-                        className="object-cover w-full h-2/4"
-                        alt="imgProduct"
-                      />
-                    </div>
-                    <div>
-                      Ôi e Trầm Cảm mất các mẹ ơi🥹🥹🥹 Mất 3 đêm thao thức, cả ngày lướt Review và Shopee để
-                      chọn ra em Robot lau cửa kính mà Rước Bực vào người, lại Trả Hàng. Cái WA50 nhiều shop
-                      bán có 2,7-3,4tr hàng trưng bày nhưng e sợ ko đảm bảo cố lên giá cao hơn chút là W920
-                      Ecovact mà cuối cùng “Treo Đầu Dê Bán Thịt Chó” các mẹ ạh! E đưa lên đây để các Mẹ mua
-                      hàng tránh xa cái shop Mất Uy Tín này ra để đỡ bực như em. Hình 1 kiểu giao hàng 1 kiểu.
-                      May quá e chưa Bấm Nhận chứ tiền e ck ngay và luôn cho giao hàng rồi. E phản ánh ảnh
-                      shop còn nói khách thế này luôn. Bảo Hình Trên Mạng có thể Sai??? Ôi Làm Ăn Thế này à
-                      Shop ơi! Xin các mẹ Review giúp e cái Robot lau kính Có Khung và Không Khung, Cầu Thang
-                      nữa ạh🥹🥹🥹❤️❤️❤️
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            {indexTab === indexTabDes && <DisplayHTMLString htmlString={dataProduct.data.mo_ta} />}
           </div>
         </div>
       </div>

@@ -5,9 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "@/app/ckeditor-custom.css";
+import Editor from "@/app/components/hook/Editor";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 
@@ -23,8 +21,13 @@ export default function EditProduct() {
   const [list_delete_img, set_list_delete_img] = useState([]);
   const [list_image_api, set_list_image_api] = useState([]);
   const [selected_category, set_selected_category] = useState("");
+  const [editorLoaded, setEditorLoaded] = useState(false);
 
   const PARAMS = useParams().id;
+
+  useEffect(() => {
+    setEditorLoaded(true);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,11 +114,6 @@ export default function EditProduct() {
       const path = URL.createObjectURL(file);
       return path;
     }
-  };
-
-  const handleCKEditorChange = (event, editor) => {
-    const data = editor.getData();
-    set_description(data);
   };
 
   const handleSelectCategory = (id, name) => {
@@ -312,10 +310,12 @@ export default function EditProduct() {
             >
               Description
             </label>
-            <CKEditor
-              editor={ClassicEditor}
-              data={description}
-              onChange={handleCKEditorChange}
+            <Editor
+              name="description"
+              onChange={(data) => {
+                set_description(data);
+              }}
+              editorLoaded={editorLoaded}
             />
           </div>
         </div>
