@@ -24,7 +24,6 @@ import { SwiperSlide } from "swiper/react";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import axios from "axios";
-import LoadingA from "./components/LoadingA";
 import WrapperSwiper from "./components/WrapperSwiper";
 import BoxCategory from "./components/BoxCategory";
 
@@ -56,15 +55,10 @@ export default function HomePage() {
     const result = await res.data;
     return result.data;
   };
-  const { data: fetchData, isLoading } = useSWR(`${process.env.HTTP_URL}/api/product/list`, fetchProducts);
-
-  if (isLoading) {
-    return <LoadingA />;
-  }
+  const { data: fetchData } = useSWR(`${process.env.HTTP_URL}/api/product/list`, fetchProducts);
   const handleViewAll = () => {
     router.push("/products");
   };
-
   return (
     <>
       {/* // slider */}
@@ -130,7 +124,7 @@ export default function HomePage() {
         <MarginY>
           <span className="label-1">- our products</span>
           <h1 className="title-1">Explore out Products</h1>
-          <ListProduct prop_items={fetchData.data}></ListProduct>
+          {fetchData?.data && <ListProduct prop_items={fetchData.data}></ListProduct>}
           <div className="w-full text-center mt-10">
             <Button
               className={"bg-main-100 text-white"}

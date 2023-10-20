@@ -81,7 +81,7 @@ export default function Header() {
                 width={35}
                 height={35}
                 alt="avatar"
-                className="object-cover"
+                className="object-cover rounded-full"
                 priority={true}
               />
               {showMenu && (
