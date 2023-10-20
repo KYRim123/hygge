@@ -132,12 +132,7 @@ export default function ListBill() {
             <th>Purchase Date</th>
             <th>Payment Status</th>
             <th>Order Status</th>
-            <th
-              dataKey="action"
-              className="remove-column"
-            >
-              View
-            </th>
+            <th className="remove-column">View</th>
           </tr>
         </thead>
         <tbody>

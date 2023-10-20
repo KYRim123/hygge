@@ -5,18 +5,23 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@/app/ckeditor-custom.css";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
+const DynamicCKEditor = dynamic(() => import("@ckeditor/ckeditor5-react").then((mod) => mod.CKEditor), {
+  ssr: false,
+});
 
 export default function CreateProduct() {
   const [name_product, set_name_product] = useState("");
-  const [price_product, set_price_product] = useState(null);
-  const [id_category_product, set_id_category_product] = useState(null);
+  const [price_product, set_price_product] = useState("");
+  const [id_category_product, set_id_category_product] = useState("");
   const [short_description, set_short_description] = useState("");
   const [description, set_description] = useState("");
-  const [sale, set_sale] = useState(null);
+  const [sale, set_sale] = useState("");
+  const [file_name, set_file_name] = useState("");
   const [image_product, set_image_product] = useState([]);
   const [list_category, set_list_category] = useState([]);
 
@@ -69,6 +74,7 @@ export default function CreateProduct() {
     });
     if (areAllImages) {
       set_image_product([...image_product, ...files]);
+      set_file_name(files[files.length - 1].name);
     } else {
       toast.error("Error: Some files are not in the allowed format.");
     }
@@ -81,11 +87,6 @@ export default function CreateProduct() {
     }
   };
 
-  const handleCKEditorChange = (event, editor) => {
-    const data = editor.getData();
-    set_description(data);
-  };
-
   const handleSelectCategory = (id, name) => {
     set_id_category_product(id);
   };
@@ -96,7 +97,9 @@ export default function CreateProduct() {
     set_image_product(new_image_product);
   };
 
-  const handleClickClose = () => {};
+  const handleClickClose = () => {
+    location.href = "/admin/products/list";
+  };
 
   const handleClickAddNew = async () => {
     try {
@@ -207,11 +210,12 @@ export default function CreateProduct() {
             <input
               id="image_product"
               type="file"
+              value={file_name}
               className={style.input_create}
               onChange={chooseImage}
             />
             <div className={style.list_img}>
-              {image_product.map((item, index) => (
+              {image_product?.map((item, index) => (
                 <div
                   className={style.img_body_list}
                   key={index}
@@ -244,10 +248,14 @@ export default function CreateProduct() {
             >
               Description
             </label>
-            <CKEditor
+            <DynamicCKEditor
+              id="editor"
               editor={ClassicEditor}
               data={description}
-              onChange={handleCKEditorChange}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                set_description(data);
+              }}
             />
           </div>
         </div>
