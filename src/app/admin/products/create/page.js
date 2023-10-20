@@ -5,14 +5,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import "@/app/ckeditor-custom.css";
 import Image from "next/image";
-import dynamic from "next/dynamic";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
-const DynamicCKEditor = dynamic(() => import("@ckeditor/ckeditor5-react").then((mod) => mod.CKEditor), {
-  ssr: false,
-});
+import Editor from "@/app/components/hook/Editor";
 
 export default function CreateProduct() {
   const [name_product, set_name_product] = useState("");
@@ -21,9 +15,14 @@ export default function CreateProduct() {
   const [short_description, set_short_description] = useState("");
   const [description, set_description] = useState("");
   const [sale, set_sale] = useState("");
-  const [file_name, set_file_name] = useState("");
   const [image_product, set_image_product] = useState([]);
   const [list_category, set_list_category] = useState([]);
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  console.log(description);
+
+  useEffect(() => {
+    setEditorLoaded(true);
+  }, []);
 
   const dataPost = {
     name: name_product,
@@ -74,7 +73,6 @@ export default function CreateProduct() {
     });
     if (areAllImages) {
       set_image_product([...image_product, ...files]);
-      set_file_name(files[files.length - 1].name);
     } else {
       toast.error("Error: Some files are not in the allowed format.");
     }
@@ -210,7 +208,6 @@ export default function CreateProduct() {
             <input
               id="image_product"
               type="file"
-              value={file_name}
               className={style.input_create}
               onChange={chooseImage}
             />
@@ -220,7 +217,6 @@ export default function CreateProduct() {
                   className={style.img_body_list}
                   key={index}
                 >
-                  {index}
                   <p className={style.img_name}>{item.name}</p>
                   <Image
                     className={style.image_product}
@@ -248,14 +244,12 @@ export default function CreateProduct() {
             >
               Description
             </label>
-            <DynamicCKEditor
-              id="editor"
-              editor={ClassicEditor}
-              data={description}
-              onChange={(event, editor) => {
-                const data = editor.getData();
+            <Editor
+              name="description"
+              onChange={(data) => {
                 set_description(data);
               }}
+              editorLoaded={editorLoaded}
             />
           </div>
         </div>

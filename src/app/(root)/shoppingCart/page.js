@@ -1,7 +1,5 @@
 "use client";
-import ListProduct from "../../components/ListProduct/index";
 import { useState } from "react";
-import SelectDropdown from "../../components/SelectDropdown/index";
 import style from "./index.module.css";
 import { GrClose } from "react-icons/gr";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -9,9 +7,6 @@ import { IoRemove } from "react-icons/io5";
 import Image from "next/image";
 
 export default function PagesShoppingCart() {
-  const handleSelectColor = (id, name) => {
-    console.log(id, name);
-  };
   const text_shopping_cart = "Shopping Cart";
   const SHIP = 10;
   const items_shopping_cart = [
