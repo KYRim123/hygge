@@ -21,10 +21,9 @@ const handler = NextAuth({
           },
         });
 
-        const user = res.data;
-
+        var user = res.data;
         if (user.status) {
-          return true;
+          return user;
         } else {
           return null;
         }

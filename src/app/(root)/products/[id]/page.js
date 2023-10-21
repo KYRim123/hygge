@@ -34,11 +34,14 @@ import { avaReview1 } from "../../../../../public/assets";
 import ReviewStar from "@/app/components/ReviewStar";
 import DisplayHTMLString from "@/app/components/hook/displayhtmlstring";
 
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+
 function DetailProduct() {
   const [currentImage, setCurrentImage] = useState(0);
   const [totalProduct, setTotalProduct] = useState(1);
   const [indexTab, setIndexTab] = useState(0);
-
+  const { data: session } = useSession();
   const params = useParams();
   const idProduct = params.id;
 
@@ -46,7 +49,6 @@ function DetailProduct() {
   async function fetchData(api) {
     const res = await axios.get(api);
     const result = await res.data;
-    console.log(result);
     return result;
   }
   const { data: dataProduct, isLoading } = useSWR(
@@ -172,14 +174,29 @@ function DetailProduct() {
     setTotalProduct((prev) => prev + 1);
   };
   const addToCard = async () => {
-    return null;
+    if (session?.user?.id != null) {
+      await axios
+        .post("http://127.0.0.1:8000/api/cart/add-to-cart", {
+          id: session?.user?.id,
+          id_san_pham: idProduct,
+          so_luong: totalProduct,
+        })
+        .catch((res) => {
+          if (res.data.status == true) {
+            toast.success(res.data.message);
+          } else {
+            toast.err("Error");
+          }
+        });
+    } else {
+      toast.error("Yêu Cầu Đăng Nhập");
+    }
   };
 
   const handleChangeTab = (index) => {
     setIndexTab(index);
   };
 
-  console.log(indexTab);
   return (
     <>
       <div className={`${"flex items-center gap-10 h-[510px] w-full"} ${style.body_detail_product}`}>
