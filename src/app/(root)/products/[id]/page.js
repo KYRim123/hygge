@@ -176,7 +176,7 @@ function DetailProduct() {
   const addToCard = async () => {
     if (session?.user?.id != null) {
       await axios
-        .post("http://127.0.0.1:8000/api/cart/add-to-cart", {
+        .post("http://xuantuyen1207.website/api/cart/add-to-cart", {
           id: session?.user?.id,
           id_san_pham: idProduct,
           so_luong: totalProduct,
