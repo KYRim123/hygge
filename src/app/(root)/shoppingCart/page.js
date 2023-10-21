@@ -1,85 +1,63 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "./index.module.css";
 import { GrClose } from "react-icons/gr";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoRemove } from "react-icons/io5";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 export default function PagesShoppingCart() {
   const text_shopping_cart = "Shopping Cart";
+  const [data, set_data] = useState([]);
   const SHIP = 10;
-  const items_shopping_cart = [
-    {
-      id: 1,
-      name: "Name 1",
-      img: "",
-      sale: 20,
-      price: 25,
-      number: 5,
-    },
-    {
-      id: 2,
-      name: "Name 2",
-      img: "",
-      sale: 10,
-      price: 30,
-      number: 1,
-    },
-    {
-      id: 3,
-      name: "Name 3",
-      img: "",
-      sale: 15,
-      price: 20,
-      number: 1,
-    },
-    {
-      id: 4,
-      name: "Name 4",
-      img: "",
-      sale: 10,
-      price: 40,
-      number: 1,
-    },
-    {
-      id: 5,
-      name: "Name 5",
-      img: "",
-      sale: 0,
-      price: 60,
-      number: 1,
-    },
-  ];
-  const [list_shopping_cart, set_list_shopping_cart] = useState(items_shopping_cart);
-  const count_items_shopping_cart = items_shopping_cart.length;
-  const SUBTOTAL = list_shopping_cart.reduce((accumulator, item) => {
-    return accumulator + (item.price - (item.price * item.sale) / 100) * item.number;
+  const { data: session } = useSession();
+  useEffect(() => {
+    if (session?.user?.id != null) {
+      const fetchData = async () => {
+        await axios
+          .post("http://127.0.0.1:8000/api/cart/my-cart", { id: session?.user?.id })
+          .then((res) => {
+            if (res.data.status == true) {
+              set_data(res.data.data.chi_tiet_gio_hang);
+            } else {
+            }
+          })
+          .catch((err) => {});
+      };
+      fetchData();
+    }
+  }, [session?.user?.id]);
+  const SUBTOTAL = data.reduce((accumulator, item) => {
+    return (
+      accumulator + (item.san_pham.gia - (item.san_pham.gia * item.san_pham.khuyen_mai) / 100) * item.so_luong
+    );
   }, 0);
-  const TAX = SUBTOTAL * 0.05;
+  const TAX = SUBTOTAL * 0.1;
   const TOTAL = SUBTOTAL + TAX + SHIP;
   const handlePlusItemCart = (id) => {
-    const updatedListShoppingCart = [...list_shopping_cart];
-    for (let i = 0; i < updatedListShoppingCart.length; i++) {
-      if (updatedListShoppingCart[i].id === id) {
-        updatedListShoppingCart[i].number += 1;
+    const updatedData = [...data];
+    for (let i = 0; i < updatedData.length; i++) {
+      if (updatedData[i].id === id) {
+        updatedData[i].so_luong += 1;
         break;
       }
     }
-    set_list_shopping_cart(updatedListShoppingCart);
+    set_data(updatedData);
   };
 
   const handleMinusItemCart = (id) => {
-    const updatedListShoppingCart = [...list_shopping_cart];
-    for (let i = 0; i < updatedListShoppingCart.length; i++) {
-      if (updatedListShoppingCart[i].id === id) {
-        if (updatedListShoppingCart[i].number > 1) {
-          updatedListShoppingCart[i].number -= 1;
+    const updatedData = [...data];
+    for (let i = 0; i < updatedData.length; i++) {
+      if (updatedData[i].id === id) {
+        if (updatedData[i].so_luong > 1) {
+          updatedData[i].so_luong -= 1;
         }
         break;
       }
     }
-    set_list_shopping_cart(updatedListShoppingCart);
+    set_data(updatedData);
   };
 
   return (
@@ -88,7 +66,7 @@ export default function PagesShoppingCart() {
       <div className={style.text_shopping_cart}>{text_shopping_cart}</div>
       <div className={style.body_shopping_cart}>
         <div className={style.list_item_shopping_cart}>
-          {list_shopping_cart.map((item, index) => (
+          {data.map((item, index) => (
             <div
               className={style.item_cart}
               key={index}
@@ -99,15 +77,17 @@ export default function PagesShoppingCart() {
                   className={style.image_item}
                   width={300}
                   height={250}
-                  src={`${process.env.HTTPS_URL}/upload/${"img"}`}
+                  src={`${process.env.HTTPS_URL}/upload/${item.san_pham.hinh_anh.hinh_anh_san_pham}`}
                 />
               </div>
               <div className={style.info_item_cart}>
-                <b className="text-2xl">{item.name}</b>
+                <b className="text-2xl">{item.san_pham.ten_san_pham}</b>
                 <div>
-                  <b className="text-xl">${item.price - (item.price * item.sale) / 100}</b>
-                  {item.sale > 0 ? (
-                    <span className="text-xl ml-5 line-through">&nbsp;${item.price}&nbsp;</span>
+                  <b className="text-xl">
+                    ${item.san_pham.gia - (item.san_pham.gia * item.san_pham.khuyen_mai) / 100}
+                  </b>
+                  {item.san_pham.khuyen_mai > 0 ? (
+                    <span className="text-xl ml-5 line-through">&nbsp;${item.san_pham.gia}&nbsp;</span>
                   ) : (
                     ""
                   )}
@@ -120,7 +100,7 @@ export default function PagesShoppingCart() {
                         handlePlusItemCart(item.id);
                       }}
                     />
-                    <div className={style.number_count_item}>{item.number}</div>
+                    <div className={style.number_count_item}>{item.so_luong}</div>
                     <IoRemove
                       className={style.remove_count_item}
                       onClick={() => {
@@ -154,7 +134,7 @@ export default function PagesShoppingCart() {
           <hr></hr>
           <div className={style.total_price}>
             <p>Total</p>
-            <p className={style.price_child}>${TOTAL}</p>
+            <p className={style.price_child}>${TOTAL.toFixed(2)}</p>
           </div>
           <div className={style.btn_checkout_cart}>Check Out</div>
         </div>

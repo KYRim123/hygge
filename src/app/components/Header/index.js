@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FiSearch } from "react-icons/fi";
 import { LuShoppingCart } from "react-icons/lu";
 import { GoPerson } from "react-icons/go";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../Navbar";
 import { usePathname } from "next/navigation";
 import LogoLink from "../LogoLink";
@@ -13,12 +13,30 @@ import { avaReview1 } from "../../../../public/assets";
 import { AiOutlineProfile } from "react-icons/ai";
 import { IoLogOutOutline } from "react-icons/io5";
 import styles from "./input.module.css";
+import axios from "axios";
 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();
+  const [header_cart, set_header_cart] = useState();
+  useEffect(() => {
+    if (session?.user?.id != null) {
+      const fetchData = async () => {
+        await axios
+          .post("http://127.0.0.1:8000/api/cart/my-cart", { id: session?.user?.id })
+          .then((res) => {
+            if (res.data.status == true) {
+              set_header_cart(res.data.data.chi_tiet_gio_hang);
+            } else {
+            }
+          })
+          .catch((err) => {});
+      };
+      fetchData();
+    }
+  }, [session?.user?.id]);
 
   const handleShowInput = () => {
     setShowInput(!showInput);
@@ -61,12 +79,37 @@ export default function Header() {
         </div>
         {/* cart */}
         <div className={`${"cursor-pointer relative"} ${styles.icon_shopping_cart}`}>
-          <Link href={"/shoppingCart"} className={styles.link_shopping_cart}>
+          <Link
+            href={"/shoppingCart"}
+            className={styles.link_shopping_cart}
+          >
             <span className="absolute -right-1 bg-pink-500 p-[6.5px] rounded-full"></span>
             <LuShoppingCart size={25} />
           </Link>
           <div className={styles.list_product_cart}>
-
+            <b className="text-teal-500">Giỏ Hàng Của Bạn</b>
+            <hr className="pb-1"></hr>
+            <div className={styles.body_cart_header}>
+              {header_cart?.map((item, index) => (
+                <div
+                  key={index}
+                  className="pt-1 flex "
+                >
+                  <Image
+                    className="object-cover mr-1 rounded-[4px]"
+                    width={20}
+                    height={20}
+                    alt="img"
+                    src={`${process.env.HTTPS_URL}/upload/${item.san_pham.hinh_anh.hinh_anh_san_pham}`}
+                  />
+                  <div className={styles.text_inline}>{item.san_pham.ten_san_pham}</div>
+                </div>
+              ))}
+            </div>
+            <hr className="pb-1"></hr>
+            <Link href={"/shoppingCart"}>
+              <div className="text-cyan-600 text-end">Xem Giỏ Hàng</div>
+            </Link>
           </div>
         </div>
         {/* account */}
