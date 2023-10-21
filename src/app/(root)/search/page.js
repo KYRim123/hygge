@@ -7,14 +7,18 @@ import Pagination from "@/app/components/Pagination";
 import LoadingA from "@/app/components/LoadingA";
 
 export default function ProductPage() {
+  const valueSearch = localStorage.getItem("search");
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchData, setFetchData] = useState();
-  const [category, setCategory] = useState({ gia_tien: [] });
+  const [price, setPrice] = useState({ gia_tien: [] });
 
   useEffect(() => {
-    const api = `${process.env.HTTP_URL}/api/product/list`;
-    axios.post(api, { page: currentPage, ...category }).then((res) => setFetchData(res.data.data));
-  }, [currentPage, category]);
+    const api = `${process.env.HTTP_URL}/api/product/search`;
+    axios.post(api, { search: valueSearch, gia_tien: price }).then((res) => {
+      setFetchData(res.data.data);
+      setCurrentPage(res.data.currentPage);
+    });
+  }, [price, currentPage, valueSearch]);
 
   // loading
 
@@ -76,31 +80,32 @@ export default function ProductPage() {
           gia_tien = [100, 0];
           break;
       }
-      console.log("adsa");
-      setCategory({ ...category, gia_tien });
+      setPrice([...gia_tien]);
     }
   };
 
   return (
     <div>
       <span className="label-1">- Search result -</span>
-      <h1 className="title-1">Eye Care Products for Tired Eyes</h1>
-      <div className="my-14">
-        <b>{count_product}</b> products found
-      </div>
       <div>
-        <SelectDropdown
-          items={list_price_range}
-          title_select="Price Range"
-          handleSelect={handleSelectColor}
-        ></SelectDropdown>
+        <h1 className="title-1">Eye Care Products for Tired Eyes</h1>
+        <div className="my-14">
+          <b>{count_product} products found</b>
+        </div>
+        <div>
+          <SelectDropdown
+            items={list_price_range}
+            title_select="Price Range"
+            handleSelect={handleSelectColor}
+          ></SelectDropdown>
+        </div>
+        {fetchData && <ListProduct prop_items={fetchData.data}></ListProduct>}
+        {/* phan trang */}
+        <Pagination
+          onPageChange={onPageChange}
+          pageCount={pageCount}
+        />
       </div>
-      {fetchData && <ListProduct prop_items={fetchData.data}></ListProduct>}
-      {/* phan trang */}
-      <Pagination
-        onPageChange={onPageChange}
-        pageCount={pageCount}
-      />
     </div>
   );
 }
