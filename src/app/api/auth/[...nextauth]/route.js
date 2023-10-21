@@ -14,7 +14,7 @@ const handler = NextAuth({
       async authorize(credentials, req) {
         const res = await axios({
           method: "post",
-          url: "http://xuantuyen1207.website/api/user/login",
+          url: `${process.env.HTTP_URL}/api/user/login`,
           data: {
             tai_khoan: credentials?.tai_khoan,
             mat_khau: credentials?.mat_khau,

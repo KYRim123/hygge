@@ -14,11 +14,14 @@ import { AiOutlineProfile } from "react-icons/ai";
 import { IoLogOutOutline } from "react-icons/io5";
 import styles from "./input.module.css";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [inputSearch, setInputSearch] = useState("");
   const { data: session } = useSession();
+  const router = useRouter();
   const pathname = usePathname();
   const [header_cart, set_header_cart] = useState();
   useEffect(() => {
@@ -45,6 +48,16 @@ export default function Header() {
     setShowMenu(!showMenu);
   };
 
+  const handleClickSearch = () => {
+    if (showInput === "") {
+      handleShowInput();
+    } else {
+      localStorage.setItem("search", inputSearch);
+      router.push("/search");
+      router.refresh();
+    }
+  };
+
   return (
     <header className="relative flex items-center justify-between">
       {/* logo */}
@@ -67,12 +80,13 @@ export default function Header() {
               <FiSearch
                 size={25}
                 className="cursor-pointer"
-                onClick={handleShowInput}
+                onClick={handleClickSearch}
               />
               <input
                 type="text"
                 placeholder="Search your products"
                 className="outline-none"
+                onChange={(e) => setInputSearch(e.target.value)}
               />
             </div>
           )}
