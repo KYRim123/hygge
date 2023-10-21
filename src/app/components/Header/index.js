@@ -25,7 +25,7 @@ export default function Header() {
     if (session?.user?.id != null) {
       const fetchData = async () => {
         await axios
-          .post("http://127.0.0.1:8000/api/cart/my-cart", { id: session?.user?.id })
+          .post("http://xuantuyen1207.website/api/cart/my-cart", { id: session?.user?.id })
           .then((res) => {
             if (res.data.status == true) {
               set_header_cart(res.data.data.chi_tiet_gio_hang);
