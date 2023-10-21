@@ -6,13 +6,7 @@ import Image from "next/image";
 // icons
 import { IoWaterOutline } from "react-icons/io5";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import {
-  AiFillStar,
-  AiOutlineComment,
-  AiOutlineHeart,
-  AiOutlineSafetyCertificate,
-  AiOutlineStar,
-} from "react-icons/ai";
+import { AiOutlineComment, AiOutlineHeart, AiOutlineSafetyCertificate } from "react-icons/ai";
 import { SlGraph } from "react-icons/sl";
 // css
 import style from "./index.module.css";
@@ -29,7 +23,6 @@ import Button from "@/app/components/Button";
 import LoadingA from "@/app/components/LoadingA";
 import WrapperSwiper from "@/app/components/WrapperSwiper";
 import { SwiperSlide } from "swiper/react";
-import { MdOutlineDescription } from "react-icons/md";
 import { avaReview1 } from "../../../../../public/assets";
 import ReviewStar from "@/app/components/ReviewStar";
 import DisplayHTMLString from "@/app/components/hook/displayhtmlstring";
@@ -173,16 +166,24 @@ function DetailProduct() {
   const handleClickNext = () => {
     setTotalProduct((prev) => prev + 1);
   };
+
   const addToCard = async () => {
     if (session?.user?.id != null) {
       await axios
-        .post("http://xuantuyen1207.website/api/cart/add-to-cart", {
+        .post(`${process.env.HTTP_URL}/api/cart/add-to-cart`, {
           id: session?.user?.id,
           id_san_pham: idProduct,
           so_luong: totalProduct,
         })
-        .catch((res) => {
+        .then((res) => {
           if (res.data.status == true) {
+            toast.success(res.data.message);
+          } else {
+            toast.err("Error");
+          }
+        })
+        .catch((res) => {
+          if (res.data.status == false) {
             toast.success(res.data.message);
           } else {
             toast.err("Error");
@@ -247,7 +248,7 @@ function DetailProduct() {
                     width={300}
                     height={300}
                     src={`${process.env.HTTPS_URL}/upload/${item.hinh_anh_san_pham}`}
-                    className="object-cover w-full h-40"
+                    className="object-cover w-full h-40 rounded-3xl"
                     alt="imgProduct"
                   />
                 </div>
@@ -255,23 +256,19 @@ function DetailProduct() {
             ))}
           </WrapperSwiper>
         </div>
-
-        <div className={"relative h-full w-[500px] bg-gray-100 rounded-3xl transition-all"}>
+        <div className={`relative bg-gray-100 rounded-3xl transition-all ${style.wrapperImgMa}`}>
           <ReactImageMagnify
             {...{
               smallImage: {
                 alt: "Wristwatch by Ted Baker London",
-                isFluidWidth: true,
                 src: `${process.env.HTTPS_URL}/upload/${listImages[currentImage].hinh_anh_san_pham}`,
+                width: 500,
+                height: 500,
               },
               largeImage: {
-                className: style.class_img,
                 src: `${process.env.HTTPS_URL}/upload/${listImages[currentImage].hinh_anh_san_pham}`,
-                width: 1500,
-                height: 1500,
-              },
-              enlargedImageContainerStyle: {
-                backgroundColor: "rgb(235, 235, 235)",
+                width: 1200,
+                height: 1200,
               },
             }}
           />
@@ -353,7 +350,7 @@ function DetailProduct() {
         </div>
       </div>
       {/* tab */}
-      <div className="h-[800px] my-20 border-gray-200 border-[2px] rounded-xl">
+      <div className="h-[800px] my-20">
         <div className="p-4 h-full flex flex-col">
           {/* tab */}
           <div className="flex gap-5 mb-4">
@@ -371,32 +368,10 @@ function DetailProduct() {
             ))}
           </div>
           {/* content */}
-          <div className="border-gray-200 border-[2px] rounded-xl flex-grow overflow-auto">
+          <div className="flex-grow overflow-y-scroll ">
             {/* reviews */}
             {indexTab === indexTabRev && (
               <div className="w-full transition-all p-4">
-                {/* <div>
-                  <div className="inline-flex items-center gap-2">
-                    <div className="h-12 w-h-12">
-                      <Image
-                        width={50}
-                        height={50}
-                        src={avaReview1}
-                        alt="avatar"
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    </div>
-                    <h4 className="font-bold">Nguyen Thanh Luong</h4>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="write a comment"
-                    className="w-full outline-none py-2 border-b-2 border-gray-300"
-                  />
-                  <div className="w-full text-end mt-3">
-                    <Button className={"bg-main-100 text-white py-[5px] px-2"}>Comment</Button>
-                  </div>
-                </div> */}
                 {/* list reviews */}
                 {(reviews &&
                   reviews.length > 0 &&
