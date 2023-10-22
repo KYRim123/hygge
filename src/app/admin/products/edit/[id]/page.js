@@ -32,7 +32,7 @@ export default function EditProduct() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.HTTPS_URL}/api/product/" + ${PARAMS} + "/edit`);
+        const response = await axios.get(`${process.env.HTTPS_URL}/api/product/${PARAMS}/edit`);
         if (response.data.status == true) {
           const product = response.data.data;
           set_name_product(product.ten_san_pham);
