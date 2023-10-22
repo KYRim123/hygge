@@ -4,7 +4,6 @@ const nextConfig = {
     HTTP_URL: "https://xuantuyen1207.website",
     HTTPS_URL: "https://xuantuyen1207.website",
     NEXTAUTH_SECRET: "lsdkmlskdmflksdkskmsdnkj",
-    URL: "http://localhost:3000/",
   },
   images: {
     remotePatterns: [

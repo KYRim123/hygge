@@ -9,7 +9,7 @@ export default function ProductItem({ id, name, img, sale, price, loai_sp }) {
   return (
     <div className="w-[250px] mt-10 border-[2px] border-gray-200 rounded-3xl">
       <Link
-        href={`${process.env.URL}/products/${id}`}
+        href={`/products/${id}`}
         className="relative block bg-gray-100 w-full rounded-3xl hover:opacity-80"
       >
         <Image
