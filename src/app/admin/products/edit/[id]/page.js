@@ -32,7 +32,7 @@ export default function EditProduct() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://xuantuyen1207.website/api/product/" + PARAMS + "/edit");
+        const response = await axios.get(`${process.env.HTTPS_URL}/api/product/" + PARAMS + "/edit`);
         if (response.data.status == true) {
           const product = response.data.data;
           set_name_product(product.ten_san_pham);
@@ -81,7 +81,7 @@ export default function EditProduct() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://xuantuyen1207.website/api/category-types/list");
+        const response = await axios.get(`${process.env.HTTPS_URL}/api/category-types/list`);
         const originalData = response.data.data;
 
         const transformedData = originalData.map((item) => ({
@@ -142,7 +142,7 @@ export default function EditProduct() {
 
   const handleClickEdit = async () => {
     try {
-      const response = await axios.post("http://xuantuyen1207.website/api/product/update", dataPost, {
+      const response = await axios.post(`${process.env.HTTPS_URL}/api/product/update`, dataPost, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
