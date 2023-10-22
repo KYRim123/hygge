@@ -50,7 +50,7 @@ export default function CreateProduct() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://xuantuyen1207.website/api/category-types/list");
+        const response = await axios.get(`${process.env.HTTPS_URL}/api/category-types/list`);
         const originalData = response.data.data;
 
         const transformedData = originalData.map((item) => ({
@@ -101,7 +101,7 @@ export default function CreateProduct() {
 
   const handleClickAddNew = async () => {
     try {
-      const response = await axios.post("http://xuantuyen1207.website/api/product/create", dataPost, {
+      const response = await axios.post(`${process.env.HTTPS_URL}/api/product/create`, dataPost, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
