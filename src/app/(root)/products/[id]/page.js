@@ -11,7 +11,7 @@ import { SlGraph } from "react-icons/sl";
 // css
 import style from "./index.module.css";
 // lb
-import ReactImageMagnify from "react-image-magnify";
+// import ReactImageMagnify from "react-image-magnify";
 import axios from "axios";
 import useSWR from "swr";
 
@@ -257,7 +257,7 @@ function DetailProduct() {
           </WrapperSwiper>
         </div>
         <div className={`relative bg-gray-100 rounded-3xl transition-all ${style.wrapperImgMa}`}>
-          <ReactImageMagnify
+          {/* <ReactImageMagnify
             {...{
               smallImage: {
                 alt: "Wristwatch by Ted Baker London",
@@ -276,7 +276,7 @@ function DetailProduct() {
             <span className="absolute top-11 -right-10 bg-red-500 text-white font-semibold text-lg py-2 px-4 rounded-full">
               {khuyen_mai}% off
             </span>
-          )}
+          )} */}
         </div>
 
         <div className="flex-grow">
