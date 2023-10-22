@@ -11,7 +11,7 @@ export default function StatusBill() {
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get("http://xuantuyen1207.website/api/hoa-don/trang-thai/" + PARAMS)
+        .get(`${process.env.HTTPS_URL}/api/hoa-don/trang-thai/` + PARAMS)
         .then((res) => {
           if (res.data.status == true) {
             set_data(res.data.data);

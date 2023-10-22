@@ -20,43 +20,42 @@ export default function PageAdminCategory() {
 
   useEffect(() => {
     const fetchData = async () => {
-      
       try {
-        const response1 = await axios.get("http://xuantuyen1207.website/api/product-types/list");
+        const response1 = await axios.get(`${process.env.HTTPS_URL}/api/product-types/list`);
         set_categories(response1.data.data);
-  
-        const response2 = await axios.get("http://xuantuyen1207.website/api/category-types/list");
+
+        const response2 = await axios.get(`${process.env.HTTPS_URL}/api/category-types/list`);
         set_categories_children(response2.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("An error occurred while fetching data.");
       }
     };
-  
+
     fetchData();
   }, []);
-  
+
   const [title_children_category, set_title_children_category] = useState(
     categories[0]?.ten_dong_san_pham || "Child Category",
   );
   const [id_category, set_id_category] = useState(categories[0]?.id || 0);
-  const [data_edit_category, set_data_edit_category] = useState({})
-  const [data_edit_child_category, set_data_edit_child_category] = useState({})
+  const [data_edit_category, set_data_edit_category] = useState({});
+  const [data_edit_child_category, set_data_edit_child_category] = useState({});
   const chooseCategory = (item) => {
     set_id_category(item.id);
     set_title_children_category(item.ten_dong_san_pham);
   };
 
-  const handleAddNewCategoryChild = async (name_new_category_child, id_dong_san_pham ,name) => {
+  const handleAddNewCategoryChild = async (name_new_category_child, id_dong_san_pham, name) => {
     await axios
-      .post("http://xuantuyen1207.website/api/category-types/create", {
+      .post(`${process.env.HTTPS_URL}/api/category-types/create`, {
         ten_loai_san_pham: name_new_category_child,
         id_dong_san_pham: id_dong_san_pham,
       })
       .then((res) => {
         if (res.data.status == true) {
           set_categories_children(res.data.data);
-          if(name != '' && id_dong_san_pham != 0){
+          if (name != "" && id_dong_san_pham != 0) {
             set_id_category(id_dong_san_pham);
             set_title_children_category(name);
           }
@@ -70,13 +69,17 @@ export default function PageAdminCategory() {
       });
   };
 
-  const handleEditChildCategory = async (ten_loai_san_pham , id_dong_san_pham,name) => {
+  const handleEditChildCategory = async (ten_loai_san_pham, id_dong_san_pham, name) => {
     await axios
-      .post("http://xuantuyen1207.website/api/category-types/edit", { id : data_edit_child_category.id ,ten_loai_san_pham ,id_dong_san_pham})
+      .post(`${process.env.HTTPS_URL}/api/category-types/edit`, {
+        id: data_edit_child_category.id,
+        ten_loai_san_pham,
+        id_dong_san_pham,
+      })
       .then((response) => {
         if (response.data.status == true) {
           set_categories_children(response.data.data);
-          if(name != '' && id_dong_san_pham != 0){
+          if (name != "" && id_dong_san_pham != 0) {
             set_id_category(id_dong_san_pham);
             set_title_children_category(name);
           }
@@ -92,23 +95,23 @@ export default function PageAdminCategory() {
 
   const handleRemoveChildCategory = async (id) => {
     await axios
-    .post("http://xuantuyen1207.website/api/category-types/destroy", {id})
-    .then((response) => {
-      if (response.data.status == true) {
-        set_categories_children(response.data.data);
-        toast.success("REMOVE SUCCESSFUL");
-      } else {
-        toast.error("REMOVE ERROR");
-      }
-    })
-    .catch((error) => {
-      console.error("Lỗi khi gọi API: ", error);
-    });
+      .post(`${process.env.HTTPS_URL}/api/category-types/destroy`, { id })
+      .then((response) => {
+        if (response.data.status == true) {
+          set_categories_children(response.data.data);
+          toast.success("REMOVE SUCCESSFUL");
+        } else {
+          toast.error("REMOVE ERROR");
+        }
+      })
+      .catch((error) => {
+        console.error("Lỗi khi gọi API: ", error);
+      });
   };
 
   const handleAddNewCategory = async (ten_dong_san_pham) => {
     await axios
-      .post("http://xuantuyen1207.website/api/product-types/create", { ten_dong_san_pham })
+      .post(`${process.env.HTTPS_URL}/api/product-types/create`, { ten_dong_san_pham })
       .then((response) => {
         if (response.data.status == true) {
           set_categories(response.data.data);
@@ -124,11 +127,14 @@ export default function PageAdminCategory() {
 
   const handleEditCategory = async (ten_dong_san_pham) => {
     await axios
-      .post("http://xuantuyen1207.website/api/product-types/edit", { id : data_edit_category.id ,ten_dong_san_pham })
+      .post(`${process.env.HTTPS_URL}/api/product-types/edit`, {
+        id: data_edit_category.id,
+        ten_dong_san_pham,
+      })
       .then((response) => {
         if (response.data.status == true) {
           set_categories(response.data.data);
-          if(data_edit_category.id == id_category){
+          if (data_edit_category.id == id_category) {
             set_title_children_category(ten_dong_san_pham);
           }
           toast.success("EDIT SUCCESSFUL");
@@ -143,12 +149,12 @@ export default function PageAdminCategory() {
 
   const handleRemoveCategory = async (id) => {
     await axios
-      .post("http://xuantuyen1207.website/api/product-types/destroy", { id })
+      .post(`${process.env.HTTPS_URL}/api/product-types/destroy`, { id })
       .then((response) => {
         if (response.data.status == true) {
           set_categories(response.data.data);
           set_categories_children(response.data.data_child);
-          set_title_children_category('Child Category');
+          set_title_children_category("Child Category");
           set_id_category(0);
           toast.success("REMOVE SUCCESSFUL");
         } else {
@@ -159,7 +165,7 @@ export default function PageAdminCategory() {
         console.error("Lỗi khi gọi API: ", error);
       });
   };
-   return (
+  return (
     <div className="px-1">
       {show_modal_add_category ? (
         <ModalAddCategory
@@ -234,7 +240,13 @@ export default function PageAdminCategory() {
                 >
                   <BiEdit
                     className={`${"absolute right-12 to-3 w-5 h-5 hover:text-blue-600  cursor-pointer text-blue-400"}`}
-                    onClick={() => {set_show_modal_edit_category(true);set_data_edit_category({id:category.id,ten_dong_san_pham:category.ten_dong_san_pham})}}
+                    onClick={() => {
+                      set_show_modal_edit_category(true);
+                      set_data_edit_category({
+                        id: category.id,
+                        ten_dong_san_pham: category.ten_dong_san_pham,
+                      });
+                    }}
                   ></BiEdit>
                   <AiOutlineCloseCircle
                     className={`${"absolute right-5 to-3 w-5 h-5 hover:text-red-600  cursor-pointer text-red-400"}`}
@@ -280,22 +292,28 @@ export default function PageAdminCategory() {
                   className="flex relative w-full items-center px-3 hover:bg-blue-50"
                 >
                   <span className={style.open_icon}>{category.ten_loai_san_pham}</span>
-                <div
-                  className={`${"absolute right-20 to-3 w-5 h-5 hover:text-blue-600  cursor-pointer text-blue-400"} ${
-                    style.icon_edit
-                  }`}
-                >
-                  <BiEdit
-                    className={`${"absolute right-12 to-3 w-5 h-5 hover:text-blue-600  cursor-pointer text-blue-400"}`}
-                    onClick={() => {set_show_modal_edit_child_category(true);set_data_edit_child_category({id:category.id,ten_loai_san_pham:category.ten_loai_san_pham})}}
-                  ></BiEdit>
-                  <AiOutlineCloseCircle
-                    className={`${"absolute right-5 to-3 w-5 h-5 hover:text-red-600  cursor-pointer text-red-400"}`}
-                    onClick={() => {
-                      handleRemoveChildCategory(category.id);
-                    }}
-                  ></AiOutlineCloseCircle>
-                </div>
+                  <div
+                    className={`${"absolute right-20 to-3 w-5 h-5 hover:text-blue-600  cursor-pointer text-blue-400"} ${
+                      style.icon_edit
+                    }`}
+                  >
+                    <BiEdit
+                      className={`${"absolute right-12 to-3 w-5 h-5 hover:text-blue-600  cursor-pointer text-blue-400"}`}
+                      onClick={() => {
+                        set_show_modal_edit_child_category(true);
+                        set_data_edit_child_category({
+                          id: category.id,
+                          ten_loai_san_pham: category.ten_loai_san_pham,
+                        });
+                      }}
+                    ></BiEdit>
+                    <AiOutlineCloseCircle
+                      className={`${"absolute right-5 to-3 w-5 h-5 hover:text-red-600  cursor-pointer text-red-400"}`}
+                      onClick={() => {
+                        handleRemoveChildCategory(category.id);
+                      }}
+                    ></AiOutlineCloseCircle>
+                  </div>
                 </div>
               ))}
           </div>

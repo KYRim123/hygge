@@ -61,7 +61,7 @@ export default function ListBill() {
     }
   };
   useEffect(() => {
-    const url = "http://xuantuyen1207.website/api/hoa-don/list-all";
+    const url = `${process.env.HTTPS_URL}/api/hoa-don/list-all`;
     fetchData(url);
   }, [pre_page]);
 
@@ -80,7 +80,7 @@ export default function ListBill() {
   };
 
   const onClickSearch = () => {
-    const url = "http://xuantuyen1207.website/api/hoa-don/list-all";
+    const url = `${process.env.HTTPS_URL}/api/hoa-don/list-all`;
     fetchData(url);
   };
 

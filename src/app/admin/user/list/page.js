@@ -59,7 +59,7 @@ export default function ListUser() {
     }
   };
   useEffect(() => {
-    const url = "http://xuantuyen1207.website/api/user/list-all";
+    const url = `${process.env.HTTPS_URL}/api/user/list-all`;
     fetchData(url);
   }, [pre_page, search]);
 
@@ -78,7 +78,7 @@ export default function ListUser() {
   };
 
   const onClickSearch = () => {
-    const url = "http://xuantuyen1207.website/api/user/list-all";
+    const url = `${process.env.HTTPS_URL}/api/user/list-all`;
     fetchData(url);
   };
 
