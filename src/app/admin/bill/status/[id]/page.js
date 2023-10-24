@@ -86,7 +86,7 @@ export default function StatusBill() {
                     </div>
                     <div className="flex ml-8">
                       <p className={`${"mr-1"} ${style.text_title}`}>Nhân Viên : </p>
-                      {item?.nhan_vien.ten_nhan_vien}
+                      {item?.nhan_vien?.ten_nhan_vien}
                     </div>
                   </div>
                   <div>
