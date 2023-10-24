@@ -5,15 +5,14 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { BiFirstPage, BiLastPage } from "react-icons/bi";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import { AiOutlineEdit, AiOutlineFileSearch } from "react-icons/ai";
-import { MdDeleteForever } from "react-icons/md";
+import { AiOutlineFileSearch } from "react-icons/ai";
 import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { BsSearch } from "react-icons/bs";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Link from "next/link";
-import ModalViewDescription from "@/app/components/ModalViewDescription";
 import Image from "next/image";
+import ShowImage from "@/app/components/ShowImage";
 
 const list_size = [
   { id: 1, name: 10 },
@@ -27,35 +26,34 @@ const list_size = [
 const generatePDF = () => {
   const pdf = new jsPDF();
   autoTable(pdf, {
-    html: "#list_product",
+    html: "#list_staff",
     theme: "grid",
     headStyles: { fillColor: [100, 100, 100] },
     columns: [
+      { header: "#", dataKey: "#" },
       { header: "ID", dataKey: "id" },
+      { header: "Avatar", dataKey: "avatar" },
       { header: "Name", dataKey: "name" },
-      { header: "Original Price", dataKey: "original_price" },
-      { header: "Sale", dataKey: "sale" },
-      { header: "Discounted Price", dataKey: "discounted_price" },
-      { header: "Category", dataKey: "category" },
-      { header: "Image", dataKey: "image" },
+      { header: "Phone", dataKey: "phone" },
+      { header: "Position", dataKey: "position" },
+      { header: "Salary", dataKey: "salary" },
+      { header: "CCCD", dataKey: "cccd" },
     ],
   });
 
-  pdf.save("danh_sach_san_pham.pdf");
+  pdf.save("danh_sach_nhan_vien.pdf");
 };
 
-export default function ListProduct() {
+export default function ListStaff() {
   const [data, set_data] = useState();
   const [pre_page, set_pre_page] = useState(20);
   const [search, set_search] = useState("");
   const [pre_search, set_pre_search] = useState("");
-  const [short_description, set_short_description] = useState("");
-  const [description, set_description] = useState("");
-  const [show_modal_description, set_show_modal_description] = useState(false);
-  const [url_pre, set_url_pre] = useState("");
+  const [is_show, set_is_show] = useState(false);
+  const [img_show, set_img_show] = useState("");
+
   const fetchData = async (url) => {
     try {
-      set_url_pre(url);
       const response = await axios.post(url, { pre_page: pre_page, search: search });
       if (response.data.status == true) {
         set_data(response.data.data);
@@ -63,19 +61,13 @@ export default function ListProduct() {
         set_pre_search(search);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
       toast.error("An error occurred while fetching data.");
     }
   };
-
   useEffect(() => {
-    const url = `${process.env.HTTPS_URL}/api/product/list-all`;
+    const url = `${process.env.HTTPS_URL}/api/nhan-vien/list`;
     fetchData(url);
   }, [pre_page]);
-
-  const discountedPrice = (price, sale) => {
-    return price - (price * sale) / 100;
-  };
 
   const handleChangePage = (url) => {
     if (url != null) {
@@ -92,41 +84,22 @@ export default function ListProduct() {
   };
 
   const onClickSearch = () => {
-    const url = `${process.env.HTTPS_URL}/api/product/list-all`;
+    const url = `${process.env.HTTPS_URL}/api/nhan-vien/list`;
     fetchData(url);
   };
 
-  const handleShowModalDescription = (sh_des, des) => {
-    set_short_description(sh_des);
-    set_description(des);
-    set_show_modal_description(true);
+  const handleShowImage = (img) => {
+    set_is_show(true);
+    set_img_show(img);
   };
 
-  const handleDeleteProduct = async (id) => {
-    try {
-      const response = await axios.post(`${process.env.HTTPS_URL}/api/product/destroy`, { id: id });
-      if (response.data.status === true) {
-        fetchData(url_pre);
-        console.log(response.data.status);
-      } else {
-        console.log("Xóa sản phẩm không thành công");
-      }
-    } catch (error) {
-      console.error("Lỗi xóa sản phẩm:", error);
-    }
-  };
-
-  console.log(data);
   return (
     <div className="px-6">
-      {show_modal_description ? (
-        <ModalViewDescription
-          setShowModal={set_show_modal_description}
-          description={description}
-          short_description={short_description}
-        ></ModalViewDescription>
-      ) : (
-        ""
+      {is_show && (
+        <ShowImage
+          setShowImage={set_is_show}
+          urlImage={img_show}
+        ></ShowImage>
       )}
       <div className={style.header}>
         <div className={style.dropdown_size_page}>
@@ -152,7 +125,7 @@ export default function ListProduct() {
           </div>
         </div>
         <div className={style.add_new}>
-          <Link href="/admin/products/create">
+          <Link href="/admin/staff/create">
             <div className={style.btn_add_new}>ADD</div>
           </Link>
         </div>
@@ -167,28 +140,24 @@ export default function ListProduct() {
       </div>
       <div>- Total : {data?.total} Item</div> {pre_search != "" ? <div>- Search : {pre_search}</div> : ""}
       <table
-        className={style.table_list_product}
-        id="list_product"
+        className={style.table_list_staff}
+        id="list_staff"
       >
         <thead>
           <tr>
-            <th dataKey="id">#</th>
-            <th dataKey="name">Name</th>
-            <th dataKey="original-price">Original Price</th>
-            <th dataKey="sale">Sale</th>
-            <th dataKey="discounted-price">Discounted Price</th>
-            <th dataKey="category">Category</th>
-            <th
-              dataKey="image"
-              className="remove-column"
-            >
-              Image
-            </th>
+            <th>#</th>
+            <th>ID</th>
+            <th>Avatar</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Position</th>
+            <th>Salary</th>
+            <th>CCCD</th>
             <th
               dataKey="action"
               className="remove-column"
             >
-              Action
+              View
             </th>
           </tr>
         </thead>
@@ -196,17 +165,28 @@ export default function ListProduct() {
           {data?.data?.map((item, index) => (
             <tr key={index}>
               <td>{index + 1 + pre_page * (data.current_page - 1)}</td>
-              <td>{item.ten_san_pham}</td>
-              <td className={style.price}>${item.gia}</td>
-              <td className={style.sale}>{item.khuyen_mai}%</td>
-              <td className={style.price}>${discountedPrice(item.gia, item.khuyen_mai)}</td>
-              <td>{item.loai_san_pham.ten_loai_san_pham}</td>
+              <td>{item.id}</td>
               <td className={style.body_img}>
-                {item.hinh_anh.map((img) => (
+                <Image
+                  className={style.img_staff}
+                  onClick={() => handleShowImage(`${process.env.HTTPS_URL}/upload/${item.anh_nhan_vien}`)}
+                  src={`${process.env.HTTPS_URL}/upload/${item.anh_nhan_vien}`}
+                  alt="â"
+                  width={300}
+                  height={300}
+                />
+              </td>
+              <td>{item.ten_nhan_vien}</td>
+              <td>{item.so_dien_thoai}</td>
+              <td>{item.chuc_vu.ten_chuc_vu}</td>
+              <td className={style.price}>${item.luong_co_ban}</td>
+              <td className={style.body_img}>
+                {item.anh_cccd.map((img, index_img) => (
                   <Image
-                    className={style.img_product}
-                    key={img.id}
-                    src={`${process.env.HTTPS_URL}/upload/${img.hinh_anh_san_pham}`}
+                    className={style.img_staff}
+                    key={index_img}
+                    src={`${process.env.HTTPS_URL}/upload/${img}`}
+                    onClick={() => handleShowImage(`${process.env.HTTPS_URL}/upload/${img}`)}
                     alt="â"
                     width={300}
                     height={300}
@@ -215,17 +195,9 @@ export default function ListProduct() {
               </td>
               <td className="remove-column">
                 <div className={style.actions}>
-                  <AiOutlineFileSearch
-                    className={style.action}
-                    onClick={() => handleShowModalDescription(item.mo_ta_ngan, item.mo_ta)}
-                  ></AiOutlineFileSearch>{" "}
-                  <Link href={`${"/admin/products/edit/" + item.id}`}>
-                    <AiOutlineEdit className={style.action}></AiOutlineEdit>{" "}
+                  <Link href={`${"/admin/nhan-vien/detail/" + item.id}`}>
+                    <AiOutlineFileSearch className={style.action}></AiOutlineFileSearch>
                   </Link>
-                  <MdDeleteForever
-                    className={style.action}
-                    onClick={() => handleDeleteProduct(item.id)}
-                  ></MdDeleteForever>
                 </div>
               </td>
             </tr>

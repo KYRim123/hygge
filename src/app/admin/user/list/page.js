@@ -61,7 +61,7 @@ export default function ListUser() {
   useEffect(() => {
     const url = `${process.env.HTTPS_URL}/api/user/list-all`;
     fetchData(url);
-  }, [pre_page, search]);
+  }, [pre_page]);
 
   const handleChangePage = (url) => {
     if (url != null) {
