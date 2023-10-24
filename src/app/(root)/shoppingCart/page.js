@@ -17,7 +17,7 @@ export default function PagesShoppingCart() {
     if (session?.user?.id != null) {
       const fetchData = async () => {
         await axios
-          .post("http://xuantuyen1207.website/api/cart/my-cart", { id: session?.user?.id })
+          .post(`${process.env.HTTPS_URL}/api/cart/my-cart`, { id: session?.user?.id })
           .then((res) => {
             if (res.data.status == true) {
               set_data(res.data.data.chi_tiet_gio_hang);
