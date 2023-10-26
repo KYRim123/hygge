@@ -24,6 +24,7 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const [header_cart, set_header_cart] = useState();
+
   useEffect(() => {
     if (session?.user?.id != null) {
       const fetchData = async () => {
@@ -34,13 +35,13 @@ export default function Header() {
               set_header_cart(res.data.data.chi_tiet_gio_hang);
             } else {
             }
-          })
-          .catch((err) => {});
+          });
       };
       fetchData();
     }
   }, [session?.user?.id]);
 
+ 
   const handleShowInput = () => {
     setShowInput(!showInput);
   };
@@ -49,12 +50,12 @@ export default function Header() {
   };
 
   const handleClickSearch = () => {
-    if (showInput === "") {
-      handleShowInput();
-    } else {
+    if (inputSearch !== "") {
       localStorage.setItem("search", inputSearch);
       router.push("/search");
       router.refresh();
+    } else {
+      setShowInput(!showInput);
     }
   };
 

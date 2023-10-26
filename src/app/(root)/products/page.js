@@ -30,8 +30,6 @@ export default function ProductPage() {
     return <LoadingA />;
   }
 
-  console.log(fetchData.data);
-
   // pagination
   const count_product = fetchData?.total;
   const pageCount = Math.ceil(count_product / 12);
@@ -104,6 +102,7 @@ export default function ProductPage() {
       setCategory({ ...category, price: name });
     }
   };
+ 
 
   return (
     <div>

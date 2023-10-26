@@ -34,7 +34,7 @@ export default function HomePage() {
   const handleShopNow = () => {
     router.push("/cart");
   };
-
+  
   const listCategory = [
     { link: "/", icon: FaShoppingBag, text: "On sale" },
     { link: "/", icon: SlGraph, text: "Featured" },
