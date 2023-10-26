@@ -1,16 +1,34 @@
 "use client";
-import ListProduct from "../../components/ListProduct/index";
-import { useState } from "react";
-import SelectDropdown from "../../components/SelectDropdown/index";
+import { useEffect, useState } from "react";
 import style from "./index.module.css";
-import { GrClose } from "react-icons/gr";
-import { AiOutlinePlus } from "react-icons/ai";
-import { IoRemove } from "react-icons/io5";
 import Image from "next/image";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 export default function PageCheckOut() {
+  const [payment_amount, set_payment_amount] = useState(0);
+  const [list_shopping_cart, set_list_shopping_cart] = useState([]);
   const text_checkout = "Check out";
   const [step, set_step] = useState(1);
+  const [profile, set_profile] = useState();
+  const { data: session } = useSession();
+  useEffect(() => {
+    if (session?.user?.id != null) {
+      const fetchData = async () => {
+        await axios
+          .post(`${process.env.HTTPS_URL}/api/cart/my-cart`, { id: session?.user?.id })
+          .then((res) => {
+            if (res.data.status == true) {
+              set_list_shopping_cart(res.data.data.chi_tiet_gio_hang);
+            } else {
+            }
+          })
+          .catch((err) => {});
+      };
+      fetchData();
+    }
+  }, [session?.user?.id]);
   const handleClickStep = (text) => {
     if (text == "back") {
       if (step == 1) {
@@ -32,50 +50,53 @@ export default function PageCheckOut() {
       }
     }
   };
+  console.log(payment_amount);
 
-  const items_shopping_cart = [
-    {
-      id: 1,
-      name: "Name 1",
-      img: "",
-      sale: 20,
-      price: 25,
-      number: 5,
-    },
-    {
-      id: 2,
-      name: "Name 2",
-      img: "",
-      sale: 10,
-      price: 30,
-      number: 1,
-    },
-    {
-      id: 3,
-      name: "Name 3",
-      img: "",
-      sale: 15,
-      price: 20,
-      number: 1,
-    },
-    {
-      id: 4,
-      name: "Name 4",
-      img: "",
-      sale: 10,
-      price: 40,
-      number: 1,
-    },
-    {
-      id: 5,
-      name: "Name 5",
-      img: "",
-      sale: 0,
-      price: 60,
-      number: 1,
-    },
-  ];
-  const [list_shopping_cart, set_list_shopping_cart] = useState(items_shopping_cart);
+  useEffect(() => {
+    if (session?.user?.id != null) {
+      if (step == 3) {
+        axios
+          .post(`${process.env.HTTPS_URL}/api/cart/get-payment-amount`, {
+            id: session.user.id,
+          })
+          .then((response) => {
+            set_payment_amount(response.data.amount);
+          })
+          .catch((error) => {
+            console.error("Error fetching payment amount:", error);
+          });
+      } else if (step == 2) {
+        axios
+          .post(`${process.env.HTTPS_URL}/api/user/profile`, { id: 10 })
+          .then((response) => {
+            set_profile(response.data.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching payment amount:", error);
+          });
+      }
+    } else {
+    }
+  }, [step, session?.user?.id]);
+
+  const createOrder = (data, actions) => {
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            currency_code: "USD",
+            value: payment_amount,
+          },
+        },
+      ],
+    });
+  };
+
+  const handleApprove = (data, actions) => {
+    return actions.order.capture().then(function (details) {
+      // Xử lý sau khi thanh toán thành công
+    });
+  };
 
   return (
     <div>
@@ -117,7 +138,7 @@ export default function PageCheckOut() {
                   style.list_item_checkout
                 }`}
               >
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead className={style.header_item_checkout}>
                     <tr>
                       <th scope="col">Product name</th>
@@ -126,78 +147,29 @@ export default function PageCheckOut() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className={style.item_checkout}>
-                      <td
-                        scope="row"
-                        className={style.name_item}
+                    {list_shopping_cart?.map((item, index) => (
+                      <tr
+                        className={style.item_checkout}
+                        key={index}
                       >
-                        Apple MacBook Pro
-                      </td>
-                      <td className={`${""} ${style.number_item}`}>2</td>
-                      <td className="p-2">
-                        <Image
-                          alt="aa"
-                          className={style.image_item}
-                          width={300}
-                          height={250}
-                          src={`${process.env.HTTPS_URL}/upload/${"img"}`}
-                        />
-                      </td>
-                    </tr>
-                    <tr className={style.item_checkout}>
-                      <td
-                        scope="row"
-                        className={style.name_item}
-                      >
-                        Apple MacBook Pro
-                      </td>
-                      <td className={`${""} ${style.number_item}`}>2</td>
-                      <td className="p-2">
-                        <Image
-                          alt="aa"
-                          className={style.image_item}
-                          width={300}
-                          height={250}
-                          src={`${process.env.HTTPS_URL}/upload/${"img"}`}
-                        />
-                      </td>
-                    </tr>
-                    <tr className={style.item_checkout}>
-                      <td
-                        scope="row"
-                        className={style.name_item}
-                      >
-                        Apple MacBook Pro
-                      </td>
-                      <td className={`${""} ${style.number_item}`}>2</td>
-                      <td className="p-2">
-                        <Image
-                          alt="aa"
-                          className={style.image_item}
-                          width={300}
-                          height={250}
-                          src={`${process.env.HTTPS_URL}/upload/${"img"}`}
-                        />
-                      </td>
-                    </tr>
-                    <tr className={style.item_checkout}>
-                      <td
-                        scope="row"
-                        className={style.name_item}
-                      >
-                        Apple MacBook Pro
-                      </td>
-                      <td className={`${""} ${style.number_item}`}>2</td>
-                      <td className="p-2">
-                        <Image
-                          alt="aa"
-                          className={style.image_item}
-                          width={300}
-                          height={250}
-                          src={`${process.env.HTTPS_URL}/upload/${"img"}`}
-                        />
-                      </td>
-                    </tr>
+                        <td
+                          scope="row"
+                          className={style.name_item}
+                        >
+                          {item?.san_pham?.ten_san_pham}
+                        </td>
+                        <td className={`${""} ${style.number_item}`}>{item?.so_luong}</td>
+                        <td className="p-2">
+                          <Image
+                            alt="aa"
+                            className={style.image_item}
+                            width={300}
+                            height={250}
+                            src={`${process.env.HTTPS_URL}/upload/${item?.san_pham?.hinh_anh[0]?.hinh_anh_san_pham}`}
+                          />
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -227,7 +199,7 @@ export default function PageCheckOut() {
                 <input
                   className={style.input_form_input}
                   type="text"
-                  defaultValue={"Đinh Xuân Tuyển"}
+                  value={profile?.ten_nguoi_dung}
                 ></input>
               </div>
 
@@ -236,7 +208,7 @@ export default function PageCheckOut() {
                 <input
                   className={style.input_form_input}
                   type="text"
-                  defaultValue={"Đinh Xuân Tuyển"}
+                  value={profile?.so_dien_thoai}
                 ></input>
               </div>
 
@@ -245,7 +217,7 @@ export default function PageCheckOut() {
                 <input
                   className={style.input_form_input}
                   type="text"
-                  defaultValue={"Đinh Xuân Tuyển"}
+                  value={profile?.dia_chi}
                 ></input>
               </div>
 
@@ -254,7 +226,7 @@ export default function PageCheckOut() {
                 <input
                   className={style.input_form_input}
                   type="email"
-                  defaultValue={"Đinh Xuân Tuyển"}
+                  value={profile?.email}
                 ></input>
               </div>
             </div>
@@ -277,6 +249,16 @@ export default function PageCheckOut() {
         {step == 3 && (
           <div className={style.info_step_checkout}>
             <div className={style.title_step}>Payment</div>
+            <div className={style.information_checkout}>
+              <div>Tổng Tiền Cần Thanh Toán : ${payment_amount}</div>
+              <PayPalScriptProvider options={{ clientId: process.env.CLIENT_ID_PAYPAL }}>
+                <PayPalButtons
+                  style={{ layout: "horizontal" }}
+                  createOrder={createOrder}
+                  onApprove={handleApprove}
+                />
+              </PayPalScriptProvider>
+            </div>
             <div className={style.footer_checkout}>
               <div
                 className={style.btn_close_step}

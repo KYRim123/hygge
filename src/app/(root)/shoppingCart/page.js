@@ -7,6 +7,7 @@ import { IoRemove } from "react-icons/io5";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import Link from "next/link";
 
 export default function PagesShoppingCart() {
   const text_shopping_cart = "Shopping Cart";
@@ -40,7 +41,8 @@ export default function PagesShoppingCart() {
     const updatedData = [...data];
     for (let i = 0; i < updatedData.length; i++) {
       if (updatedData[i].id === id) {
-        updatedData[i].so_luong += 1;
+        updatedData[i].so_luong = updatedData[i].so_luong * 1 + 1;
+        changeNumberItemCard(updatedData[i].id, updatedData[i].so_luong);
         break;
       }
     }
@@ -52,12 +54,24 @@ export default function PagesShoppingCart() {
     for (let i = 0; i < updatedData.length; i++) {
       if (updatedData[i].id === id) {
         if (updatedData[i].so_luong > 1) {
-          updatedData[i].so_luong -= 1;
+          updatedData[i].so_luong = updatedData[i].so_luong * 1 - 1;
+          changeNumberItemCard(updatedData[i].id, updatedData[i].so_luong);
         }
         break;
       }
     }
     set_data(updatedData);
+  };
+
+  const changeNumberItemCard = async (id, number) => {
+    await axios
+      .post(`http://127.0.0.1:8000/api/cart/change-cart`, { id: id, so_luong: number })
+      .then((res) => {
+        if (res.data.status == true) {
+        } else {
+        }
+      })
+      .catch((err) => {});
   };
 
   return (
@@ -136,7 +150,9 @@ export default function PagesShoppingCart() {
             <p>Total</p>
             <p className={style.price_child}>${TOTAL.toFixed(2)}</p>
           </div>
-          <div className={style.btn_checkout_cart}>Check Out</div>
+          <Link href={"/checkout"}>
+            <div className={style.btn_checkout_cart}>Check Out</div>
+          </Link>
         </div>
       </div>
     </div>
