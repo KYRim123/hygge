@@ -78,14 +78,13 @@ export default function PageCheckOut() {
     } else {
     }
   }, [step, session?.user?.id]);
-
   const createOrder = (data, actions) => {
     return actions.order.create({
       purchase_units: [
         {
           amount: {
             currency_code: "USD",
-            value: payment_amount,
+            value: payment_amount * 1,
           },
         },
       ],
