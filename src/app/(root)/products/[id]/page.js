@@ -5,13 +5,10 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 // icons
 import { IoWaterOutline } from "react-icons/io5";
-import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import { AiOutlineComment, AiOutlineHeart, AiOutlineSafetyCertificate } from "react-icons/ai";
+import { GrClose, GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { AiOutlineComment, AiOutlineSafetyCertificate } from "react-icons/ai";
 import { SlGraph } from "react-icons/sl";
-// css
-import style from "./index.module.css";
 // lb
-// import ReactImageMagnify from "react-image-magnify";
 import axios from "axios";
 import useSWR from "swr";
 
@@ -34,6 +31,8 @@ function DetailProduct() {
   const [currentImage, setCurrentImage] = useState(0);
   const [totalProduct, setTotalProduct] = useState(1);
   const [indexTab, setIndexTab] = useState(0);
+  const [zoomImg, setZoomImg] = useState(false);
+  const [isShowModal, setIsShowModal] = useState(false);
   const { data: session } = useSession();
   const params = useParams();
   const idProduct = params.id;
@@ -198,9 +197,20 @@ function DetailProduct() {
     setIndexTab(index);
   };
 
+  const handleZoomImg = () => {
+    setZoomImg(true);
+    setIsShowModal(true);
+  };
+  const handleClose = () => {
+    setZoomImg(false);
+    setTimeout(() => {
+      setIsShowModal(false);
+    }, 300);
+  };
+
   return (
     <>
-      <div className={`${"flex items-center gap-10 h-[510px] w-full"} ${style.body_detail_product}`}>
+      <div className={"flex items-center gap-10 h-[510px] w-full"}>
         <div className="w-[150px] h-full relative">
           {/* next prev */}
           <div
@@ -256,29 +266,46 @@ function DetailProduct() {
             ))}
           </WrapperSwiper>
         </div>
-        <div className={`relative bg-gray-100 rounded-3xl transition-all ${style.wrapperImgMa}`}>
-          {/* <ReactImageMagnify
-            {...{
-              smallImage: {
-                alt: "Wristwatch by Ted Baker London",
-                src: `${process.env.HTTPS_URL}/upload/${listImages[currentImage].hinh_anh_san_pham}`,
-                width: 500,
-                height: 500,
-              },
-              largeImage: {
-                src: `${process.env.HTTPS_URL}/upload/${listImages[currentImage].hinh_anh_san_pham}`,
-                width: 1200,
-                height: 1200,
-              },
-            }}
+        <div
+          className={`relative bg-gray-100 rounded-3xl cursor-pointer flex-grow flex items-center justify-center h-full`}
+          onClick={handleZoomImg}
+        >
+          <Image
+            src={`${process.env.HTTPS_URL}/upload/${listImages[currentImage].hinh_anh_san_pham}`}
+            width={500}
+            height={500}
+            alt="imgProduct"
+            className="object-cover p-5"
           />
-          {khuyen_mai !== 0 && (
-            <span className="absolute top-11 -right-10 bg-red-500 text-white font-semibold text-lg py-2 px-4 rounded-full">
-              {khuyen_mai}% off
-            </span>
-          )} */}
         </div>
-
+        {/* zoom image */}
+        {isShowModal && (
+          <div
+            className={`fixed inset-0 z-20 bg-productDetail flex items-center justify-center`}
+            onClick={handleClose}
+          >
+            <div
+              className={`relative bg-white w-full h-full mx-[25%] max-h-[600px] flex items-center justify-center rounded-2xl ${
+                zoomImg ? "animate-fadeIn" : "animate-fadeOut"
+              }`}
+            >
+              <Image
+                src={`${process.env.HTTPS_URL}/upload/${listImages[currentImage].hinh_anh_san_pham}`}
+                width={700}
+                height={500}
+                alt="imgProduct"
+                className="object-cover w-[500px] h-[500px]"
+              />
+              <div
+                className="absolute right-0 top-0 p-4 cursor-pointer hover:opacity-70"
+                onClick={handleClose}
+              >
+                <GrClose size={25} />
+              </div>
+            </div>
+          </div>
+        )}
+        {/* detail */}
         <div className="flex-grow">
           <span className="label-1">{nameTag}</span>
           <h1 className="title-1">{ten_san_pham}</h1>
@@ -292,7 +319,6 @@ function DetailProduct() {
               <span className="font-bold text-3xl">${priceNew}</span>
             </div>
           </div>
-
           <div className="mt-20 flex gap-2 justify-between">
             <div className="flex items-center justify-between gap-2 py-4 border-2 rounded-full">
               <button
@@ -317,13 +343,9 @@ function DetailProduct() {
             >
               Add to Cart
             </Button>
-            <div className="p-5 border-black-100 border-2 rounded-full cursor-pointer">
-              <AiOutlineHeart size={26} />
-            </div>
           </div>
         </div>
       </div>
-
       {/* about */}
       <div className="mt-32">
         <span className="label-1">- Product Features</span>

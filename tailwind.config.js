@@ -34,6 +34,9 @@ module.exports = {
           50: "#F6F7FB",
         },
       },
+      backgroundColor: {
+        productDetail: "rgba(53,53,59,0.5)",
+      },
       maxWidth: {
         pc: "1200px",
       },
@@ -75,12 +78,35 @@ module.exports = {
             transform: "rotate(0deg)",
           },
         },
+        fadeIn: {
+          from: {
+            transform: "translate(0,100%)",
+            opacity: 0,
+          },
+          to: {
+            transform: "translate(0,0)",
+            opacity: 1,
+          },
+        },
+        fadeOut: {
+          from: {
+            transform: "translate(0,0)",
+            opacity: 1,
+          },
+          to: {
+            transform: "translate(0,100%)",
+            opacity: 0,
+          },
+        },
       },
       animation: {
         showInput: "showInput .4s linear",
         loadingMain: "rotate_main 1.2s linear infinite",
         spin0to180: "spin0to180 0.3s ease-in-out",
         spin180to0: "spin180to0 0.3s ease-in-out",
+        spin180to0: "spin180to0 0.3s ease-in-out",
+        fadeIn: "fadeIn 0.3s linear",
+        fadeOut: "fadeOut 0.3s linear",
       },
       textColor: {
         button: "#F7FAFC",
