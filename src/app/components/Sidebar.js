@@ -37,7 +37,7 @@ const Sidebar = () => {
     { name: "Quản lý người dùng", link: "/admin/user/list", Icon: BsFillPersonFill },
     { name: "Thống kê", link: "/admin/thongke", Icon: GiNotebook },
     { name: "Tin nhắn", link: "/admin/message", Icon: AiFillMessage },
-    { name: "Bảng lương", link: "/admin/luong", Icon: FaMoneyCheck },
+    { name: "Bảng lương", link: "/admin/salary/list", Icon: FaMoneyCheck },
     { name: "Tin tức", link: "/admin/news", Icon: PiNewspaperFill },
     { name: "Thoát", link: "/admin/signOut", Icon: BiLogOut },
   ];
