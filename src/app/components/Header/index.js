@@ -32,7 +32,7 @@ export default function Header() {
           .post(`${process.env.HTTPS_URL}/api/cart/my-cart`, { id: session?.user?.id })
           .then((res) => {
             if (res.data.status == true) {
-              set_header_cart(res.data.data.chi_tiet_gio_hang);
+              set_header_cart(res.data.data?.chi_tiet_gio_hang);
             } else {
             }
           });

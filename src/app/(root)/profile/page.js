@@ -3,46 +3,37 @@ import Image from "next/image";
 import { avaReview1 } from "../../../../public/assets";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import LoadingA from "@/app/components/LoadingA";
 
 const ProfilePage = () => {
   const router = useRouter();
-  const [data, setData] = useState({
-    ten_nguoi_dung: "nguyen thanh luong",
-    email: "luong@gmail.com",
-    dia_chi: "quang nam",
-    so_dien_thoai: "12333344",
-    anh_dai_dien: "",
-  });
+  const { data: session } = useSession();
+  const idUser = session?.user?.id;
+  const [newImg, setNewImg] = useState("");
+  const [data, setData] = useState();
 
-  // const radios = [
-  //   {
-  //     id: "male",
-  //     name: "gender",
-  //     type: "radio",
-  //     value: "male",
-  //   },
-  //   {
-  //     id: "female",
-  //     name: "gender",
-  //     type: "radio",
-  //     value: "female",
-  //   },
-  //   ,
-  //   {
-  //     id: "other",
-  //     name: "gender",
-  //     type: "radio",
-  //     value: "other",
-  //   },
-  // ];
+  useEffect(() => {
+    if (idUser !== null) {
+      axios
+        .post(`${process.env.HTTPS_URL}/api/user/profile`, { id: idUser })
+        .then((res) => setData(res.data.data));
+    }
+  }, [idUser]);
+
+  const onChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
 
   const uploadImg = (e) => {
     const file = e.target?.files[0];
     const newUrl = URL.createObjectURL(file);
+    setNewImg(newUrl);
     const formdata = new FormData();
     if (file) {
       formdata.append("file", file);
@@ -50,24 +41,29 @@ const ProfilePage = () => {
     }
   };
 
-  const onChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+  const handleSubmit = () => {
+    axios
+      .post(`${process.env.HTTPS_URL}/api/user/update`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        if (res.data.status) {
+          toast.success("updated!");
+        }
+      });
   };
+
   const handleCancel = () => {
     router.push("/");
   };
-  const handleSubmit = () => {
-    // axios
-    //   .post(`${process.env.HTTPS_URL}/api/user/update`, data, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   })
-    //   .then((res) => console.log(res.data))
-    //   .then((err) => console.log(err));
-    console.log(data);
-  };
 
+  if (!data) {
+    return <LoadingA />;
+  }
+
+  console.log(data);
   return (
     <div>
       <div className="w-full">
@@ -77,7 +73,7 @@ const ProfilePage = () => {
             className="block w-[250px] h-[250px] cursor-pointer"
           >
             <Image
-              src={data.url === "" ? avaReview1 : data.url}
+              src={newImg ? newImg : data?.anh_dai_dien === null ? avaReview1 : data?.anh_dai_dien}
               alt="avatar"
               width={500}
               height={500}
@@ -94,31 +90,31 @@ const ProfilePage = () => {
           />
           <Input
             label="Full name"
-            value={data.ten_nguoi_dung}
+            value={data?.ten_nguoi_dung}
             name="ten_nguoi_dung"
             onChange={onChange}
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-5 my-10">
+      <div className="grid grid-cols-2 gap-5 my-10 items-center">
         <Input
           label="Email"
           type="email"
-          value={data.email}
+          value={data?.email}
           name="email"
           onChange={onChange}
         />
         <Input
           label="Phone number"
           type="text"
-          value={data.so_dien_thoai}
+          value={data?.so_dien_thoai}
           name="so_dien_thoai"
           onChange={onChange}
         />
         <Input
           label="Address"
           type="text"
-          value={data.dia_chi}
+          value={data?.dia_chi}
           name="dia_chi"
           onChange={onChange}
         />
@@ -128,32 +124,6 @@ const ProfilePage = () => {
         >
           Change password
         </Link>
-        {/* <div className="flex gap-5 items-center">
-          <label>Gender</label>
-          {radios.length > 0 &&
-            radios.map((radio, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-2"
-              >
-                <label
-                  htmlFor={radio.id}
-                  className={`${
-                    radio.id === data.gender ? "bg-main-100" : ""
-                  } border-main-100 block border-[2px] w-5 h-5 rounded-full cursor-pointer`}
-                ></label>
-                <label className="capitalize">{radio.id}</label>
-                <input
-                  type={radio.type}
-                  name={radio.name}
-                  id={radio.id}
-                  value={radio.value}
-                  className="hidden"
-                  onChange={onChange}
-                />
-              </div>
-            ))}
-        </div> */}
       </div>
       <div className="mt-5 flex gap-2 justify-center">
         <Button
