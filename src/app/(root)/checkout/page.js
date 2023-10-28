@@ -5,6 +5,7 @@ import Image from "next/image";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import VietQR from "@/app/components/VietQR";
 
 export default function PageCheckOut() {
   const [payment_amount, set_payment_amount] = useState(0);
@@ -69,7 +70,9 @@ export default function PageCheckOut() {
         axios
           .post(`${process.env.HTTPS_URL}/api/user/profile`, { id: 10 })
           .then((response) => {
-            set_profile(response.data.data);
+            if (response.data.status == true) {
+              set_profile(response.data.data);
+            }
           })
           .catch((error) => {
             console.error("Error fetching payment amount:", error);
@@ -250,6 +253,7 @@ export default function PageCheckOut() {
             <div className={style.title_step}>Payment</div>
             <div className={style.information_checkout}>
               <div>Tổng Tiền Cần Thanh Toán : ${payment_amount}</div>
+              <VietQR />
               <PayPalScriptProvider options={{ clientId: process.env.CLIENT_ID_PAYPAL }}>
                 <PayPalButtons
                   style={{ layout: "horizontal" }}

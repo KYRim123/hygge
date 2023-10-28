@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 // icons
 import { BiSolidDashboard, BiSitemap, BiSolidCategory, BiLogOut } from "react-icons/bi";
-import { BsFillInboxFill, BsFillFilePersonFill, BsFillPersonFill } from "react-icons/bs";
+import { BsFillInboxFill, BsFillFilePersonFill, BsFillPersonFill, BsQuestionDiamond } from "react-icons/bs";
 import { RiBillLine, RiAdminFill } from "react-icons/ri";
 import { GiNotebook } from "react-icons/gi";
 import { AiFillMessage } from "react-icons/ai";
@@ -38,6 +38,7 @@ const Sidebar = () => {
     { name: "Thống kê", link: "/admin/thongke", Icon: GiNotebook },
     { name: "Tin nhắn", link: "/admin/message", Icon: AiFillMessage },
     { name: "Bảng lương", link: "/admin/salary/list", Icon: FaMoneyCheck },
+    { name: "Quản lý FAQ", link: "/admin/faq", Icon: BsQuestionDiamond },
     { name: "Tin tức", link: "/admin/news", Icon: PiNewspaperFill },
     { name: "Thoát", link: "/admin/signOut", Icon: BiLogOut },
   ];
