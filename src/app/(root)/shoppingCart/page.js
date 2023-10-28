@@ -65,7 +65,7 @@ export default function PagesShoppingCart() {
 
   const changeNumberItemCard = async (id, number) => {
     await axios
-      .post(`http://127.0.0.1:8000/api/cart/change-cart`, { id: id, so_luong: number })
+      .post(`${process.env.HTTPS_URL}/api/cart/change-cart`, { id: id, so_luong: number })
       .then((res) => {
         if (res.data.status == true) {
         } else {
