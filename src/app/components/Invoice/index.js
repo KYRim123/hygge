@@ -57,19 +57,19 @@ export default function Invoice({ data }) {
           <tbody>
             {data?.chi_tiet_hoa_don?.map((item, index) => (
               <tr key={index}>
-                <td>{index + 1}</td>
+                <td className={style.price}>{index + 1}</td>
                 <td>{item?.san_pham?.ten_san_pham}</td>
-                <td>{item?.so_luong}</td>
-                <td>{item?.gia_tien}</td>
-                <td>{item?.so_luong * item?.gia_tien}</td>
+                <td className={style.price}>{item?.so_luong}</td>
+                <td className={style.price}>${(item?.gia_tien * 1).toFixed(2)}</td>
+                <td className={style.price}>${(item?.so_luong * item?.gia_tien * 1).toFixed(2)}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
       <div>
-        <div className="grid grid-cols-2">
-          <div className="text-center">
+        <div className="grid grid-cols-4">
+          <div className="text-center col-span-2">
             <div>
               Date {date.getDate()} Month {date.getMonth() + 1} Year {date.getFullYear()}
             </div>
@@ -78,10 +78,20 @@ export default function Invoice({ data }) {
             </div>
             <div className="my-2 text-[#00cc98]">Hygge Shop</div>
           </div>
+          <div></div>
           <div>
-            <div>TAX : {data?.tax} </div>
-            <div>SHIP : {data?.ship}</div>
-            <div>TOTAL : {data?.gia_tien_thanh_toan}</div>
+            <div>
+              <b>TAX : </b>
+              <p className="float-right mr-4">${(data?.tax * 1).toFixed(2)}</p>
+            </div>
+            <div>
+              <b>SHIP : </b>
+              <p className="float-right mr-4">${(data?.ship * 1).toFixed(2)}</p>
+            </div>
+            <div>
+              <b>TOTAL : </b>
+              <p className="float-right mr-4">${(data?.gia_tien_thanh_toan * 1).toFixed(2)}</p>
+            </div>
           </div>
         </div>
         <div></div>

@@ -31,7 +31,7 @@ export default function PageCheckOut() {
   const [list_banks, set_list_banks] = useState([]);
   const [selected_option, set_selected_option] = useState(0);
   const { data: session } = useSession();
-  const [id_invoice, set_id_invoice] = useState();
+  const [id_invoice, set_id_invoice] = useState(0);
   const [data_invoice, set_data_invoice] = useState();
   const [validate_step2, set_validate_step2] = useState(false);
   useEffect(() => {
@@ -126,21 +126,17 @@ export default function PageCheckOut() {
     }
   }, [session?.user?.id]);
 
-  useEffect(() => {
-    if (id_invoice != null) {
-      const getInvoice = async () => {
-        await axios
-          .get(`${process.env.HTTPS_URL}/api/hoa-don/get/${id_invoice}`)
-          .then((res) => {
-            if (res.data.status == true) {
-              set_data_invoice(res.data.data);
-            }
-          })
-          .catch((err) => {});
-      };
-      getInvoice();
-    }
-  }, [id_invoice]);
+  const getInvoice = async () => {
+    const id_invoice_local = localStorage.getItem("id_invoice");
+    await axios
+      .get(`${process.env.HTTPS_URL}/api/hoa-don/get/${id_invoice_local}`)
+      .then((res) => {
+        if (res.data.status == true) {
+          set_data_invoice(res.data.data);
+        }
+      })
+      .catch((err) => {});
+  };
 
   const createOrder = (data, actions) => {
     postCreateOrder();
@@ -156,20 +152,51 @@ export default function PageCheckOut() {
     });
   };
   const postCreateOrder = async () => {
+    if (
+      session?.user?.id != null &&
+      payment_amount != null &&
+      profile.ten_nguoi_dung != null &&
+      profile.so_dien_thoai != null &&
+      profile.dia_chi != null &&
+      tax != null &&
+      ship != null
+    ) {
+      await axios
+        .post(`${process.env.HTTPS_URL}/api/hoa-don/create`, {
+          id: session?.user?.id,
+          status: false,
+          amount: payment_amount,
+          name: profile.ten_nguoi_dung,
+          phone: profile.so_dien_thoai,
+          address: profile.dia_chi,
+          tax: tax,
+          ship: ship,
+        })
+        .then((res) => {
+          if (res.data.status == true) {
+            set_id_invoice(res.data.invoiceID);
+            localStorage.setItem("id_invoice", res.data.invoiceID);
+          } else {
+            return toast.error("Thông Tin Không Đầy Đủ");
+          }
+        })
+        .catch((err) => {
+          return toast.error("Thông Tin Không Đầy Đủ");
+        });
+    } else {
+      return toast.error("Missing Information");
+    }
+  };
+
+  const handleAccuracy = async (id) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/hoa-don/create`, {
-        id: session?.user?.id,
-        status: false,
-        amount: payment_amount,
-        name: profile.ten_nguoi_dung,
-        phone: profile.so_dien_thoai,
-        address: profile.dia_chi,
-        tax: tax,
-        ship: ship,
+      .post(`${process.env.HTTPS_URL}/api/hoa-don/xac-thuc`, {
+        id: id,
+        status: true,
       })
       .then((res) => {
         if (res.data.status == true) {
-          set_id_invoice(res.data.invoiceID);
+          set_step(4);
         } else {
           return toast.error("Thông Tin Không Đầy Đủ");
         }
@@ -178,25 +205,15 @@ export default function PageCheckOut() {
         return toast.error("Thông Tin Không Đầy Đủ");
       });
   };
-
-  const handleApprove = (data, actions) => {
-    return actions.order.capture().then(function (details) {
-      axios
-        .post(`${process.env.HTTPS_URL}/api/hoa-don/xac-thuc`, {
-          id: id_invoice,
-          status: true,
-        })
-        .then((res) => {
-          if (res.data.status == true) {
-            set_step(4);
-          } else {
-            return toast.error("Thông Tin Không Đầy Đủ");
-          }
-        })
-        .catch((err) => {
-          return toast.error("Thông Tin Không Đầy Đủ");
-        });
-    });
+  const handleApprove = async (data, actions) => {
+    const id_invoice_local = localStorage.getItem("id_invoice");
+    try {
+      const details = await actions.order.capture();
+      await handleAccuracy(id_invoice_local);
+      await getInvoice();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onChangeListTab = (key) => {
@@ -218,8 +235,9 @@ export default function PageCheckOut() {
     NewProfile[title] = value;
     set_profile(NewProfile);
   };
-  const handleConfirm = () => {
-    postCreateOrder();
+  const handleConfirm = async () => {
+    await postCreateOrder();
+    await getInvoice();
     set_step(4);
   };
 
