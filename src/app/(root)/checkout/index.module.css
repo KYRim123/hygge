@@ -1,29 +1,32 @@
-.text_checkout{
+.text_checkout {
     font-weight: bold;
     font-size: 24px;
     margin: 8px 0px;
 }
-.title_checkout{
+
+.title_checkout {
     font-weight: bold;
     color: #75AEFF;
     margin-top: 8px;
 
 }
-.body_checkout{
-}
-.steps_checkout{
+
+.body_checkout {}
+
+.steps_checkout {
     width: 900px;
     display: flex;
     margin: auto;
     justify-content: space-between;
     margin-top: 40px;
 }
-.step_checkout{
+
+.step_checkout {
     position: relative;
     background-color: #ccc;
     font-size: 24px;
     font-weight: bold;
-    color:white; 
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,6 +34,7 @@
     border-radius: 50%;
     height: 70px;
 }
+
 .step_checkout:not(:last-child):before {
     content: "";
     position: absolute;
@@ -44,67 +48,78 @@
     left: 80px;
     width: 184px;
 }
-.name_step_checkout{
+
+.name_step_checkout {
     position: absolute;
     font-size: 18px;
     color: black;
-    top:-30px;
+    top: -30px;
 }
-.footer_checkout{
+
+.footer_checkout {
     display: flex;
     margin: auto;
     width: 400px;
     justify-content: space-between;
 }
-.btn_next_step,.btn_close_step{
+
+.btn_next_step,
+.btn_close_step {
     width: 100px;
     padding: 12px;
     text-align: center;
     position: relative;
     cursor: pointer;
 }
-.btn_next_step{
+
+.btn_next_step {
     background-color: #00cc96;
     border-radius: 24px;
 }
-.btn_close_step{
+
+.btn_close_step {
     background-color: #ccc;
     border-radius: 24px;
 }
-.btn_next_step:hover{
+
+.btn_next_step:hover {
     box-shadow: 0px 0px 12px #00cc96;
 }
-.btn_close_step:hover{
+
+.btn_close_step:hover {
     box-shadow: 0px 0px 12px #ccc;
 }
-.step_open{
+
+.step_open {
     background-color: #00cc96;
     position: relative;
 }
+
 .step_open:not(:last-child):before {
     background: #00cc96;
     transition: background 2s;
 }
-.step_choose{
+
+.step_choose {
     background-color: #75AEFF;
     transition: background 1s;
 }
 
-.title_step{
+.title_step {
     text-align: center;
     font-size: 32px;
     color: #00cc96;
     font-weight: bold;
 }
 
-.image_item{
+.image_item {
     width: 100px;
     background-color: rgb(254, 223, 228);
     border-radius: 24px;
     margin: auto;
 }
 
-.list_item_checkout{
+.list_item_checkout {
     display: flex;
     width: 800px;
     align-items: center;
@@ -113,22 +128,24 @@
     padding: 4px 8px;
 }
 
-.item_checkout>td{
+.item_checkout>td {
     text-align: center;
     font-size: 14px;
     color: black;
     font-weight: 500;
 }
-tr.item_checkout:nth-child(2n){
+
+tr.item_checkout:nth-child(2n) {
     background-color: rgba(239, 239, 239, 0.541);
 }
-.header_item_checkout{
+
+.header_item_checkout {
     font-size: 16px;
     text-align: center;
     height: 50px;
 }
 
-.information_checkout{
+.information_checkout {
     width: 800px;
     margin: 32px auto 46px;
     box-shadow: 1px 1px 4px #ccc;
@@ -136,20 +153,45 @@ tr.item_checkout:nth-child(2n){
     padding: 24px 32px;
 }
 
-.form_input{
+.form_input {
     margin: 24px 0px;
 }
-.title_form_input{
+
+.title_form_input {
     margin-bottom: 4px;
     color: #75AEFF;
     font-weight: 600;
 }
-.input_form_input{
+
+.input_form_input {
     border: 0.5px solid #ccc;
     border-radius: 20px;
     padding: 8px 16px;
     width: 100%;
 }
-.input_form_input:focus{
+
+.input_form_input:focus {
     outline: 1px solid rgb(83, 78, 233);
+}
+
+.total_price_pay {
+    text-align: center;
+    font-size: 24px;
+    color: #00cc98;
+    font-weight: 600;
+}
+
+.text_key1 {
+    font-size: 30px;
+    text-align: center;
+    line-height: 60px;
+    color: #009966;
+}
+
+.checker_radio {
+    box-shadow: 0px 0px 3px #00cc98;
+}
+
+.validate_input {
+    border: 1px solid red;
 }

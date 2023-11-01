@@ -1,15 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 
-const VietQR = () => {
+const VietQR = ({ bin, amount, accountNo }) => {
   const [data, set_data] = useState("");
   const dataPost = {
-    accountNo: 113366668888,
-    accountName: "QUY VAC XIN PHONG CHONG COVID",
-    acqId: 970415,
-    amount: 9000,
-    addInfo: "Ung Ho Quy Vac Xin",
+    accountNo: accountNo * 1,
+    accountName: "BUY PRODUCT AT HYGGE",
+    acqId: bin * 1,
+    amount: amount * 100,
+    addInfo: "Buy Product At Hygge",
     format: "text",
     template: "compact",
   };
@@ -35,15 +36,15 @@ const VietQR = () => {
 
   useEffect(() => {
     handlePayment();
-  }, []);
+  }, [bin]);
 
   return (
-    <div>
-      <img
+    <div className="flex justify-center">
+      <Image
         src={data.qrDataURL}
         alt="QR Code"
-        width="800"
-        height="800"
+        width={600}
+        height={600}
       />
     </div>
   );

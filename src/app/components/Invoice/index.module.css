@@ -1,0 +1,31 @@
+.title_invoice {
+    color: #00cc98;
+    font-size: 46px;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 600;
+}
+
+.logo {
+    width: 340px;
+}
+
+.table_invoice {
+    border: 2px dashed #000;
+    width: 100%;
+    padding: 4px;
+    border-radius: 12px;
+    min-height: 300px;
+}
+
+.table_invoice>table {
+    width: 100%;
+}
+
+.chu_ky {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    opacity: 0.2;
+}
