@@ -114,6 +114,7 @@ module.exports = {
       backgroundImage: {
         "loading-main": "linear-gradient(#9b59b6, #84cdfa, #5ad1cd)",
       },
+      display: ["group-hover"],
     },
   },
   plugins: [],

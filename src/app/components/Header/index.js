@@ -10,11 +10,12 @@ import LogoLink from "../LogoLink";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { avaReview1 } from "../../../../public/assets";
-import { AiOutlineProfile } from "react-icons/ai";
+import { AiOutlineProfile, AiOutlineShoppingCart } from "react-icons/ai";
 import { IoLogOutOutline } from "react-icons/io5";
 import styles from "./input.module.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { MdOutlineRateReview } from "react-icons/md";
 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
@@ -24,7 +25,11 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const [header_cart, set_header_cart] = useState();
-
+  const menuBtn = [
+    { nameMenu: "profile", url: "/profile", Icon: AiOutlineProfile},
+    { nameMenu: "my purchase", url: "/purchase", Icon: AiOutlineShoppingCart},
+    { nameMenu: "product reviews", url: "/product_reviews", Icon: MdOutlineRateReview},
+  ];
   useEffect(() => {
     if (session?.user?.id != null) {
       const fetchData = async () => {
@@ -41,7 +46,6 @@ export default function Header() {
     }
   }, [session?.user?.id]);
 
- 
   const handleShowInput = () => {
     setShowInput(!showInput);
   };
@@ -131,7 +135,7 @@ export default function Header() {
         <div>
           {session ? (
             <div
-              className="flex items-center w-12 h-12 cursor-pointer relative"
+              className="group flex items-center w-12 h-12 cursor-pointer relative"
               onClick={handleShowMenu}
             >
               <Image
@@ -142,25 +146,27 @@ export default function Header() {
                 className="object-cover rounded-full"
                 priority={true}
               />
-              {showMenu && (
-                <div className="w-32 py-2 bg-gray-100 text-black-100 absolute -bottom-[132%] rounded-xl transition-all">
-                  <Link
-                    href={"/profile"}
-                    className="flex gap-2 hover:bg-gray-200"
-                  >
-                    <AiOutlineProfile size={25} />
-                    <span>Profile</span>
-                  </Link>
 
-                  <div
-                    className="flex gap-2 hover:bg-gray-200"
-                    onClick={signOut}
-                  >
-                    <IoLogOutOutline size={25} />
-                    <span>Sign out</span>
-                  </div>
+              <div className="hidden group-hover:block w-max absolute top-full shadow-lg rounded-2xl overflow-hidden py-2  bg-gray-100 text-black-100">
+                {menuBtn.length > 0 &&
+                  menuBtn.map((item, index) => (
+                    <Link
+                    key={index}
+                      href={item.url}
+                      className="flex gap-2 hover:bg-gray-200 px-2 my-1"
+                    >
+                      <item.Icon size={25} />
+                      <span className="capitalize">{item.nameMenu}</span>
+                    </Link>
+                  ))}
+                <div
+                  className="flex gap-2 hover:bg-gray-200 px-2 my-1"
+                  onClick={signOut}
+                >
+                  <IoLogOutOutline size={25} />
+                  <span>Sign out</span>
                 </div>
-              )}
+              </div>
             </div>
           ) : (
             <Link href={"/login"}>
