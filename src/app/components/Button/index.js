@@ -1,7 +1,7 @@
 const Button = ({ className, children, onClick, props }) => {
   return (
     <button
-      className={`${className} text-center font-bold cursor-pointer rounded-full px-[40px] py-[20px]`}
+      className={` text-center font-bold cursor-pointer rounded-full px-[40px] py-[20px] ${className}`}
       onClick={onClick || null}
       {...props}
     >

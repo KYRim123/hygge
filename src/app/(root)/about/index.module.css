@@ -42,44 +42,5 @@
     padding-left: 32px;
     margin-bottom: 40px;
 }
-.content_body_2{
-    display: flex;
-    justify-content: center;
-}
-.content_body_21{
-    text-align: center;
-    width: 340px;
-}
-.icon{
-    height: 64px;
-    width: 64px;
-    background-color: #F6F7FB;
-    border-radius: 50%;
-    margin-bottom: 32px;
-}
-.about_category{
-    margin-bottom: 16px;
-    font-size: 24px;
-    line-height: 1.66667;
-    font-weight: 600;
-}
-.about_text{
-    font-size: 20px;
-    line-height: 1.6;
-}
-.about_btns{
-    text-align: center;
-    margin-top: 72px;
-}
-.btn{
-    text-decoration: none;
-    padding: 0 40px;
-    height: 64px;
-    font-size: 20px;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    border-radius: 32px;
-}
 
 
