@@ -10,6 +10,9 @@ import { Tabs } from "antd";
 import Invoice from "@/app/components/Invoice";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { AiOutlinePlus } from "react-icons/ai";
+import { IoRemove } from "react-icons/io5";
+import { GrClose } from "react-icons/gr";
 
 const list_tab = [
   { label: "Cash on delivery", key: 1 },
@@ -17,12 +20,10 @@ const list_tab = [
   { label: "Paypal", key: 3 },
 ];
 
-const accountNo = 103878036095;
+const accountNo = `0898433473`;
 
 export default function PageCheckOut() {
   const [payment_amount, set_payment_amount] = useState(0);
-  const [tax, set_tax] = useState(0);
-  const [ship, set_ship] = useState(0);
   const [list_shopping_cart, set_list_shopping_cart] = useState([]);
   const text_checkout = "Check out";
   const [step, set_step] = useState(1);
@@ -55,36 +56,34 @@ export default function PageCheckOut() {
       fetchData();
     }
   }, [session?.user?.id]);
-  const handleClickStep = (text) => {
-    if (text == "back") {
-      if (step == 1) {
-        window.history.back();
-        return;
-      } else if (step == 2) {
-        set_validate_step2(false);
-        set_step(step - 1);
-      } else if (step > 4) {
-        location.href = "/home";
-      } else {
-        set_step(step - 1);
-      }
-    } else if (text == "next") {
-      if (step < 1) {
-        location.href = "/home";
-        return;
-      } else if (step >= 4) {
-        location.href = "/home";
-      } else {
-        if (
-          step == 2 &&
-          (profile.ten_nguoi_dung == "" || profile.so_dien_thoai.length < 10 || profile.dia_chi == "")
-        ) {
-          set_validate_step2(true);
-        } else {
-          set_step(step + 1);
-        }
+
+  const handlePlusItemCart = (id) => {
+    const updateData = [...list_shopping_cart];
+    for (let i = 0; i < updateData.length; i++) {
+      if (updateData[i].id === id) {
+        updateData[i].so_luong = updateData[i].so_luong * 1 + 1;
+        break;
       }
     }
+    set_list_shopping_cart(updateData);
+  };
+
+  const handleMinusItemCart = (id) => {
+    const updateData = [...list_shopping_cart];
+    for (let i = 0; i < updateData.length; i++) {
+      if (updateData[i].id === id) {
+        if (updateData[i].so_luong > 1) {
+          updateData[i].so_luong = updateData[i].so_luong * 1 - 1;
+        }
+        break;
+      }
+    }
+    set_list_shopping_cart(updateData);
+  };
+
+  const handleRemoveItem = (id) => {
+    const updatedData = list_shopping_cart.filter((item) => item.id !== id);
+    set_list_shopping_cart(updatedData);
   };
 
   const handleRadioChange = (id) => {
@@ -93,21 +92,6 @@ export default function PageCheckOut() {
 
   useEffect(() => {
     if (session?.user?.id != null) {
-      const fetchAmount = async () => {
-        await axios
-          .post(`${process.env.HTTPS_URL}/api/cart/get-payment-amount`, {
-            id: session.user.id,
-          })
-          .then((response) => {
-            set_payment_amount(response.data.amount);
-            set_tax(response.data.tax);
-            set_ship(response.data.ship);
-          })
-          .catch((error) => {
-            console.error("Error fetching payment amount:", error);
-          });
-      };
-
       const fetchProfile = async () => {
         await axios
           .post(`${process.env.HTTPS_URL}/api/user/profile`, { id: session?.user?.id })
@@ -120,7 +104,6 @@ export default function PageCheckOut() {
             console.error("Error fetching payment amount:", error);
           });
       };
-      fetchAmount();
       fetchProfile();
     } else {
     }
@@ -139,10 +122,10 @@ export default function PageCheckOut() {
   };
 
   const createOrder = (data, actions) => {
-    postCreateOrder();
     return actions.order.create({
       purchase_units: [
         {
+          description: `Number Invoice : ${id_invoice}`,
           amount: {
             currency_code: "USD",
             value: payment_amount * 1,
@@ -151,40 +134,62 @@ export default function PageCheckOut() {
       ],
     });
   };
+
   const postCreateOrder = async () => {
-    if (
-      session?.user?.id != null &&
-      payment_amount != null &&
-      profile.ten_nguoi_dung != null &&
-      profile.so_dien_thoai != null &&
-      profile.dia_chi != null &&
-      tax != null &&
-      ship != null
-    ) {
+    if (session?.user?.id == null) {
+      return (location.href = "/login");
+    }
+    if (list_shopping_cart.length < 1) {
+      toast.error("None Product Selected");
+      return (location.href = "/shoppingCart");
+    }
+    await axios
+      .post(`${process.env.HTTPS_URL}/api/hoa-don/create`, {
+        id: session?.user?.id,
+        data: list_shopping_cart,
+      })
+      .then((res) => {
+        if (res.data.status == true) {
+          set_id_invoice(res.data.invoiceID);
+          set_payment_amount(res.data.amount);
+          localStorage.setItem("id_invoice", res.data.invoiceID);
+          toast.success("Order created successfully");
+          set_step(2);
+        } else {
+          return toast.error("Wrong Information");
+        }
+      })
+      .catch((err) => {
+        return toast.error("System error");
+      });
+  };
+
+  const postInfo = async () => {
+    if (session?.user?.id == null) {
+      return (location.href = "/login");
+    }
+    if (profile.ten_nguoi_dung != null && profile.so_dien_thoai != null && profile.dia_chi != null) {
       await axios
-        .post(`${process.env.HTTPS_URL}/api/hoa-don/create`, {
-          id: session?.user?.id,
-          status: false,
-          amount: payment_amount,
+        .post(`${process.env.HTTPS_URL}/api/hoa-don/add-info`, {
+          id: id_invoice,
           name: profile.ten_nguoi_dung,
           phone: profile.so_dien_thoai,
           address: profile.dia_chi,
-          tax: tax,
-          ship: ship,
         })
         .then((res) => {
           if (res.data.status == true) {
-            set_id_invoice(res.data.invoiceID);
-            localStorage.setItem("id_invoice", res.data.invoiceID);
+            toast.success("Add Info Successfully");
+            set_step(3);
           } else {
-            return toast.error("Thông Tin Không Đầy Đủ");
+            return toast.error("Wrong Information");
           }
         })
         .catch((err) => {
-          return toast.error("Thông Tin Không Đầy Đủ");
+          return toast.error("System error");
         });
     } else {
-      return toast.error("Missing Information");
+      set_validate_step2(true);
+      return toast.error("Wrong Information");
     }
   };
 
@@ -198,11 +203,29 @@ export default function PageCheckOut() {
         if (res.data.status == true) {
           set_step(4);
         } else {
-          return toast.error("Thông Tin Không Đầy Đủ");
+          return toast.error("Wrong Information");
         }
       })
       .catch((err) => {
-        return toast.error("Thông Tin Không Đầy Đủ");
+        return toast.error("Wrong Information");
+      });
+  };
+
+  const postAccuracyOrder = async () => {
+    const id_invoice_local = localStorage.getItem("id_invoice");
+    await axios
+      .post(`${process.env.HTTPS_URL}/api/hoa-don/xac-thuc-hoa-don`, {
+        id: id_invoice_local,
+      })
+      .then((res) => {
+        if (res.data.status == true) {
+          set_step(4);
+        } else {
+          return toast.error("Wrong Information");
+        }
+      })
+      .catch((err) => {
+        return toast.error("Wrong Information");
       });
   };
   const handleApprove = async (data, actions) => {
@@ -219,6 +242,7 @@ export default function PageCheckOut() {
   const onChangeListTab = (key) => {
     set_key_list_tab(key);
   };
+
   useEffect(() => {
     getBanks();
   }, []);
@@ -236,9 +260,8 @@ export default function PageCheckOut() {
     set_profile(NewProfile);
   };
   const handleConfirm = async () => {
-    await postCreateOrder();
+    await postAccuracyOrder();
     await getInvoice();
-    set_step(4);
   };
 
   return (
@@ -287,6 +310,7 @@ export default function PageCheckOut() {
                       <th scope="col">Product name</th>
                       <th scope="col">Number</th>
                       <th scope="col">Image</th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -301,7 +325,23 @@ export default function PageCheckOut() {
                         >
                           {item?.san_pham?.ten_san_pham}
                         </td>
-                        <td className={`${""} ${style.number_item}`}>{item?.so_luong}</td>
+                        <td className={`${""} ${style.number_item}`}>
+                          <div className={style.count_item}>
+                            <AiOutlinePlus
+                              className={style.plus_count_item}
+                              onClick={() => {
+                                handlePlusItemCart(item.id);
+                              }}
+                            />
+                            <div className={style.number_count_item}>{item.so_luong}</div>
+                            <IoRemove
+                              className={style.remove_count_item}
+                              onClick={() => {
+                                handleMinusItemCart(item.id);
+                              }}
+                            />
+                          </div>
+                        </td>
                         <td className="p-2">
                           <Image
                             alt="aa"
@@ -310,6 +350,15 @@ export default function PageCheckOut() {
                             height={250}
                             src={`${process.env.HTTPS_URL}/upload/${item?.san_pham?.hinh_anh[0]?.hinh_anh_san_pham}`}
                           />
+                        </td>
+                        <td>
+                          <div className={style.cancel_item}>
+                            <GrClose
+                              onClick={() => {
+                                handleRemoveItem(item.id);
+                              }}
+                            />
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -320,13 +369,13 @@ export default function PageCheckOut() {
             <div className={style.footer_checkout}>
               <div
                 className={style.btn_close_step}
-                onClick={() => handleClickStep("back")}
+                onClick={() => (location.href = "/shoppingCart")}
               >
                 Close
               </div>
               <div
                 className={style.btn_next_step}
-                onClick={() => handleClickStep("next")}
+                onClick={() => postCreateOrder()}
               >
                 Next
               </div>
@@ -406,26 +455,17 @@ export default function PageCheckOut() {
                   <p style={{ color: "red" }}>* Address can not be empty</p>
                 )}
               </div>
-              {/* 
-              <div className={style.form_input}>
-                <div className={style.title_form_input}>Email</div>
-                <input
-                  className={style.input_form_input}
-                  type="email"
-                  value={profile?.email}
-                ></input>
-              </div> */}
             </div>
             <div className={style.footer_checkout}>
               <div
                 className={style.btn_close_step}
-                onClick={() => handleClickStep("back")}
+                onClick={() => set_step(1)}
               >
                 Back
               </div>
               <div
                 className={style.btn_next_step}
-                onClick={() => handleClickStep("next")}
+                onClick={() => postInfo()}
               >
                 Next
               </div>
@@ -481,6 +521,7 @@ export default function PageCheckOut() {
                   </div>
                   {selected_option != 0 ? (
                     <VietQR
+                      id_invoice={id_invoice}
                       bin={selected_option}
                       amount={payment_amount}
                       accountNo={accountNo}
@@ -505,7 +546,7 @@ export default function PageCheckOut() {
             <div className={style.footer_checkout}>
               <div
                 className={style.btn_close_step}
-                onClick={() => handleClickStep("back")}
+                onClick={() => set_step(2)}
               >
                 Back
               </div>

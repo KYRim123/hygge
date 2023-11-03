@@ -115,7 +115,7 @@ export default function Header() {
                     width={20}
                     height={20}
                     alt="img"
-                    src={`${process.env.HTTPS_URL}/upload/${item.san_pham.hinh_anh.hinh_anh_san_pham}`}
+                    src={`${process.env.HTTPS_URL}/upload/${item.san_pham.hinh_anh[0]?.hinh_anh_san_pham}`}
                   />
                   <div className={styles.text_inline}>{item.san_pham.ten_san_pham}</div>
                 </div>
