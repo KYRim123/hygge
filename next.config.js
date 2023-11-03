@@ -5,8 +5,8 @@ const nextConfig = {
     HTTPS_URL: "https://xuantuyen1207.website",
     NEXTAUTH_SECRET: "lsdkmlskdmflksdkskmsdnkj",
     CLIENT_ID_PAYPAL: "AcO_eHmPFOsuvsyYqxAUVL0r61pmJ4ckMvi3ioi_GEwp4nj5OQucQr3Yl6zKbu4EvZFqXDBuiBsci9aF",
-    CLIENT_ID_VIETQR: "885cd6c9-c285-4c32-b190-3fb545df5855",
-    API_KEY_VIETQR: "45d3e208-7cef-4db6-975d-66a1eb28cc6a",
+    CLIENT_ID_VIETQR: "1dafcddd-57ba-419e-bd86-ca51e70df0ce",
+    API_KEY_VIETQR: "e55a6d07-d553-427a-8e68-15c7933feb1e",
   },
   images: {
     remotePatterns: [

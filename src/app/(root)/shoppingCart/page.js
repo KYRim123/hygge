@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 export default function PagesShoppingCart() {
   const text_shopping_cart = "Shopping Cart";
@@ -74,6 +75,30 @@ export default function PagesShoppingCart() {
       .catch((err) => {});
   };
 
+  const handleRemoveItem = (id) => {
+    console.log(id);
+    const updatedData = data.filter((item) => item.id !== id);
+    set_data(updatedData);
+    RemoveItemCard(id);
+  };
+
+  const RemoveItemCard = async (id) => {
+    if (session?.user?.id != null) {
+      const fetchData = async () => {
+        await axios
+          .post(`${process.env.HTTPS_URL}/api/cart/remove`, { id: session?.user?.id, id_item: id })
+          .then((res) => {
+            if (res.data.status == true) {
+              toast.success("Removed item");
+            } else {
+            }
+          })
+          .catch((err) => {});
+      };
+      fetchData();
+    }
+  };
+
   return (
     <div>
       <div className={style.title_shopping_cart}>- Your Cart -</div>
@@ -91,7 +116,7 @@ export default function PagesShoppingCart() {
                   className={style.image_item}
                   width={300}
                   height={250}
-                  src={`${process.env.HTTPS_URL}/upload/${item.san_pham.hinh_anh.hinh_anh_san_pham}`}
+                  src={`${process.env.HTTPS_URL}/upload/${item.san_pham.hinh_anh[0]?.hinh_anh_san_pham}`}
                 />
               </div>
               <div className={style.info_item_cart}>
@@ -123,7 +148,11 @@ export default function PagesShoppingCart() {
                     />
                   </div>
                   <div className={style.cancel_item}>
-                    <GrClose />
+                    <GrClose
+                      onClick={() => {
+                        handleRemoveItem(item.id);
+                      }}
+                    />
                   </div>
                 </div>
               </div>
