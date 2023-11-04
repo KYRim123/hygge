@@ -26,6 +26,10 @@ const ProfilePage = () => {
     }
   }, [idUser]);
 
+  if (!data) {
+    return <LoadingA />;
+  }
+
   const onChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
@@ -34,36 +38,46 @@ const ProfilePage = () => {
     const file = e.target?.files[0];
     const newUrl = URL.createObjectURL(file);
     setNewImg(newUrl);
-    const formdata = new FormData();
     if (file) {
-      formdata.append("file", file);
-      setData({ ...data, anh_dai_dien: formdata });
+      setData({ ...data, anh_dai_dien: file });
     }
   };
 
+  async function postProfile(newData) {
+    const res = await axios.post(`${process.env.HTTPS_URL}/api/user/update`, newData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    const result = await res.data;
+    return result;
+  }
   const handleSubmit = () => {
-    axios
-      .post(`${process.env.HTTPS_URL}/api/user/update`, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        if (res.data.status) {
-          toast.success("updated!");
+    if (newImg === "") {
+      const newData = { ...data };
+      delete newData.anh_dai_dien;
+      postProfile(newData).then((res) => {
+        if (res?.status) {
+          toast.success("updated !");
+        } else {
+          toast.success("failed !");
         }
       });
+    } else {
+      postProfile(data).then((res) => {
+        if (res?.status) {
+          toast.success("updated !");
+        } else {
+          toast.success("failed !");
+        }
+      });
+    }
   };
 
   const handleCancel = () => {
     router.push("/");
   };
 
-  if (!data) {
-    return <LoadingA />;
-  }
-
-  console.log(data);
   return (
     <div>
       <div className="w-full">
@@ -73,7 +87,13 @@ const ProfilePage = () => {
             className="block w-[250px] h-[250px] cursor-pointer"
           >
             <Image
-              src={newImg ? newImg : data?.anh_dai_dien === null ? avaReview1 : data?.anh_dai_dien}
+              src={
+                newImg
+                  ? newImg
+                  : data?.anh_dai_dien === null
+                  ? avaReview1
+                  : `${process.env.HTTPS_URL}/upload/${data?.anh_dai_dien}`
+              }
               alt="avatar"
               width={500}
               height={500}
