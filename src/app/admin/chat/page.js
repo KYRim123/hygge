@@ -34,7 +34,7 @@ export default function Chat() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      await axios.get("http://127.0.0.1:8000/api/user/name").then((res) => {
+      await axios.get(`${process.env.HTTPS_URL}/api/user/name`).then((res) => {
         set_list_user(res.data.data);
       });
     };
@@ -46,7 +46,7 @@ export default function Chat() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/message",
+        `${process.env.HTTPS_URL}/api/message`,
         {
           userId: 0,
           username: username,

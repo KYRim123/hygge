@@ -39,7 +39,7 @@ export default function Chatbox() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/message",
+        `${process.env.HTTPS_URL}/api/message`,
         {
           userId: user_id,
           username: username,
