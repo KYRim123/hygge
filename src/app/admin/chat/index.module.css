@@ -1,0 +1,43 @@
+.input_message {
+    height: 50px;
+    outline: none;
+    border: 1px solid #00cc98;
+    width: 100%;
+    font-size: 20px;
+    padding-right: 12px;
+    padding-left: 12px;
+    position: relative;
+}
+
+.icon_send {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.box_user {
+    height: 670px;
+    width: 320px;
+}
+
+.user_box {
+    padding: 6px 4px;
+    line-height: 32px;
+}
+
+.user_box:nth-child(2n) {
+    background-color: rgb(251, 208, 208);
+}
+
+.mess_to_me {
+    text-align: start;
+    padding: 0 12px;
+}
+
+.mess_from_me {
+    text-align: end;
+    padding: 0 12px;
+}
