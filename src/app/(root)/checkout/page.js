@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoRemove } from "react-icons/io5";
 import { GrClose } from "react-icons/gr";
+import { useRouter } from "next/navigation";
 
 const list_tab = [
   { label: "Cash on delivery", key: 1 },
@@ -35,6 +36,8 @@ export default function PageCheckOut() {
   const [id_invoice, set_id_invoice] = useState(0);
   const [data_invoice, set_data_invoice] = useState();
   const [validate_step2, set_validate_step2] = useState(false);
+  const router = useRouter();
+
   useEffect(() => {
     if (session?.user?.id != null) {
       const fetchData = async () => {
@@ -45,12 +48,12 @@ export default function PageCheckOut() {
               set_list_shopping_cart(res.data.data.chi_tiet_gio_hang);
             } else {
               toast.error("No Products In Cart");
-              location.href = "/shoppingCart";
+              router.push("/shoppingCart");
             }
           })
           .catch((err) => {
             toast.error("No Products In Cart");
-            location.href = "/shoppingCart";
+            router.push("/shoppingCart");
           });
       };
       fetchData();
@@ -137,11 +140,11 @@ export default function PageCheckOut() {
 
   const postCreateOrder = async () => {
     if (session?.user?.id == null) {
-      return (location.href = "/login");
+      return router.push("/login");
     }
     if (list_shopping_cart.length < 1) {
       toast.error("None Product Selected");
-      return (location.href = "/shoppingCart");
+      return router.push("/shoppingCart");
     }
     await axios
       .post(`${process.env.HTTPS_URL}/api/hoa-don/create`, {
@@ -166,7 +169,7 @@ export default function PageCheckOut() {
 
   const postInfo = async () => {
     if (session?.user?.id == null) {
-      return (location.href = "/login");
+      return router.push("/login");
     }
     if (profile.ten_nguoi_dung != null && profile.so_dien_thoai != null && profile.dia_chi != null) {
       await axios
@@ -369,7 +372,7 @@ export default function PageCheckOut() {
             <div className={style.footer_checkout}>
               <div
                 className={style.btn_close_step}
-                onClick={() => (location.href = "/shoppingCart")}
+                onClick={() => router.push("/shoppingCart")}
               >
                 Close
               </div>
