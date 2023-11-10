@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function CreateStaff() {
   const [name, set_name] = useState("");
@@ -17,6 +18,7 @@ export default function CreateStaff() {
   const [avatar, set_avatar] = useState();
   const [img_CCCD, set_img_CCCD] = useState([]);
   const [list_position, set_list_position] = useState([]);
+  const router = useRouter();
 
   const dataPost = {
     name: name,
@@ -102,7 +104,7 @@ export default function CreateStaff() {
   };
 
   const handleClickClose = () => {
-    location.href = "/admin/staff/list";
+    router.push("/admin/staff/list");
   };
 
   const handleClickAddNew = async () => {
@@ -113,7 +115,7 @@ export default function CreateStaff() {
         },
       });
       if (response.data.status == true) {
-        location.href = "/admin/staff/list";
+        router.push("/admin/staff/list");
       } else {
       }
     } catch (error) {

@@ -8,6 +8,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import Editor from "@/app/components/hook/Editor";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function EditProduct() {
   const [name_product, set_name_product] = useState("");
@@ -137,8 +138,6 @@ export default function EditProduct() {
     new_list_delete_img.push(id);
     set_list_delete_img(new_list_delete_img);
   };
-
-  const handleClickClose = () => {};
 
   const handleClickEdit = async () => {
     try {
@@ -321,12 +320,9 @@ export default function EditProduct() {
         </div>
       </div>
       <div className={style.footer_btn}>
-        <div
-          className={style.btn_close}
-          onClick={handleClickClose}
-        >
-          Close
-        </div>
+        <Link href={"/admin/products/list"}>
+          <div className={style.btn_close}>Close</div>
+        </Link>
         <div
           className={style.btn_save}
           onClick={handleClickEdit}

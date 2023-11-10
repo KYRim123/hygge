@@ -7,6 +7,8 @@ import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Image from "next/image";
 import Editor from "@/app/components/hook/Editor";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function CreateProduct() {
   const [name_product, set_name_product] = useState("");
@@ -18,7 +20,7 @@ export default function CreateProduct() {
   const [image_product, set_image_product] = useState([]);
   const [list_category, set_list_category] = useState([]);
   const [editorLoaded, setEditorLoaded] = useState(false);
-  console.log(description);
+  const router = useRouter();
 
   useEffect(() => {
     setEditorLoaded(true);
@@ -95,10 +97,6 @@ export default function CreateProduct() {
     set_image_product(new_image_product);
   };
 
-  const handleClickClose = () => {
-    location.href = "/admin/products/list";
-  };
-
   const handleClickAddNew = async () => {
     try {
       const response = await axios.post(`${process.env.HTTPS_URL}/api/product/create`, dataPost, {
@@ -107,7 +105,7 @@ export default function CreateProduct() {
         },
       });
       if (response.data.status == true) {
-        location.href = "/admin/products/list";
+        router.push("/admin/products/list");
       } else {
       }
     } catch (error) {
@@ -255,12 +253,9 @@ export default function CreateProduct() {
         </div>
       </div>
       <div className={style.footer_btn}>
-        <div
-          className={style.btn_close}
-          onClick={handleClickClose}
-        >
-          Close
-        </div>
+        <Link href={"/admin/products/list"}>
+          <div className={style.btn_close}>Close</div>
+        </Link>
         <div
           className={style.btn_save}
           onClick={handleClickAddNew}
