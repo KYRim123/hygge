@@ -34,7 +34,9 @@ const Purchase = () => {
           ))}
       </div>
       <div className=" mt-2 h-[500px]">
-        <div className="h-full overflow-y-scroll">a</div>
+        <div className="h-full overflow-y-scroll">
+          <div>dâdadada</div>
+        </div>
       </div>
     </div>
   );

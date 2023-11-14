@@ -31,6 +31,12 @@ import BoxCategory from "./components/BoxCategory";
 export default function HomePage() {
   const router = useRouter();
   const { data: session } = useSession();
+
+  if (session?.user.role === "ADMIN") {
+    router.push("/admin");
+    router.refresh();
+  }
+
   const handleShopNow = () => {
     router.push("/cart");
   };
@@ -59,6 +65,7 @@ export default function HomePage() {
   const handleViewAll = () => {
     router.push("/products");
   };
+
   return (
     <>
       {/* // slider */}
