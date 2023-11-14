@@ -4,7 +4,6 @@ import Header from "./Header";
 import Footer from "./Footer";
 import MarginY from "./MarginY";
 import { usePathname } from "next/navigation";
-import Chatbox from "./chatbox";
 
 export default function Wrapper({ children }) {
   const pathname = usePathname();
@@ -18,7 +17,6 @@ export default function Wrapper({ children }) {
       <div className="w-[1250px]">
         <Header />
         <MarginY>{children}</MarginY>
-        <Chatbox />
         <Footer />
       </div>
     </div>
