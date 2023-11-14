@@ -1,63 +1,55 @@
 .chat_box {
-    position: absolute;
-    width: 400px;
-    height: 500px;
-    background-color: white;
-    top: 0;
-    right: 0;
-    transform: translate(-80px, -100%);
-    border-radius: 12px 12px 0 12px;
-    box-shadow: 0px 0px 3px #00cc98;
+  position: absolute;
+  width: 400px;
+  background-color: white;
+  bottom: 10px;
+  right: 10px;
+  @apply shadow-sm shadow-gray-400 rounded-lg overflow-hidden;
 }
 
 .title {
-    background-color: #6b7271;
-    border-radius: 12px 12px 0 0;
+  @apply flex gap-1 items-center bg-main-100 py-1 px-2 text-white font-semibold text-xl justify-between;
 }
 
 .name {
-    text-align: start;
-    margin-left: 12px;
-    color: blue;
+  text-align: start;
+  margin-left: 12px;
+  color: blue;
 }
 
 .input_message {
-    height: 40px;
-    outline: none;
-    border: 1px solid #00cc98;
-    width: 100%;
-    font-size: 16px;
-    padding-right: 12px;
-    padding-left: 12px;
-    position: relative;
-    border-radius: 0 0 0 12px;
-    color: black
+  height: 40px;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+  padding-right: 12px;
+  padding-left: 12px;
+  position: relative;
+  color: black;
+  @apply border-t-[1px] border-gray-400;
 }
 
 .icon_send {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    right: 10px;
-    top: 10px;
-    cursor: pointer;
-    color: blue;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  @apply text-main-100;
 }
 
 .list_chat {
-    height: 379px;
-}
-
-.list_chat {
-    color: red;
+  min-height: 370px;
+  overflow-y: scroll;
 }
 
 .mess_to_me {
-    text-align: start;
-    padding: 0 12px;
+  text-align: start;
+  padding: 0 12px;
 }
 
 .mess_from_me {
-    text-align: end;
-    padding: 0 12px;
+  text-align: end;
+  padding: 0 12px;
 }

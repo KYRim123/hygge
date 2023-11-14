@@ -6,7 +6,6 @@ const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
-
       credentials: {
         tai_khoan: { label: "UserName", type: "text", placeholder: "jsmith" },
         mat_khau: { label: "Password", type: "password" },
@@ -14,13 +13,12 @@ const handler = NextAuth({
       async authorize(credentials, req) {
         const res = await axios({
           method: "post",
-          url: `${process.env.HTTP_URL}/api/user/login`,
+          url: `${process.env.HTTPS_URL}/api/user/login`,
           data: {
             tai_khoan: credentials?.tai_khoan,
             mat_khau: credentials?.mat_khau,
           },
         });
-
         var user = res.data;
         if (user.status) {
           return user;
@@ -35,9 +33,12 @@ const handler = NextAuth({
     async jwt({ token, user }) {
       return { ...token, ...user };
     },
-    async session({ session, token }) {
+    async session({ token, session }) {
       session.user = token;
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
     },
   },
   pages: {

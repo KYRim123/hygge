@@ -1,14 +1,15 @@
 "use client";
-import { Fragment } from "react";
 import style from "./index.module.css";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import pusherJs from "pusher-js";
 import { BsFillSendCheckFill } from "react-icons/bs";
 import axios from "axios";
+import Image from "next/image";
+import { avaReview1 } from "../../../../public/assets";
+import { AiOutlineClose } from "react-icons/ai";
 
-export default function Chatbox() {
-  const [show_chat, set_show_chat] = useState(false);
+export default function Chatbox({ showChatBox }) {
   const { data: session } = useSession();
   const [username, set_username] = useState("Hygge User");
   const [user_id, set_user_id] = useState();
@@ -55,49 +56,56 @@ export default function Chatbox() {
     } catch (error) {}
     set_message("");
   };
-
-  console.log(session?.user?.name);
   return (
-    <Fragment>
-      <div
-        className="fixed bottom-5 right-5 bg-[#00cc98] rounded-xl w-[150px] h-[40px] text-center leading-[40px] text-white z-10 cursor-pointer"
-        onClick={() => set_show_chat(true)}
-      >
-        Chat Me
-        {show_chat && (
-          <div className={style.chat_box}>
-            <div className={style.title}>Hygge Shop</div>
-            <div className={style.name}>{session?.user?.name}</div>
-            <div className={style.list_chat}>
-              {messages
-                .filter((messagef) => messagef.userId == user_id || messagef.toId == user_id)
-                .map((message, index) => (
-                  <div key={index}>
-                    {message.userId == user_id ? (
-                      <div className={style.mess_from_me}>{message.message}</div>
-                    ) : (
-                      <div className={style.mess_to_me}>{message.message}</div>
-                    )}
-                  </div>
-                ))}
-            </div>
-            <form
-              className="relative"
-              onSubmit={submit}
-            >
-              <input
-                className={style.input_message}
-                value={message}
-                onChange={(e) => set_message(e.target.value)}
-              ></input>
-              <BsFillSendCheckFill
-                className={style.icon_send}
-                onSubmit={submit}
-              ></BsFillSendCheckFill>
-            </form>
-          </div>
-        )}
+    <div className={style.chat_box}>
+      <div className={style.title}>
+        <Image
+          width={40}
+          height={40}
+          src={avaReview1}
+          alt="logo"
+          className="object-cover rounded-full"
+        />
+        <span className="flex-grow text-start">Hygge Shop</span>
+        <AiOutlineClose
+          className="text-white hover:text-gray-300 cursor-pointer"
+          onClick={showChatBox}
+        />
       </div>
-    </Fragment>
+      <div className={style.list_chat}>
+        {messages
+          .filter((messagef) => messagef.userId == user_id || messagef.toId == user_id)
+          .map((message, index) => (
+            <div key={index}>
+              {message.userId == user_id ? (
+                <div className={style.mess_from_me}>
+                  <span className="text-gray-400 text-sm">You</span> <br />
+                  {message.message}
+                </div>
+              ) : (
+                <div className={style.mess_to_me}>
+                  <span className="text-gray-400 text-sm">Hygee</span> <br />
+                  {message.message}
+                </div>
+              )}
+            </div>
+          ))}
+      </div>
+      <form
+        className="relative"
+        onSubmit={submit}
+      >
+        <input
+          className={style.input_message}
+          value={message}
+          onChange={(e) => set_message(e.target.value)}
+          placeholder="Enter your message!"
+        ></input>
+        <BsFillSendCheckFill
+          className={style.icon_send}
+          onSubmit={submit}
+        ></BsFillSendCheckFill>
+      </form>
+    </div>
   );
 }

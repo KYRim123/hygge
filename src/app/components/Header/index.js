@@ -16,20 +16,27 @@ import styles from "./input.module.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { MdOutlineRateReview } from "react-icons/md";
+import { BiMessageRounded } from "react-icons/bi";
+import Chatbox from "../chatbox";
 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showChatBox, setShowChatBox] = useState(false);
   const [inputSearch, setInputSearch] = useState("");
   const { data: session } = useSession();
   const router = useRouter();
   const pathname = usePathname();
   const [header_cart, set_header_cart] = useState();
+
   const menuBtn = [
-    { nameMenu: "profile", url: "/profile", Icon: AiOutlineProfile},
-    { nameMenu: "my purchase", url: "/purchase", Icon: AiOutlineShoppingCart},
-    { nameMenu: "product reviews", url: "/product_reviews", Icon: MdOutlineRateReview},
+    { nameMenu: "profile", url: "/profile", Icon: AiOutlineProfile },
+    { nameMenu: "my purchase", url: "/purchase", Icon: AiOutlineShoppingCart },
+    { nameMenu: "chat hygee", Icon: BiMessageRounded, onClick: () => setShowChatBox(!showChatBox) },
+    { nameMenu: "product reviews", url: "/product_reviews", Icon: MdOutlineRateReview },
+    { nameMenu: "sign out", Icon: IoLogOutOutline, onClick: () => signOut() },
   ];
+
   useEffect(() => {
     if (session?.user?.id != null) {
       const fetchData = async () => {
@@ -149,23 +156,27 @@ export default function Header() {
 
               <div className="hidden group-hover:block w-max absolute top-full shadow-lg rounded-2xl overflow-hidden py-2  bg-gray-100 text-black-100">
                 {menuBtn.length > 0 &&
-                  menuBtn.map((item, index) => (
-                    <Link
-                    key={index}
-                      href={item.url}
-                      className="flex gap-2 hover:bg-gray-200 px-2 my-1"
-                    >
-                      <item.Icon size={25} />
-                      <span className="capitalize">{item.nameMenu}</span>
-                    </Link>
-                  ))}
-                <div
-                  className="flex gap-2 hover:bg-gray-200 px-2 my-1"
-                  onClick={signOut}
-                >
-                  <IoLogOutOutline size={25} />
-                  <span>Sign out</span>
-                </div>
+                  menuBtn.map((item, index) =>
+                    item.url ? (
+                      <Link
+                        key={index}
+                        href={item.url}
+                        className="flex gap-2 hover:text-main-100 px-2 my-1 font-medium"
+                      >
+                        <item.Icon size={25} />
+                        <span className="capitalize">{item.nameMenu}</span>
+                      </Link>
+                    ) : (
+                      <button
+                        key={index}
+                        className="flex gap-2 hover:text-main-100 px-2 my-1 font-medium"
+                        onClick={item.onClick}
+                      >
+                        <item.Icon size={25} />
+                        <span className="capitalize">{item.nameMenu}</span>
+                      </button>
+                    ),
+                  )}
               </div>
             </div>
           ) : (
@@ -175,6 +186,11 @@ export default function Header() {
           )}
         </div>
       </div>
+      {showChatBox && (
+        <div className="fixed bottom-0 right-0 z-10">
+          <Chatbox showChatBox={() => setShowChatBox(!showChatBox)} />
+        </div>
+      )}
     </header>
   );
 }
