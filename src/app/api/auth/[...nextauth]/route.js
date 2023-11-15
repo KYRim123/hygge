@@ -9,16 +9,23 @@ const handler = NextAuth({
       credentials: {
         tai_khoan: { label: "UserName", type: "text", placeholder: "jsmith" },
         mat_khau: { label: "Password", type: "password" },
+        role: { type: "text" },
       },
       async authorize(credentials, req) {
         const res = await axios({
           method: "post",
-          url: `${process.env.HTTPS_URL}/api/user/login`,
+          url: `${
+            credentials?.role == "admin"
+              ? `${process.env.HTTPS_URL}/api/nhan-vien/login`
+              : `${process.env.HTTPS_URL}/api/user/login`
+          }`,
           data: {
             tai_khoan: credentials?.tai_khoan,
             mat_khau: credentials?.mat_khau,
+            role: credentials?.role,
           },
         });
+
         var user = res.data;
         if (user.status) {
           return user;
@@ -34,7 +41,11 @@ const handler = NextAuth({
       return { ...token, ...user };
     },
     async session({ token, session }) {
-      session.user = token;
+      if (token?.role == "admin") {
+        session.admin = token;
+      } else {
+        session.user = token;
+      }
       return session;
     },
     async redirect({ url, baseUrl }) {
