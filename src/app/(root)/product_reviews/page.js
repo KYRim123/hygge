@@ -23,7 +23,7 @@ const ProductReviews = () => {
     if (session?.user?.id != null) {
       const fetchData = async () => {
         await axios
-          .post(`http://127.0.0.1:8000/api/hoa-don/list-completed`, { id: session?.user?.id, status: tabAll })
+          .post(`${process.env.HTTPS_URL}/api/hoa-don/list-completed`, { id: session?.user?.id, status: tabAll })
           .then((res) => {
             if (res.data.status == true) {
               set_data(res.data.data);
