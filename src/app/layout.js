@@ -4,6 +4,7 @@ import "./globals.css";
 import { Montserrat } from "next/font/google";
 import Providers from "./components/Provider";
 import ChatPlugin from "./components/ChatPlugin";
+import MiddleWareUser from "./components/middleware/middlewareuser";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -18,7 +19,9 @@ export default function RootLayout({ children }) {
       <body className={montserrat.className}>
         <Providers>
           <ChatPlugin></ChatPlugin>
-          <Wrapper>{children}</Wrapper>
+          <MiddleWareUser>
+            <Wrapper>{children}</Wrapper>
+          </MiddleWareUser>
           <Toaster />
         </Providers>
       </body>

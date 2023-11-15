@@ -38,7 +38,6 @@ export default function Position() {
       })
       .catch((err) => {});
   };
-  console.log(list_power);
 
   const postPosition = async (id) => {
     await axios
@@ -55,7 +54,6 @@ export default function Position() {
     dataPower();
     dataPosition();
   }, []);
-  console.log();
   const handleSelectPosition = (id, name) => {
     set_id_position(id);
     postPosition(id);

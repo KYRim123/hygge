@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 
-const VietQR = ({ bin, amount, accountNo ,id_invoice}) => {
+const VietQR = ({ bin, amount, accountNo, id_invoice }) => {
   const [data, set_data] = useState("");
   const dataPost = {
     accountNo: accountNo * 1,
     accountName: "BUY PRODUCT AT HYGGE",
     acqId: bin * 1,
     amount: amount * 100,
-    addInfo: `Number Invoice : ${id_invoice}` ,
+    addInfo: `Number Invoice : ${id_invoice}`,
     format: "text",
     template: "compact",
   };
@@ -27,7 +27,6 @@ const VietQR = ({ bin, amount, accountNo ,id_invoice}) => {
       if (response.data.code == "00") {
         set_data(response.data.data);
       } else {
-        console.log(response.data.desc);
       }
     } catch (error) {
       console.error("Lỗi khi tạo QR code:", error);
