@@ -27,7 +27,7 @@ const Purchase = () => {
     if (session?.user?.id != null) {
       const fetchData = async () => {
         await axios
-          .post(`http://127.0.0.1:8000/api/hoa-don/list-hoa-don`, { id: session?.user?.id })
+          .post(`${process.env.HTTPS_URL}/api/hoa-don/list-hoa-don`, { id: session?.user?.id })
           .then((res) => {
             if (res.data.status == true) {
               set_data(res.data.data);
