@@ -58,6 +58,7 @@ const ProductReviews = () => {
               ?.filter((item) => (crTab == 0 ? true : tabs[crTab].status.includes(item.id_trang_thai)))
               .map((item_child, index) => (
                 <ItemPurchase
+                key={index}
                   index={index}
                   item_child={item_child}
                 />
