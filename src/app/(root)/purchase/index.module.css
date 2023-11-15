@@ -1,0 +1,8 @@
+.body_order {
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding: 12px;
+    display: flex;
+}

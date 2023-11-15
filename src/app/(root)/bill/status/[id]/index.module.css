@@ -1,0 +1,65 @@
+.number_status {
+    background-color: #00cc98;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 32px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: 700;
+    color: white;
+}
+
+.line_status {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    margin-bottom: 120px;
+}
+
+.line_status::after {
+    content: '';
+    width: 4px;
+    height: 100px;
+    background-color: #ccc;
+    position: absolute;
+    bottom: -110px;
+    right: 23px;
+}
+
+
+.title_status {
+    position: absolute;
+    top: 50%;
+    transform: translate(100%, -50%);
+    right: -12px;
+    font-size: 20px;
+    font-weight: 600;
+    width: auto;
+    white-space: nowrap;
+    color: #00cc98
+}
+
+.status_command {
+    position: absolute;
+    width: 800px;
+    transform: translate(100%, 0%);
+    right: -5px;
+}
+
+.note_status {
+    max-height: 60px;
+    overflow: auto;
+}
+
+.text_title {
+    color: blue;
+    font-weight: 600;
+}
+
+.title_status_main {
+    font-size: 28px;
+    color: #00cc98;
+    font-weight: 700;
+    margin-top: 20px;
+}
