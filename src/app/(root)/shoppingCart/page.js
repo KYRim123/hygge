@@ -76,7 +76,6 @@ export default function PagesShoppingCart() {
   };
 
   const handleRemoveItem = (id) => {
-    console.log(id);
     const updatedData = data.filter((item) => item.id !== id);
     set_data(updatedData);
     RemoveItemCard(id);

@@ -107,16 +107,13 @@ export default function ListProduct() {
       const response = await axios.post(`${process.env.HTTPS_URL}/api/product/destroy`, { id: id });
       if (response.data.status === true) {
         fetchData(url_pre);
-        console.log(response.data.status);
       } else {
-        console.log("Xóa sản phẩm không thành công");
       }
     } catch (error) {
       console.error("Lỗi xóa sản phẩm:", error);
     }
   };
 
-  console.log(data);
   return (
     <div className="px-6">
       {show_modal_description ? (

@@ -40,7 +40,6 @@ const Purchase = () => {
       fetchData();
     }
   }, [session?.user?.id]);
-
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -61,7 +60,7 @@ const Purchase = () => {
         <div className="h-full overflow-y-scroll">
           <div>
             {data
-              ?.filter((item) => (crTab == 0 ? true : tabs[crTab].status.includes(item.id_trang_thai)))
+              ?.filter((item) => (crTab == 0 ? true : tabs[crTab].status.includes(item.id_trang_thai * 1)))
               .map((item_child, index) => (
                 <div
                   key={index}

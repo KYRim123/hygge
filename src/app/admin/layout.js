@@ -1,16 +1,20 @@
 "use client";
 import Sidebar from "@/app/components/Sidebar";
 import { useSession } from "next-auth/react";
+import MiddleWareAdmin from "../components/middleware/middlewareadmin";
+import HeaderAdmin from "../components/HeaderAdmin";
 
 export default function AdminLayout({ children }) {
   const { data: session } = useSession();
   return (
-    <div className="flex justify-between bg-slate-100">
-      {session?.admin != null ? <Sidebar /> : ""}
-      <div className="w-full bg-white flex-grow">
-        <div className="h-[60px] w-full bg-[#00cc96]"></div>
-        <div className="">{children}</div>
+    <MiddleWareAdmin>
+      <div className="flex justify-between bg-slate-100">
+        {session?.admin != null ? <Sidebar /> : ""}
+        <div className="w-full bg-white flex-grow">
+          <HeaderAdmin></HeaderAdmin>
+          <div className="">{children}</div>
+        </div>
       </div>
-    </div>
+    </MiddleWareAdmin>
   );
 }
