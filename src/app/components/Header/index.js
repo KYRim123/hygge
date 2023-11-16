@@ -11,13 +11,14 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { avaReview1 } from "../../../../public/assets";
 import { AiOutlineProfile, AiOutlineShoppingCart } from "react-icons/ai";
-import { IoLogOutOutline } from "react-icons/io5";
+import { IoClose, IoLogOutOutline } from "react-icons/io5";
 import styles from "./input.module.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { MdOutlineRateReview } from "react-icons/md";
 import { BiMessageRounded } from "react-icons/bi";
 import Chatbox from "../chatbox";
+import Button from "../Button";
 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
@@ -70,6 +71,30 @@ export default function Header() {
     }
   };
 
+  const handleClickEditCart = () => {
+    router.push("/shoppingCart");
+  };
+  const handleClickCheckout = () => {
+    router.push("/checkout");
+  };
+
+  const RemoveItemCard = async (id) => {
+    if (session?.user?.id != null) {
+      const fetchData = async () => {
+        await axios
+          .post(`${process.env.HTTPS_URL}/api/cart/remove`, { id: session?.user?.id, id_item: id })
+          .then((res) => {
+            if (res.data.status == true) {
+              toast.success("Removed item");
+            } else {
+            }
+          })
+          .catch((err) => {});
+      };
+      fetchData();
+    }
+  };
+
   return (
     <header className="relative flex items-center justify-between">
       {/* logo */}
@@ -77,9 +102,9 @@ export default function Header() {
       {/* navbar */}
       {!showInput && <Navbar pathname={pathname} />}
       {/* button */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-5">
         {/* search */}
-        <div className="absolute right-24">
+        <div>
           {!showInput && (
             <FiSearch
               size={25}
@@ -113,29 +138,49 @@ export default function Header() {
             <LuShoppingCart size={25} />
           </Link>
           <div className={styles.list_product_cart}>
-            <b className="text-teal-500">Giỏ Hàng Của Bạn</b>
-            <hr className="pb-1"></hr>
-            <div className={styles.body_cart_header}>
+            <div className={"flex flex-col gap-3"}>
+              {header_cart?.length === 0 && <h1 className="text-xl font-semibold text-center w-full">Cart is empty!</h1>}
               {header_cart?.map((item, index) => (
                 <div
                   key={index}
-                  className="pt-1 flex "
+                  className="flex gap-4 items-center"
                 >
-                  <Image
-                    className="object-cover mr-1 rounded-[4px]"
-                    width={20}
-                    height={20}
-                    alt="img"
-                    src={`${process.env.HTTPS_URL}/upload/${item.san_pham.hinh_anh[0]?.hinh_anh_san_pham}`}
-                  />
-                  <div className={styles.text_inline}>{item.san_pham.ten_san_pham}</div>
+                  <div className="bg-gray-100 w-[80px] h-[80px] rounded-xl overflow-hidden flex items-center justify-center">
+                    <Image
+                      className="object-cover"
+                      width={80}
+                      height={80}
+                      alt="img"
+                      src={`${process.env.HTTPS_URL}/upload/${item.san_pham.hinh_anh[0]?.hinh_anh_san_pham}`}
+                    />
+                  </div>
+                  <div className={"flex-grow pr-8"}>
+                    <h1 className="font-semibold text-xl">{item.san_pham.ten_san_pham}</h1>
+                    <span>{item.san_pham.gia} $</span>
+                  </div>
+                  <div
+                    onClick={() => RemoveItemCard(item.id)}
+                    className="p-3 bg-gray-100 hover:bg-gray-300 rounded-full"
+                  >
+                    <IoClose />
+                  </div>
                 </div>
               ))}
             </div>
-            <hr className="pb-1"></hr>
-            <Link href={"/shoppingCart"}>
-              <div className="text-cyan-600 text-end">Xem Giỏ Hàng</div>
-            </Link>
+            <div className="mt-6 flex gap-3 justify-center">
+              <Button
+                onClick={handleClickCheckout}
+                className={"bg-main-100 text-white"}
+              >
+                Checkout
+              </Button>
+              <Button
+                onClick={handleClickEditCart}
+                className={"text-black border-[1px] border-gray-200"}
+              >
+                Edit cart
+              </Button>
+            </div>
           </div>
         </div>
         {/* account */}
