@@ -6,13 +6,16 @@ import { iconLogo } from "../../../../public/assets";
 export default function LogoLink() {
   return (
     <div>
-      <Link href={"/"}>
+      <Link
+        href={"/"}
+        className="block w-[100px] h-[100px]"
+      >
         <Image
           src={iconLogo}
-          width={150}
-          height={50}
+          width={100}
+          height={100}
           alt="logo"
-          style={{ objectFit: "contain", width: "auto", height: "auto" }}
+          className="object-cover"
           priority={false}
         />
       </Link>

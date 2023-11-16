@@ -1,30 +1,13 @@
 .list_product_cart {
   position: absolute;
-  width: 180px;
-  height: fit-content;
-  background-color: rgb(254, 254, 254);
-  box-shadow: 0px 0px 3px rgb(100, 100, 100);
   right: 10px;
   z-index: 10;
-  border-radius: 12px 0px 12px 12px;
   display: none;
-  padding: 8px
+  @apply border-[1px] border-gray-300 rounded-xl bg-white p-5 min-w-max;
 }
 
-.link_shopping_cart:hover~.list_product_cart,
+.link_shopping_cart:hover ~ .list_product_cart,
 .list_product_cart:hover {
   display: block;
   opacity: 1;
-}
-
-.body_cart_header {
-  min-height: 100px;
-  max-height: 150px;
-  overflow: auto;
-}
-
-.text_inline {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }

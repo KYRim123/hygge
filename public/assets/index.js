@@ -10,6 +10,6 @@ const listImageDetails = [
 ];
 export { imageSlide, avaReview1, chuky, listImageDetails };
 // icons
-const iconLogo = require("./icons/logo.svg");
+const iconLogo = require("./icons/logo.png");
 
 export { iconLogo };
