@@ -26,16 +26,22 @@ import useSWR from "swr";
 import axios from "axios";
 import WrapperSwiper from "./components/WrapperSwiper";
 import BoxCategory from "./components/BoxCategory";
+import { useDispatch } from "react-redux";
+import { fetchCart } from "./store/slide/cartSlide";
+import { useEffect } from "react";
 
 //  home page
 export default function HomePage() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { data: session } = useSession();
 
-  if (session?.user.role === "ADMIN") {
-    router.push("/admin");
-    router.refresh();
-  }
+  // redux
+  useEffect(() => {
+    if (session?.user) {
+      dispatch(fetchCart(session?.user.id));
+    }
+  }, [dispatch]);
 
   const handleShopNow = () => {
     router.push("/cart");
@@ -65,6 +71,7 @@ export default function HomePage() {
   const handleViewAll = () => {
     router.push("/products");
   };
+  //
 
   return (
     <>

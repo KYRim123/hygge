@@ -3,7 +3,16 @@
   right: 10px;
   z-index: 10;
   display: none;
-  @apply border-[1px] border-gray-300 rounded-xl bg-white p-5 min-w-max;
+  @apply border-[1px] border-gray-300 rounded-xl bg-white p-5 w-[400px];
+}
+.list_product_cart::before {
+  content: "";
+  position: absolute;
+  padding: 10px;
+  z-index: 20;
+  top: -10px;
+  left: 0;
+  right: 0;
 }
 
 .link_shopping_cart:hover ~ .list_product_cart,
