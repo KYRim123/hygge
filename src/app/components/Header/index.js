@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FiSearch } from "react-icons/fi";
 import { LuShoppingCart } from "react-icons/lu";
 import { GoPerson } from "react-icons/go";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Navbar from "../Navbar";
 import { usePathname } from "next/navigation";
 import LogoLink from "../LogoLink";
@@ -13,12 +13,14 @@ import { avaReview1 } from "../../../../public/assets";
 import { AiOutlineProfile, AiOutlineShoppingCart } from "react-icons/ai";
 import { IoClose, IoLogOutOutline } from "react-icons/io5";
 import styles from "./input.module.css";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { MdOutlineRateReview } from "react-icons/md";
 import { BiMessageRounded } from "react-icons/bi";
 import Chatbox from "../chatbox";
 import Button from "../Button";
+import { useDispatch, useSelector } from "react-redux";
+import { getDataCart } from "@/app/store/selector";
+import { delItemCart } from "@/app/store/slide/cartSlide";
 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
@@ -28,7 +30,8 @@ export default function Header() {
   const { data: session } = useSession();
   const router = useRouter();
   const pathname = usePathname();
-  const [header_cart, set_header_cart] = useState();
+  const dispatch = useDispatch();
+  const header_cart = useSelector(getDataCart);
 
   const menuBtn = [
     { nameMenu: "profile", url: "/profile", Icon: AiOutlineProfile },
@@ -37,22 +40,6 @@ export default function Header() {
     { nameMenu: "product reviews", url: "/product_reviews", Icon: MdOutlineRateReview },
     { nameMenu: "sign out", Icon: IoLogOutOutline, onClick: () => signOut() },
   ];
-
-  useEffect(() => {
-    if (session?.user?.id != null) {
-      const fetchData = async () => {
-        await axios
-          .post(`${process.env.HTTPS_URL}/api/cart/my-cart`, { id: session?.user?.id })
-          .then((res) => {
-            if (res.data.status == true) {
-              set_header_cart(res.data.data?.chi_tiet_gio_hang);
-            } else {
-            }
-          });
-      };
-      fetchData();
-    }
-  }, [session?.user?.id]);
 
   const handleShowInput = () => {
     setShowInput(!showInput);
@@ -78,21 +65,9 @@ export default function Header() {
     router.push("/checkout");
   };
 
-  const RemoveItemCard = async (id) => {
-    if (session?.user?.id != null) {
-      const fetchData = async () => {
-        await axios
-          .post(`${process.env.HTTPS_URL}/api/cart/remove`, { id: session?.user?.id, id_item: id })
-          .then((res) => {
-            if (res.data.status == true) {
-              toast.success("Removed item");
-            } else {
-            }
-          })
-          .catch((err) => {});
-      };
-      fetchData();
-    }
+  const RemoveItemCard = async (idItem) => {
+    const idUser = session?.user?.id;
+    dispatch(delItemCart({ idUser, idItem }));
   };
 
   return (
@@ -139,7 +114,9 @@ export default function Header() {
           </Link>
           <div className={styles.list_product_cart}>
             <div className={"flex flex-col gap-3"}>
-              {header_cart?.length === 0 && <h1 className="text-xl font-semibold text-center w-full">Cart is empty!</h1>}
+              {header_cart?.length === 0 && (
+                <h1 className="text-xl font-semibold text-center w-full">Cart is empty!</h1>
+              )}
               {header_cart?.map((item, index) => (
                 <div
                   key={index}

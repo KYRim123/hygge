@@ -26,6 +26,9 @@ import DisplayHTMLString from "@/app/components/hook/displayhtmlstring";
 
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import { addItemCart, fetchCart } from "@/app/store/slide/cartSlide";
+import { useDispatch, useSelector } from "react-redux";
+import { getStatusCart } from "@/app/store/selector";
 
 function DetailProduct() {
   const [currentImage, setCurrentImage] = useState(0);
@@ -35,6 +38,8 @@ function DetailProduct() {
   const [isShowModal, setIsShowModal] = useState(false);
   const { data: session } = useSession();
   const params = useParams();
+  const dispatch = useDispatch();
+  const getStatus = useSelector(getStatusCart);
   const idProduct = params.id;
 
   // fetchdata
@@ -51,18 +56,17 @@ function DetailProduct() {
     return <LoadingA />;
   }
 
-  // data
+  // initial data
+  const idUser = session?.user?.id;
   const { ten_san_pham, khuyen_mai, gia } = dataProduct.data;
   const { ten_loai_san_pham } = dataProduct.data.loai_san_pham;
   const reviews = dataProduct.reviews;
   const priceNew = gia - (gia * khuyen_mai) / 100;
   const nameTag = "- Selling Fast";
   const listImages = dataProduct.image;
-
   const tabs = [{ name: "reivews" }, { name: "description" }];
   const indexTabRev = 0;
   const indexTabDes = 1;
-
   const listFeatures = [
     {
       Icon: IoWaterOutline,
@@ -159,39 +163,27 @@ function DetailProduct() {
   const handleChangeCurrentImg = (index) => {
     setCurrentImage(index);
   };
+
   const handleClickPrev = () => {
     setTotalProduct((prev) => prev - 1);
   };
+
   const handleClickNext = () => {
     setTotalProduct((prev) => prev + 1);
   };
 
-  const addToCard = async () => {
-    if (session?.user?.id != null) {
-      await axios
-        .post(`${process.env.HTTP_URL}/api/cart/add-to-cart`, {
-          id: session?.user?.id,
-          id_san_pham: idProduct,
-          so_luong: totalProduct,
-        })
-        .then((res) => {
-          if (res.data.status == true) {
-            toast.success(res.data.message);
-          } else {
-            toast.err("Error");
-          }
-        })
-        .catch((res) => {
-          if (res.data.status == false) {
-            toast.success(res.data.message);
-          } else {
-            toast.err("Error");
-          }
-        });
+  const addToCard = () => {
+    if (idUser != null) {
+      dispatch(addItemCart({ idUser, idProduct, totalProduct }));
     } else {
       toast.error("Yêu Cầu Đăng Nhập");
     }
   };
+
+  if (getStatus === "successed_add") {
+    dispatch(fetchCart(idUser));
+    toast.success("Add to cart successfully!");
+  }
 
   const handleChangeTab = (index) => {
     setIndexTab(index);
@@ -201,6 +193,7 @@ function DetailProduct() {
     setZoomImg(true);
     setIsShowModal(true);
   };
+  
   const handleClose = () => {
     setZoomImg(false);
     setTimeout(() => {
