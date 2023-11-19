@@ -152,7 +152,7 @@ export default function HomePage() {
         <div className="my-28">
           <span className="label-1 text-center w-full block">- why us</span>
           <h1 className="title-1 text-center">why people choose us</h1>
-          <div className="flex justify-between mt-20">
+          <div className="flex gap-10 text-center justify-between mt-20">
             <div className="flex items-center flex-col flex-grow">
               <div className="wrapper-icon--1 w-20 h-20">
                 <MdOutlinePolicy size={45} />
