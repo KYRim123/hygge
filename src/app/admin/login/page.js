@@ -77,20 +77,6 @@ const LoginPage = () => {
             Login
           </Button>
         </form>
-        <div className="flex gap-5 items-center">
-          <Button
-            className={"bg-white text-black-100 border-2 border-gray-200 w-[250px] hover:border-black-100"}
-            onClick={handleCreateAccount}
-          >
-            Create Account
-          </Button>
-          <Link
-            className="underline text-xl hover:text-main-100"
-            href={"/"}
-          >
-            Forgot Password ?
-          </Link>
-        </div>
       </div>
     </div>
   );

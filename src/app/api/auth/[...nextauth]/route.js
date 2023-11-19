@@ -43,8 +43,10 @@ const handler = NextAuth({
     async session({ token, session }) {
       if (token?.role == "admin") {
         session.admin = token;
+        session.user = undefined;
       } else {
         session.user = token;
+        session.admin = undefined;
       }
       return session;
     },

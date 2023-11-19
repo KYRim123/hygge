@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { avaReview1 } from "../../../../public/assets";
-import { AiOutlineProfile} from "react-icons/ai";
+import { AiOutlineProfile } from "react-icons/ai";
 import { IoLogOutOutline, IoNotifications } from "react-icons/io5";
 import styles from "./input.module.css";
 import axios from "axios";
@@ -25,7 +25,7 @@ export default function HeaderAdmin() {
   };
 
   return (
-    <header className="relative flex items-center justify-end pr-[80px] shadow-md">
+    <header className="relative flex items-center justify-end pr-[80px] shadow-md min-h-[48px]">
       <div className="flex items-center gap-3">
         <div className={`${"cursor-pointer relative"} ${styles.icon_shopping_cart}`}>
           <Link
@@ -33,7 +33,10 @@ export default function HeaderAdmin() {
             className={styles.link_shopping_cart}
           >
             <span className="absolute -right-1 bg-pink-500 p-[6.5px] rounded-full"></span>
-            <IoNotifications size={25}  style={{color: "rebeccapurple"}}/>
+            <IoNotifications
+              size={25}
+              style={{ color: "rebeccapurple" }}
+            />
           </Link>
           <div className={styles.list_product_cart}>
             <b className="text-teal-500">Thông Báo</b>
