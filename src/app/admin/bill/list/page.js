@@ -5,13 +5,15 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { BiFirstPage, BiLastPage } from "react-icons/bi";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import { AiOutlineEdit, AiOutlineFileSearch } from "react-icons/ai";
-import { MdDeleteForever } from "react-icons/md";
+import { AiOutlineFileSearch } from "react-icons/ai";
 import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { BsSearch } from "react-icons/bs";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import ModalUpdateStatusInvoice from "@/app/components/ModalUpdateStatusInvoice";
+import ModalUpdatePayInvoice from "@/app/components/ModalUpdatePayInvoice";
 
 const list_size = [
   { id: 1, name: 10 },
@@ -43,13 +45,46 @@ const generatePDF = () => {
 };
 
 export default function ListBill() {
+  const { data: session } = useSession();
   const [data, set_data] = useState();
   const [pre_page, set_pre_page] = useState(20);
   const [search, set_search] = useState("");
   const [pre_search, set_pre_search] = useState("");
+  const [list_status, set_list_status] = useState([]);
+  const [show_modal_update_status_invoice, set_show_modal_update_status_invoice] = useState(false);
+  const [show_modal_update_pay_invoice, set_show_modal_update_pay_invoice] = useState(false);
+  const [id_invoice, set_id_invoice] = useState(0);
+  const [name_status, set_name_status] = useState("Trạng Thái Order");
+  const [name_pay, set_name_pay] = useState("Trạng Thái Thanh Toán");
+  const fetchDataStatus = async () => {
+    try {
+      const mang = JSON.parse(session?.admin?.chucvu);
+      const response = await axios.post(`${process.env.HTTPS_URL}/api/trang-thai/list-r`, {
+        role: mang,
+      });
+      if (response?.data?.status == true) {
+        const formattedData = response?.data?.data?.map((item) => ({
+          id: item.id,
+          name: item.trang_thai,
+        }));
+        set_list_status(formattedData);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("An error occurred while fetching data.");
+    }
+  };
+  useEffect(() => {
+    fetchDataStatus();
+  }, [session?.admin?.chucvu]);
   const fetchData = async (url) => {
     try {
-      const response = await axios.post(url, { pre_page: pre_page, search: search });
+      const mang = JSON.parse(session?.admin?.chucvu);
+      const response = await axios.post(url, {
+        pre_page: pre_page,
+        search: search,
+        role: mang,
+      });
       if (response.data.status == true) {
         set_data(response.data.data);
         set_search("");
@@ -63,7 +98,7 @@ export default function ListBill() {
   useEffect(() => {
     const url = `${process.env.HTTPS_URL}/api/hoa-don/list-all`;
     fetchData(url);
-  }, [pre_page]);
+  }, [pre_page, session?.admin?.chucvu]);
 
   const handleChangePage = (url) => {
     if (url != null) {
@@ -84,8 +119,78 @@ export default function ListBill() {
     fetchData(url);
   };
 
+  const handleUpdateStatusInvoice = (id, name, note) => {
+    const updateStatus = async () => {
+      try {
+        const response = await axios.post(`${process.env.HTTPS_URL}/api/hoa-don/update-status`, {
+          id: id_invoice,
+          id_trang_thai: id,
+          id_nhan_vien: session?.admin?.id,
+          ghi_chu: note,
+        });
+        if (response.data.status == true) {
+          toast.success("Update Status Success");
+          const url = `${process.env.HTTPS_URL}/api/hoa-don/list-all`;
+          fetchData(url);
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("An error occurred while fetching data.");
+      }
+    };
+    updateStatus();
+  };
+
+  const handleUpdatePayInvoice = (id, name) => {
+    const updateStatus = async () => {
+      try {
+        const mang = JSON.parse(session?.admin?.chucvu);
+        const response = await axios.post(`${process.env.HTTPS_URL}/api/hoa-don/update-pay`, {
+          id: id_invoice,
+          id_trang_thai_thanh_toan: id,
+          role: mang,
+        });
+        if (response.data.status == true) {
+          toast.success("Update Status Success");
+          const url = `${process.env.HTTPS_URL}/api/hoa-don/list-all`;
+          fetchData(url);
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("An error occurred while fetching data.");
+      }
+    };
+    updateStatus();
+  };
+
   return (
     <div className="px-6">
+      {show_modal_update_status_invoice ? (
+        <ModalUpdateStatusInvoice
+          setShowModal={set_show_modal_update_status_invoice}
+          handleUpdateStatusInvoice={handleUpdateStatusInvoice}
+          listStatus={list_status}
+          idInvoice={id_invoice}
+          titleSelect={name_status}
+        ></ModalUpdateStatusInvoice>
+      ) : (
+        ""
+      )}
+      {show_modal_update_pay_invoice ? (
+        <ModalUpdatePayInvoice
+          setShowModal={set_show_modal_update_pay_invoice}
+          handleUpdatePayInvoice={handleUpdatePayInvoice}
+          idInvoice={id_invoice}
+          listStatus={list_status}
+          titleSelect={name_pay}
+        ></ModalUpdatePayInvoice>
+      ) : (
+        ""
+      )}
       <div className={style.header}>
         <div className={style.dropdown_size_page}>
           <SelectDropdownAdmin
@@ -143,8 +248,30 @@ export default function ListBill() {
               <td>{item.nguoi_dung.tai_khoan}</td>
               <td className={style.price}>{item.gia_tien_thanh_toan}</td>
               <td>{item.ngay_mua}</td>
-              <td>{item.trang_thai_thanh_toan}</td>
-              <td>{item.trang_thai.trang_thai}</td>
+              <td>
+                <div
+                  className={style.status_order}
+                  onClick={() => {
+                    set_show_modal_update_pay_invoice(true);
+                    set_id_invoice(item.id);
+                    set_name_pay(item?.trang_thai_thanh_toan);
+                  }}
+                >
+                  {item?.trang_thai_thanh_toan}
+                </div>
+              </td>
+              <td>
+                <div
+                  className={style.status_order}
+                  onClick={() => {
+                    set_show_modal_update_status_invoice(true);
+                    set_id_invoice(item.id);
+                    set_name_status(item.trang_thai.trang_thai);
+                  }}
+                >
+                  {item.trang_thai.trang_thai}
+                </div>
+              </td>
               <td className="remove-column">
                 <div className={style.actions}>
                   <Link href={"/admin/bill/status/" + item.id}>

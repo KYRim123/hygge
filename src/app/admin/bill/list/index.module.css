@@ -197,3 +197,11 @@
 .img_product {
     width: 24px;
 }
+
+.status_order {
+    background-color: #00cc0e;
+    cursor: pointer;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+}

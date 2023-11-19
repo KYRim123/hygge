@@ -219,6 +219,7 @@ export default function PageCheckOut() {
     await axios
       .post(`${process.env.HTTPS_URL}/api/hoa-don/xac-thuc-hoa-don`, {
         id: id_invoice_local,
+        thanh_toan: key_list_tab == 2 ? "Chờ Xác Nhận Thanh Toán" : "Chưa Thanh Toán",
       })
       .then((res) => {
         if (res.data.status == true) {
