@@ -19,18 +19,38 @@ export default function Chat() {
   let allMessage = [];
 
   useEffect(() => {
+    const getNotifications = async () => {
+      try {
+        const response = await axios.get(`${process.env.HTTPS_URL}/api/chat/admin`);
+        if (response.data.status == true) {
+          set_messages(response.data.data);
+        }
+      } catch (error) {}
+    };
+    getNotifications();
+  }, []);
+
+  useEffect(() => {
     Pusher.logToConsole = true;
 
     const pusher = new Pusher("186ee310c9ca72d2af51", {
       cluster: "ap1",
     });
-
     const channel = pusher.subscribe("chat");
-    channel.bind("message", function (data) {
-      allMessage.push(data);
-      set_messages(allMessage);
+    channel.bind("message", function (event) {
+      if (event?.id_user == 0 || event?.chat?.to_id == 0) {
+        set_messages((prevMessage) => {
+          const isMessageExists = prevMessage.some((item) => item.id == event?.chat?.id);
+
+          if (!isMessageExists) {
+            return [...prevMessage, event?.chat];
+          } else {
+            return prevMessage;
+          }
+        });
+      }
     });
-  });
+  }, []);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -49,7 +69,6 @@ export default function Chat() {
         `${process.env.HTTPS_URL}/api/message`,
         {
           userId: 0,
-          username: username,
           message: message,
           toId: to_id,
         },
@@ -88,10 +107,10 @@ export default function Chat() {
           />
           <div className="w-full h-[480px] overflow-auto">
             {messages
-              .filter((messagef) => messagef.toId == to_id || messagef.userId == to_id)
+              .filter((messagef) => messagef.to_id == to_id || messagef.user_id == to_id)
               .map((message, index) => (
                 <div key={index}>
-                  {message.userId == to_id ? (
+                  {message.user_id == to_id ? (
                     <div className={style.mess_to_me}>{message.message}</div>
                   ) : (
                     <div className={style.mess_from_me}>{message.message}</div>
