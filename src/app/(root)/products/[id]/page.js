@@ -64,6 +64,7 @@ function DetailProduct() {
   const priceNew = gia - (gia * khuyen_mai) / 100;
   const nameTag = "- Selling Fast";
   const listImages = dataProduct.image;
+
   const tabs = [{ name: "reivews" }, { name: "description" }];
   const indexTabRev = 0;
   const indexTabDes = 1;
@@ -84,81 +85,15 @@ function DetailProduct() {
       details: "It is one of our most popular products that we have on offer",
     },
   ];
-  const listProductRelated = [
-    {
-      name: "Name 1",
-      img: "",
-      sale: 20,
-      loai_sp: { ten_loai_san_pham: "EYE CARE" },
-      price: 85,
-      img: "169721623927.png",
-    },
-    {
-      name: "Name 2",
-      img: "",
-      sale: 10,
-      loai_sp: { ten_loai_san_pham: "SUN CARE" },
-      price: 200,
-      img: "169721623927.png",
-    },
-    {
-      name: "Name 3",
-      img: "",
-      sale: 15,
-      loai_sp: { ten_loai_san_pham: "TREATMENTS" },
-      price: 20,
-      img: "169721623927.png",
-    },
-    {
-      name: "Name 4",
-      img: "",
-      sale: 10,
-      loai_sp: { ten_loai_san_pham: "MOISTURIZERS" },
-      price: 37,
-      img: "169721623927.png",
-    },
-    {
-      name: "Name 5",
-      img: "",
-      sale: 0,
-      loai_sp: { ten_loai_san_pham: "FEATURED" },
-      price: 188,
-      img: "169721623927.png",
-    },
-    {
-      name: "Name 6",
-      img: "",
-      sale: 10,
-      loai_sp: { ten_loai_san_pham: "MOISTURIZERS" },
-      price: 1111,
-      img: "169721623927.png",
-    },
-    {
-      name: "Name 7",
-      img: "",
-      sale: 0,
-      loai_sp: { ten_loai_san_pham: "FEATURED" },
-      price: 60,
-      img: "169721623927.png",
-    },
-    {
-      name: "Name 8",
-      img: "",
-      sale: 10,
-      loai_sp: { ten_loai_san_pham: "FEATURED" },
-      price: 80,
-      img: "169721623927.png",
-    },
-    {
-      name: "Name 9",
-      img: "",
-      sale: 0,
-      loai_sp: { ten_loai_san_pham: "FEATURED" },
-      price: 60,
-      img: "169721623927.png",
-    },
-  ];
-
+  const listProductRelated = dataProduct?.sanPhamPhu?.map((item) => ({
+    name: item?.ten_san_pham,
+    img: "",
+    sale: item?.khuyen_mai,
+    loai_sp: { ten_loai_san_pham: item?.loai_san_pham?.ten_loai_san_pham },
+    price: item?.gia,
+    img: item?.hinh_anh[0]?.hinh_anh_san_pham,
+  }));
+  console.log(listProductRelated);
   // handle
   const handleChangeCurrentImg = (index) => {
     setCurrentImage(index);
@@ -193,7 +128,7 @@ function DetailProduct() {
     setZoomImg(true);
     setIsShowModal(true);
   };
-  
+
   const handleClose = () => {
     setZoomImg(false);
     setTimeout(() => {

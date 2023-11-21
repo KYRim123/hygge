@@ -23,18 +23,40 @@ export default function Chatbox({ showChatBox }) {
   }, [session]);
 
   useEffect(() => {
+    const getChatUSer = async () => {
+      try {
+        const response = await axios.post(`${process.env.HTTPS_URL}/api/chat/user`, {
+          id: session?.user?.id,
+        });
+        if (response.data.status == true) {
+          set_messages(response.data.data);
+        }
+      } catch (error) {}
+    };
+    getChatUSer();
+  }, [session?.user?.id]);
+
+  useEffect(() => {
     Pusher.logToConsole = true;
 
     const pusher = new Pusher("186ee310c9ca72d2af51", {
       cluster: "ap1",
     });
-
     const channel = pusher.subscribe("chat");
-    channel.bind("message", function (data) {
-      allMessage.push(data);
-      set_messages(allMessage);
+    channel.bind("message", function (event) {
+      if (event?.id_user == session?.user?.id || event?.chat?.to_id == session?.user?.id) {
+        set_messages((prevMessage) => {
+          const isMessageExists = prevMessage.some((item) => item.id == event?.chat?.id);
+
+          if (!isMessageExists) {
+            return [...prevMessage, event?.chat];
+          } else {
+            return prevMessage;
+          }
+        });
+      }
     });
-  });
+  }, []);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -43,7 +65,6 @@ export default function Chatbox({ showChatBox }) {
         `${process.env.HTTPS_URL}/api/message`,
         {
           userId: user_id,
-          username: username,
           message: message,
           toId: 0,
         },
@@ -56,6 +77,12 @@ export default function Chatbox({ showChatBox }) {
     } catch (error) {}
     set_message("");
   };
+
+  // useEffect(() => {
+  //   window.Echo.channel("chat").on("message", (event) => {
+  //     set_messages((prevMessages) => [...prevMessages, event]);
+  //   });
+  // }, [session?.user?.id]);
   return (
     <div className={style.chat_box}>
       <div className={style.title}>
@@ -74,18 +101,18 @@ export default function Chatbox({ showChatBox }) {
       </div>
       <div className={style.list_chat}>
         {messages
-          .filter((messagef) => messagef.userId == user_id || messagef.toId == user_id)
+          ?.filter((messagef) => messagef?.user_id == user_id || messagef?.to_id == user_id)
           .map((message, index) => (
             <div key={index}>
-              {message.userId == user_id ? (
+              {message?.user_id == user_id ? (
                 <div className={style.mess_from_me}>
                   <span className="text-gray-400 text-sm">You</span> <br />
-                  {message.message}
+                  {message?.message}
                 </div>
               ) : (
                 <div className={style.mess_to_me}>
                   <span className="text-gray-400 text-sm">Hygee</span> <br />
-                  {message.message}
+                  {message?.message}
                 </div>
               )}
             </div>

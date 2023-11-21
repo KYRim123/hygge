@@ -16,6 +16,11 @@ export default function HeaderAdmin() {
   const { data: session } = useSession();
   const pathname = usePathname();
 
+  const [notifications, setNotifications] = useState([]);
+  const CountNewNotifi = notifications.filter(
+    (notification) => notification.trang_thai_thong_bao == 0,
+  ).length;
+
   const menuBtn = [
     { nameMenu: "profile", url: "/profile", Icon: AiOutlineProfile },
     { nameMenu: "sign out", Icon: IoLogOutOutline, onClick: () => signOut() },
@@ -24,27 +29,119 @@ export default function HeaderAdmin() {
     setShowMenu(!showMenu);
   };
 
+  useEffect(() => {
+    const getNotifications = async () => {
+      try {
+        const response = await axios.get(`${process.env.HTTPS_URL}/api/thong-bao/admin`);
+        if (response.data.status == true) {
+          setNotifications(response.data.data);
+        }
+      } catch (error) {}
+    };
+    getNotifications();
+  }, [session?.admin?.id]);
+
+  useEffect(() => {
+    if (session?.admin?.id) {
+      Pusher.logToConsole = true;
+
+      const pusher = new Pusher("186ee310c9ca72d2af51", {
+        cluster: "ap1",
+      });
+
+      const channel = pusher.subscribe("adminnotifications");
+      channel.bind("adminnotification", function (event) {
+        if (event?.id_admin == 1) {
+          setNotifications((prevNotifications) => {
+            const isNotificationExists = prevNotifications.some((item) => item.id == event?.notification?.id);
+            if (!isNotificationExists) {
+              return [event?.notification, ...prevNotifications];
+            } else {
+              return prevNotifications;
+            }
+          });
+        }
+      });
+    }
+  }, [session?.admin?.id]);
+
+  // useEffect(() => {
+  //   if (session?.admin?.id) {
+  //     const socket = io("https://xuantuyen1207.website:6001", {
+  //       withCredentials: true,
+  //       extraHeaders: {
+  //         "X-Requested-With": "XMLHttpRequest",
+  //       },
+  //     });
+
+  //     window.Echo = new Echo({
+  //       broadcaster: "socket.io",
+  //       host: "https://xuantuyen1207.website:6001",
+  //       client: io,
+  //     });
+
+  //     socket.on("connect", () => {
+  //       console.log("Connected to Socket.IO");
+  //     });
+
+  //     window.Echo.channel("adminnotifications").on("adminnotification", (event) => {
+  //       if (event?.id_admin == 1) {
+  //         setNotifications((prevNotifications) => {
+  //           const isNotificationExists = prevNotifications.some((item) => item.id == event?.notification?.id);
+  //           if (!isNotificationExists) {
+  //             return [event?.notification, ...prevNotifications];
+  //           } else {
+  //             return prevNotifications;
+  //           }
+  //         });
+  //       }
+  //     });
+
+  //     return () => {
+  //       socket.disconnect();
+  //     };
+  //   }
+  // }, [session?.admin?.id]);
+
   return (
     <header className="relative flex items-center justify-end pr-[80px] shadow-md min-h-[48px]">
       <div className="flex items-center gap-3">
         <div className={`${"cursor-pointer relative"} ${styles.icon_shopping_cart}`}>
-          <Link
+          <div
             href={"/shoppingCart"}
             className={styles.link_shopping_cart}
           >
-            <span className="absolute -right-1 bg-pink-500 p-[6.5px] rounded-full"></span>
-            <IoNotifications
-              size={25}
-              style={{ color: "rebeccapurple" }}
-            />
-          </Link>
+            <span
+              className="absolute -right-1 bg-pink-500 rounded-full"
+              style={{
+                fontSize: "12px",
+                width: "18px",
+                height: "18px",
+                color: "white",
+                textAlign: "center",
+                lineHeight: "18px",
+              }}
+            >
+              {CountNewNotifi}
+            </span>
+            <IoNotifications size={25} />
+          </div>
           <div className={styles.list_product_cart}>
-            <b className="text-teal-500">Thông Báo</b>
-            <hr className="pb-1"></hr>
-            <hr className="pb-1"></hr>
-            <Link href={"/shoppingCart"}>
-              <div className="text-cyan-600 text-end">Xem Thông Báo</div>
-            </Link>
+            <div className={"flex flex-col gap-3 max-h-[250px] overflow-auto"}>
+              {notifications?.length === 0 && (
+                <h1 className="text-xl font-semibold text-center w-full">Notification is empty!</h1>
+              )}
+              {notifications?.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex gap-4 items-center"
+                >
+                  <p style={item?.trang_thai_thong_bao == 0 ? { color: "blue" } : { color: "#ccc" }}>
+                    {item?.thong_bao}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <div>
