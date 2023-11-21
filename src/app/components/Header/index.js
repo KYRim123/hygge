@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDataCart } from "@/app/store/selector";
 import { delItemCart } from "@/app/store/slide/cartSlide";
 import axios from "axios";
+import { api_post_UserThongBao } from "@/app/lib/api";
 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
@@ -77,7 +78,7 @@ export default function Header() {
   useEffect(() => {
     const getNotifications = async () => {
       try {
-        const response = await axios.post(`${process.env.HTTPS_URL}/api/thong-bao/user`, {
+        const response = await axios.post(api_post_UserThongBao, {
           id: session?.user?.id,
         });
         if (response.data.status == true) {

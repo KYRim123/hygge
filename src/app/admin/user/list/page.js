@@ -11,6 +11,7 @@ import { BsSearch } from "react-icons/bs";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Link from "next/link";
+import { api_get_UserListAll } from "@/app/lib/api";
 
 const list_size = [
   { id: 1, name: 10 },
@@ -59,8 +60,7 @@ export default function ListUser() {
     }
   };
   useEffect(() => {
-    const url = `${process.env.HTTPS_URL}/api/user/list-all`;
-    fetchData(url);
+    fetchData(api_get_UserListAll);
   }, [pre_page]);
 
   const handleChangePage = (url) => {

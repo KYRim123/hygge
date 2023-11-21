@@ -5,19 +5,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Pagination from "@/app/components/Pagination";
 import LoadingA from "@/app/components/LoadingA";
+import { api_get_search } from "@/app/lib/api";
 
 export default function ProductPage() {
   let valueSearch;
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchData, setFetchData] = useState();
   const [price, setPrice] = useState({ gia_tien: [] });
-  
+
   if (typeof window !== "undefined") {
     valueSearch = localStorage.getItem("search");
   }
   useEffect(() => {
-    const api = `${process.env.HTTP_URL}/api/product/search`;
-    axios.post(api, { search: valueSearch, gia_tien: price }).then((res) => {
+    axios.post(api_get_search, { search: valueSearch, gia_tien: price }).then((res) => {
       setFetchData(res.data.data);
       setCurrentPage(res.data.currentPage);
     });

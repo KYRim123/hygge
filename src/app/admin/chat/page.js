@@ -6,6 +6,7 @@ import axios from "axios";
 import style from "./index.module.css";
 import { Tabs } from "antd";
 import { BsFillSendCheckFill } from "react-icons/bs";
+import { api_get_ChatAdmin, api_get_Message, api_get_User } from "@/app/lib/api";
 
 export default function Chat() {
   const [username, set_username] = useState("Hygge Shop");
@@ -21,7 +22,7 @@ export default function Chat() {
   useEffect(() => {
     const getNotifications = async () => {
       try {
-        const response = await axios.get(`${process.env.HTTPS_URL}/api/chat/admin`);
+        const response = await axios.get(api_get_ChatAdmin);
         if (response.data.status == true) {
           set_messages(response.data.data);
         }
@@ -54,7 +55,7 @@ export default function Chat() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      await axios.get(`${process.env.HTTPS_URL}/api/user/name`).then((res) => {
+      await axios.get(api_get_User).then((res) => {
         set_list_user(res.data.data);
       });
     };
@@ -66,7 +67,7 @@ export default function Chat() {
 
     try {
       const response = await axios.post(
-        `${process.env.HTTPS_URL}/api/message`,
+        api_get_Message,
         {
           userId: 0,
           message: message,

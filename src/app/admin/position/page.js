@@ -4,6 +4,13 @@ import style from "./index.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import {
+  api_get_ChucVuList,
+  api_get_QuyenHanList,
+  api_post_ChucVuCreate,
+  api_post_ChucVuQuyenHan,
+  api_post_ChucVuUpdate,
+} from "@/app/lib/api";
 
 export default function Position() {
   const [data, set_data] = useState();
@@ -13,7 +20,7 @@ export default function Position() {
   const [input_position, set_input_position] = useState("");
   const dataPower = async () => {
     await axios
-      .get(`${process.env.HTTPS_URL}/api/quyen-han/list`)
+      .get(api_get_QuyenHanList)
       .then((res) => {
         if (res.data.status == true) {
           set_data(res.data.data);
@@ -25,7 +32,7 @@ export default function Position() {
 
   const dataPosition = async () => {
     await axios
-      .get(`${process.env.HTTPS_URL}/api/chuc-vu/list`)
+      .get(api_get_ChucVuList)
       .then((res) => {
         if (res.data.status == true) {
           const formattedData = res.data.data.map((item) => ({
@@ -41,7 +48,7 @@ export default function Position() {
 
   const postPosition = async (id) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/chuc-vu/quyen-han`, { id: id })
+      .post(api_post_ChucVuQuyenHan, { id: id })
       .then((res) => {
         if (res.data.status == true) {
           set_list_power(res.data.data);
@@ -61,7 +68,7 @@ export default function Position() {
 
   const handleOnClickSavePosition = async () => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/chuc-vu/update`, { id: id_position, list_quyen_han: list_power })
+      .post(api_post_ChucVuUpdate, { id: id_position, list_quyen_han: list_power })
       .then((res) => {
         if (res.data.status == true) {
           toast.success("Lưu Thành Công!");
@@ -75,7 +82,7 @@ export default function Position() {
 
   const handleOnClickAddPosition = async () => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/chuc-vu/create`, { ten_chuc_vu: input_position })
+      .post(api_post_ChucVuCreate, { ten_chuc_vu: input_position })
       .then((res) => {
         if (res.data.status == true) {
           toast.success("Thêm Thành Công!");

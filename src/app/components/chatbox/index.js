@@ -8,6 +8,7 @@ import axios from "axios";
 import Image from "next/image";
 import { avaReview1 } from "../../../../public/assets";
 import { AiOutlineClose } from "react-icons/ai";
+import { api_get_ChatUser, api_get_Message } from "@/app/lib/api";
 
 export default function Chatbox({ showChatBox }) {
   const { data: session } = useSession();
@@ -25,7 +26,7 @@ export default function Chatbox({ showChatBox }) {
   useEffect(() => {
     const getChatUSer = async () => {
       try {
-        const response = await axios.post(`${process.env.HTTPS_URL}/api/chat/user`, {
+        const response = await axios.post(api_get_ChatUser, {
           id: session?.user?.id,
         });
         if (response.data.status == true) {
@@ -62,7 +63,7 @@ export default function Chatbox({ showChatBox }) {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${process.env.HTTPS_URL}/api/message`,
+        api_get_Message,
         {
           userId: user_id,
           message: message,

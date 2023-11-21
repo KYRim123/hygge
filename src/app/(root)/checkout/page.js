@@ -14,6 +14,16 @@ import { GrClose } from "react-icons/gr";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoRemove } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import {
+  api_get_HoaDon,
+  api_get_MyCart,
+  api_get_Qrbank,
+  api_get_UserProfile,
+  api_post_CreateHoaDon,
+  api_post_InforHoaDon,
+  api_post_XacThucHoaDon,
+  api_post_XacThucInfor,
+} from "@/app/lib/api";
 
 const list_tab = [
   { label: "Cash on delivery", key: 1 },
@@ -42,7 +52,7 @@ export default function PageCheckOut() {
     if (session?.user?.id != null) {
       const fetchData = async () => {
         await axios
-          .post(`${process.env.HTTPS_URL}/api/cart/my-cart`, { id: session?.user?.id })
+          .post(api_get_MyCart, { id: session?.user?.id })
           .then((res) => {
             if (res.data.status == true) {
               set_list_shopping_cart(res.data.data.chi_tiet_gio_hang);
@@ -97,7 +107,7 @@ export default function PageCheckOut() {
     if (session?.user?.id != null) {
       const fetchProfile = async () => {
         await axios
-          .post(`${process.env.HTTPS_URL}/api/user/profile`, { id: session?.user?.id })
+          .post(api_get_UserProfile, { id: session?.user?.id })
           .then((response) => {
             if (response.data.status == true) {
               set_profile(response.data.data);
@@ -115,7 +125,7 @@ export default function PageCheckOut() {
   const getInvoice = async () => {
     const id_invoice_local = localStorage.getItem("id_invoice");
     await axios
-      .get(`${process.env.HTTPS_URL}/api/hoa-don/get/${id_invoice_local}`)
+      .get(`${api_get_HoaDon}${id_invoice_local}`)
       .then((res) => {
         if (res.data.status == true) {
           set_data_invoice(res.data.data);
@@ -147,7 +157,7 @@ export default function PageCheckOut() {
       return router.push("/shoppingCart");
     }
     await axios
-      .post(`${process.env.HTTPS_URL}/api/hoa-don/create`, {
+      .post(api_post_CreateHoaDon, {
         id: session?.user?.id,
         data: list_shopping_cart,
       })
@@ -173,7 +183,7 @@ export default function PageCheckOut() {
     }
     if (profile.ten_nguoi_dung != null && profile.so_dien_thoai != null && profile.dia_chi != null) {
       await axios
-        .post(`${process.env.HTTPS_URL}/api/hoa-don/add-info`, {
+        .post(api_post_InforHoaDon, {
           id: id_invoice,
           name: profile.ten_nguoi_dung,
           phone: profile.so_dien_thoai,
@@ -198,7 +208,7 @@ export default function PageCheckOut() {
 
   const handleAccuracy = async (id) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/hoa-don/xac-thuc`, {
+      .post(api_post_XacThucInfor, {
         id: id,
         status: true,
       })
@@ -217,7 +227,7 @@ export default function PageCheckOut() {
   const postAccuracyOrder = async () => {
     const id_invoice_local = localStorage.getItem("id_invoice");
     await axios
-      .post(`${process.env.HTTPS_URL}/api/hoa-don/xac-thuc-hoa-don`, {
+      .post(api_post_XacThucHoaDon, {
         id: id_invoice_local,
         thanh_toan: key_list_tab == 2 ? "Chờ Xác Nhận Thanh Toán" : "Chưa Thanh Toán",
       })
@@ -253,7 +263,7 @@ export default function PageCheckOut() {
 
   const getBanks = async () => {
     await axios
-      .get("https://api.vietqr.io/v2/banks")
+      .get(api_get_Qrbank)
       .then((res) => set_list_banks(res.data.data))
       .catch((err) => console.log(err));
   };

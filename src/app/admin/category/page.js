@@ -9,6 +9,16 @@ import toast from "react-hot-toast";
 import { BiEdit } from "react-icons/bi";
 import ModalEditCategory from "@/app/components/ModalEditCategory";
 import ModalEditChildCategory from "@/app/components/ModalEditChildCategory";
+import {
+  api_get_Category,
+  api_get_TypeProduct,
+  api_post_CategoryCreate,
+  api_post_CategoryDestroy,
+  api_post_CategoryEdit,
+  api_post_TypeProductCreate,
+  api_post_TypeProductDelete,
+  api_post_TypeProductEdit,
+} from "@/app/lib/api";
 
 export default function PageAdminCategory() {
   const [categories, set_categories] = useState([]);
@@ -21,10 +31,10 @@ export default function PageAdminCategory() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response1 = await axios.get(`${process.env.HTTPS_URL}/api/product-types/list`);
+        const response1 = await axios.get(api_get_TypeProduct);
         set_categories(response1.data.data);
 
-        const response2 = await axios.get(`${process.env.HTTPS_URL}/api/category-types/list`);
+        const response2 = await axios.get(api_get_Category);
         set_categories_children(response2.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -48,7 +58,7 @@ export default function PageAdminCategory() {
 
   const handleAddNewCategoryChild = async (name_new_category_child, id_dong_san_pham, name) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/category-types/create`, {
+      .post(api_post_CategoryCreate, {
         ten_loai_san_pham: name_new_category_child,
         id_dong_san_pham: id_dong_san_pham,
       })
@@ -71,7 +81,7 @@ export default function PageAdminCategory() {
 
   const handleEditChildCategory = async (ten_loai_san_pham, id_dong_san_pham, name) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/category-types/edit`, {
+      .post(api_post_CategoryEdit, {
         id: data_edit_child_category.id,
         ten_loai_san_pham,
         id_dong_san_pham,
@@ -95,7 +105,7 @@ export default function PageAdminCategory() {
 
   const handleRemoveChildCategory = async (id) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/category-types/destroy`, { id })
+      .post(api_post_CategoryDestroy, { id })
       .then((response) => {
         if (response.data.status == true) {
           set_categories_children(response.data.data);
@@ -111,7 +121,7 @@ export default function PageAdminCategory() {
 
   const handleAddNewCategory = async (ten_dong_san_pham) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/product-types/create`, { ten_dong_san_pham })
+      .post(api_post_TypeProductCreate, { ten_dong_san_pham })
       .then((response) => {
         if (response.data.status == true) {
           set_categories(response.data.data);
@@ -127,7 +137,7 @@ export default function PageAdminCategory() {
 
   const handleEditCategory = async (ten_dong_san_pham) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/product-types/edit`, {
+      .post(api_post_TypeProductEdit, {
         id: data_edit_category.id,
         ten_dong_san_pham,
       })
@@ -149,7 +159,7 @@ export default function PageAdminCategory() {
 
   const handleRemoveCategory = async (id) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/product-types/destroy`, { id })
+      .post(api_post_TypeProductDelete, { id })
       .then((response) => {
         if (response.data.status == true) {
           set_categories(response.data.data);

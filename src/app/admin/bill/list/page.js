@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import ModalUpdateStatusInvoice from "@/app/components/ModalUpdateStatusInvoice";
 import ModalUpdatePayInvoice from "@/app/components/ModalUpdatePayInvoice";
+import { api_get_ListAllHoaDon, api_get_TrangThaiAdmin, api_post_HoaDonUpdatePay, api_post_HoaDonUpdateStatus } from "@/app/lib/api";
 
 const list_size = [
   { id: 1, name: 10 },
@@ -59,7 +60,7 @@ export default function ListBill() {
   const fetchDataStatus = async () => {
     try {
       const mang = JSON.parse(session?.admin?.chucvu);
-      const response = await axios.post(`${process.env.HTTPS_URL}/api/trang-thai/list-r`, {
+      const response = await axios.post(api_get_TrangThaiAdmin, {
         role: mang,
       });
       if (response?.data?.status == true) {
@@ -96,8 +97,7 @@ export default function ListBill() {
     }
   };
   useEffect(() => {
-    const url = `${process.env.HTTPS_URL}/api/hoa-don/list-all`;
-    fetchData(url);
+    fetchData(api_get_ListAllHoaDon);
   }, [pre_page, session?.admin?.chucvu]);
 
   const handleChangePage = (url) => {
@@ -122,7 +122,7 @@ export default function ListBill() {
   const handleUpdateStatusInvoice = (id, name, note) => {
     const updateStatus = async () => {
       try {
-        const response = await axios.post(`${process.env.HTTPS_URL}/api/hoa-don/update-status`, {
+        const response = await axios.post(api_post_HoaDonUpdateStatus, {
           id: id_invoice,
           id_trang_thai: id,
           id_nhan_vien: session?.admin?.id,
@@ -130,8 +130,7 @@ export default function ListBill() {
         });
         if (response.data.status == true) {
           toast.success("Update Status Success");
-          const url = `${process.env.HTTPS_URL}/api/hoa-don/list-all`;
-          fetchData(url);
+          fetchData(api_get_ListAllHoaDon);
         } else {
           toast.error(response.data.message);
         }
@@ -147,7 +146,7 @@ export default function ListBill() {
     const updateStatus = async () => {
       try {
         const mang = JSON.parse(session?.admin?.chucvu);
-        const response = await axios.post(`${process.env.HTTPS_URL}/api/hoa-don/update-pay`, {
+        const response = await axios.post(api_post_HoaDonUpdatePay, {
           id: id_invoice,
           id_trang_thai_thanh_toan: id,
           role: mang,

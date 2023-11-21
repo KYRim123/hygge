@@ -9,6 +9,7 @@ import Image from "next/image";
 import Editor from "@/app/components/hook/Editor";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { api_get_Category, api_post_ProductCreate } from "@/app/lib/api";
 
 export default function CreateProduct() {
   const [name_product, set_name_product] = useState("");
@@ -52,7 +53,7 @@ export default function CreateProduct() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.HTTPS_URL}/api/category-types/list`);
+        const response = await axios.get(api_get_Category);
         const originalData = response.data.data;
 
         const transformedData = originalData.map((item) => ({
@@ -99,7 +100,7 @@ export default function CreateProduct() {
 
   const handleClickAddNew = async () => {
     try {
-      const response = await axios.post(`${process.env.HTTPS_URL}/api/product/create`, dataPost, {
+      const response = await axios.post(api_post_ProductCreate, dataPost, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

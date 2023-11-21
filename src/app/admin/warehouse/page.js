@@ -5,6 +5,7 @@ import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import axios from "axios";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { api_get_CategoryLSP, api_get_Kho, api_get_ProductListId, api_get_TypeProduct } from "@/app/lib/api";
 
 export default function ListUser() {
   const [list_dsp, set_list_dsp] = useState([]);
@@ -19,7 +20,7 @@ export default function ListUser() {
 
   const fetchDataDSP = async () => {
     await axios
-      .get(`${process.env.HTTP_URL}/api/product-types/list`)
+      .get(api_get_TypeProduct)
       .then((res) => {
         const formattedData = res.data.data.map((item) => ({
           id: item.id,
@@ -32,7 +33,7 @@ export default function ListUser() {
 
   const fetchDataLSP = useCallback(async () => {
     await axios
-      .post(`${process.env.HTTP_URL}/api/category-types/list-id`, { id: choose_id_dsp })
+      .post(api_get_CategoryLSP, { id: choose_id_dsp })
       .then((res) => {
         if (res.data.status == true) {
           const formattedData = res.data.data.map((item) => ({
@@ -48,7 +49,7 @@ export default function ListUser() {
 
   const fetchDataSP = useCallback(async () => {
     await axios
-      .post(`${process.env.HTTP_URL}/api/product/list-id`, { id: choose_id_lsp })
+      .post(api_get_ProductListId, { id: choose_id_lsp })
       .then((res) => {
         if (res.data.status == true) {
           const formattedData = res.data.data.map((item) => ({
@@ -64,7 +65,7 @@ export default function ListUser() {
 
   const fetchDataKho = useCallback(async () => {
     await axios
-      .post(`${process.env.HTTP_URL}/api/kho/product`, { id: choose_id_sp })
+      .post(api_get_Kho, { id: choose_id_sp })
       .then((res) => {
         if (res.data.status == true) {
           set_data(res.data.data);

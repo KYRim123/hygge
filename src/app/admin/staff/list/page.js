@@ -13,6 +13,7 @@ import autoTable from "jspdf-autotable";
 import Link from "next/link";
 import Image from "next/image";
 import ShowImage from "@/app/components/ShowImage";
+import { api_get_NvList } from "@/app/lib/api";
 
 const list_size = [
   { id: 1, name: 10 },
@@ -65,8 +66,7 @@ export default function ListStaff() {
     }
   };
   useEffect(() => {
-    const url = `${process.env.HTTPS_URL}/api/nhan-vien/list`;
-    fetchData(url);
+     fetchData(api_get_NvList);
   }, [pre_page]);
 
   const handleChangePage = (url) => {

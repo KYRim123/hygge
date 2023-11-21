@@ -14,6 +14,7 @@ import autoTable from "jspdf-autotable";
 import Link from "next/link";
 import ModalViewDescription from "@/app/components/ModalViewDescription";
 import Image from "next/image";
+import { api_delete_ProductDelete, api_get_ListProductAllAdmin } from "@/app/lib/api";
 
 const list_size = [
   { id: 1, name: 10 },
@@ -69,8 +70,7 @@ export default function ListProduct() {
   };
 
   useEffect(() => {
-    const url = `${process.env.HTTPS_URL}/api/product/list-all`;
-    fetchData(url);
+    fetchData(api_get_ListProductAllAdmin);
   }, [pre_page]);
 
   const discountedPrice = (price, sale) => {
@@ -92,8 +92,7 @@ export default function ListProduct() {
   };
 
   const onClickSearch = () => {
-    const url = `${process.env.HTTPS_URL}/api/product/list-all`;
-    fetchData(url);
+    fetchData(api_get_ListProductAllAdmin);
   };
 
   const handleShowModalDescription = (sh_des, des) => {
@@ -104,7 +103,7 @@ export default function ListProduct() {
 
   const handleDeleteProduct = async (id) => {
     try {
-      const response = await axios.post(`${process.env.HTTPS_URL}/api/product/destroy`, { id: id });
+      const response = await axios.post(api_delete_ProductDelete, { id: id });
       if (response.data.status === true) {
         fetchData(url_pre);
       } else {

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { api_post_PayMent } from "@/app/lib/api";
 
 const VietQR = ({ bin, amount, accountNo, id_invoice }) => {
   const [data, set_data] = useState("");
@@ -17,7 +18,7 @@ const VietQR = ({ bin, amount, accountNo, id_invoice }) => {
 
   const handlePayment = async () => {
     try {
-      const response = await axios.post("https://api.vietqr.io/v2/generate", dataPost, {
+      const response = await axios.post(api_post_PayMent, dataPost, {
         headers: {
           "Content-Type": "application/json",
           "x-client-id": process.env.CLIENT_ID_VIETQR,

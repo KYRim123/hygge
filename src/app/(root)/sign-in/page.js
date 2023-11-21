@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { NAME_TK, NAME_TND, NAME_EMAIL, NAME_MK, NAME_DC, NAME_SDT } from "../../../app/lib/constants";
+import { api_get_UserCreate } from "@/app/lib/api";
 
 const SignInPage = () => {
   const router = useRouter();
@@ -25,7 +26,7 @@ const SignInPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://xuantuyen1207.website/api/user/create", data)
+      .post(api_get_UserCreate, data)
       .then((res) => toast.success("Create Anaccount is successfull !"))
       .catch((err) => toast.error("Create Anaccount is failure !"));
   };
@@ -89,7 +90,7 @@ const SignInPage = () => {
 
   return (
     <div>
-       <div>
+      <div>
         <span className="label-1">- Sign Up</span>
         <h1 className="title-1">Create Account</h1>
       </div>

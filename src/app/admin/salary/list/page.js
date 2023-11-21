@@ -8,6 +8,7 @@ import autoTable from "jspdf-autotable";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { DatePicker, Space } from "antd";
+import { api_get_Luong, api_get_Nv } from "@/app/lib/api";
 dayjs.extend(customParseFormat);
 
 const monthFormat = "YYYY/MM";
@@ -15,13 +16,13 @@ const monthFormat = "YYYY/MM";
 export default function ListSalary() {
   const [list_staff, set_list_staff] = useState([]);
   const [choose_id_staff, set_choose_id_staff] = useState();
-  const [month, set_month] = useState('');
+  const [month, set_month] = useState("");
 
   const [data, set_data] = useState();
   console.log(list_staff);
   const fetchDataStaff = async () => {
     await axios
-      .get(`${process.env.HTTPS_URL}/api/nhan-vien/list-name`)
+      .get(api_get_Nv)
       .then((res) => {
         const formattedData = res.data.data.map((item) => ({
           id: item.id,
@@ -34,7 +35,7 @@ export default function ListSalary() {
 
   const fetchDataLuong = useCallback(async () => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/luong/select`, { id: choose_id_staff, month: month })
+      .post(api_get_Luong, { id: choose_id_staff, month: month })
       .then((res) => {
         if (res.data.status == true) {
           set_data(res.data.data);
@@ -125,7 +126,7 @@ export default function ListSalary() {
                     <th>Hệ Số Lương</th>
                     <th>Thưởng</th>
                     <th>Lương Được Nhận</th>
-                    {month != '' ? "" : <th>Tháng</th>}
+                    {month != "" ? "" : <th>Tháng</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -139,10 +140,13 @@ export default function ListSalary() {
                       <td className={style.price}>{item.he_so}</td>
                       <td className={style.price}>${item.thuong}</td>
                       <td className={style.price}>
-                        ${(item.nhan_vien?.luong_co_ban * 1 * (item.he_so * 1) * ((item.cham_cong * 1) / 28) +
-                          item.thuong * 1).toFixed(2)}
+                        $
+                        {(
+                          item.nhan_vien?.luong_co_ban * 1 * (item.he_so * 1) * ((item.cham_cong * 1) / 28) +
+                          item.thuong * 1
+                        ).toFixed(2)}
                       </td>
-                      {month != '' ? "" : <td>{item.thang_nam}</td>}
+                      {month != "" ? "" : <td>{item.thang_nam}</td>}
                     </tr>
                   ))}
                 </tbody>

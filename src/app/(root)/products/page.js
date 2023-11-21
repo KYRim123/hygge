@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Pagination from "@/app/components/Pagination";
 import LoadingA from "@/app/components/LoadingA";
+import { api_get_ListProduct, api_get_TypeProduct } from "@/app/lib/api";
 
 export default function ProductPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,10 +14,10 @@ export default function ProductPage() {
   const [category, setCategory] = useState({ id_category: "", price: "", gia_tien: [] });
 
   useEffect(() => {
-    const api = `${process.env.HTTP_URL}/api/product/list`;
-    const api2 = `${process.env.HTTPS_URL}/api/product-types/list`;
-    axios.post(api, { page: currentPage, ...category }).then((res) => setFetchData(res.data.data));
-    axios.get(api2).then((res) => {
+    axios
+      .post(api_get_ListProduct, { page: currentPage, ...category })
+      .then((res) => setFetchData(res.data.data));
+    axios.get(api_get_TypeProduct).then((res) => {
       const formattedData = res.data.data.map((item) => ({
         id: item.id,
         name: item.ten_dong_san_pham,
@@ -102,7 +103,6 @@ export default function ProductPage() {
       setCategory({ ...category, price: name });
     }
   };
- 
 
   return (
     <div>

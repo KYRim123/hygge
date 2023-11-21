@@ -8,6 +8,7 @@ import Modal from "@/app/components/Modal";
 import TextArea from "antd/es/input/TextArea";
 import { AiOutlineEdit } from "react-icons/ai";
 import { CiCircleRemove } from "react-icons/ci";
+import { api_get_FaqTitleList, api_post_FaqList, api_post_FaqListCreate, api_post_FaqListDelete, api_post_FaqListUpdate, api_post_FaqTitleCreate } from "@/app/lib/api";
 
 export default function FAQAdmin() {
   const [data, set_data] = useState();
@@ -18,10 +19,10 @@ export default function FAQAdmin() {
   const [show_modal_edit, set_show_modal_edit] = useState(false);
   const [question, set_question] = useState();
   const [answer, set_answer] = useState();
-  const [data_edit,set_data_edit] = useState();
+  const [data_edit, set_data_edit] = useState();
   const dataChuDeFAQ = async () => {
     await axios
-      .get(`${process.env.HTTPS_URL}/api/chu-de-faq/list`)
+      .get(api_get_FaqTitleList)
       .then((res) => {
         if (res.data.status == true) {
           const formattedData = res.data.data.map((item) => ({
@@ -37,7 +38,7 @@ export default function FAQAdmin() {
 
   const postFAQ = async (id) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/faq/list-faq`, { id: id })
+      .post(api_post_FaqList, { id: id })
       .then((res) => {
         if (res.data.status == true) {
           set_data(res.data.data);
@@ -57,7 +58,7 @@ export default function FAQAdmin() {
 
   const handleOnClickAddTitleFAQ = async () => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/chu-de-faq/create`, { ten_chu_de: input_title_faq })
+      .post(api_post_FaqTitleCreate, { ten_chu_de: input_title_faq })
       .then((res) => {
         if (res.data.status == true) {
           toast.success("Thêm Thành Công!");
@@ -74,7 +75,7 @@ export default function FAQAdmin() {
 
   const handleOnClickAddFAQ = async () => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/faq/create`, {
+      .post(api_post_FaqListCreate, {
         id_chu_de: id_title_faq,
         cau_hoi: question,
         cau_tra_loi: answer,
@@ -95,7 +96,7 @@ export default function FAQAdmin() {
 
   const handleOnClickSaveFAQ = async () => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/faq/update`, data_edit)
+      .post(api_post_FaqListUpdate, data_edit)
       .then((res) => {
         if (res.data.status == true) {
           toast.success("Lưu Thành Công!");
@@ -111,7 +112,7 @@ export default function FAQAdmin() {
 
   const handleRemoveFAQ = async (id) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/faq/destroy`, {
+      .post(api_post_FaqListDelete, {
         id: id,
       })
       .then((res) => {
@@ -127,25 +128,23 @@ export default function FAQAdmin() {
       });
   };
 
-  const handleEditFAQ = (id,question,answer) =>{
+  const handleEditFAQ = (id, question, answer) => {
     const item_pre = {
-      id : id,
-      cau_hoi : question,
-      cau_tra_loi : answer
-    }
-    set_data_edit(item_pre)
+      id: id,
+      cau_hoi: question,
+      cau_tra_loi: answer,
+    };
+    set_data_edit(item_pre);
     set_show_modal_edit(true);
-  }
+  };
 
-  const handleSetDataEdit = (title,name) => {
-    const item_pre = {...data_edit}
-    item_pre[title] = name
-    set_data_edit(item_pre)
-  }
+  const handleSetDataEdit = (title, name) => {
+    const item_pre = { ...data_edit };
+    item_pre[title] = name;
+    set_data_edit(item_pre);
+  };
 
-  const handleRemoveTitleFAQ = () => {
-
-  }
+  const handleRemoveTitleFAQ = () => {};
 
   console.log(data_edit);
   return (
@@ -209,7 +208,7 @@ export default function FAQAdmin() {
                   type="text"
                   placeholder="Nhập Câu Hỏi"
                   value={data_edit?.cau_hoi}
-                  onChange={(e) => handleSetDataEdit('cau_hoi',e.target.value)}
+                  onChange={(e) => handleSetDataEdit("cau_hoi", e.target.value)}
                   cols={2}
                 ></TextArea>
               </div>
@@ -223,7 +222,7 @@ export default function FAQAdmin() {
                   type="text"
                   placeholder="Nhập Câu Trả Lời"
                   value={data_edit?.cau_tra_loi}
-                  onChange={(e) => handleSetDataEdit('cau_tra_loi',e.target.value)}
+                  onChange={(e) => handleSetDataEdit("cau_tra_loi", e.target.value)}
                   cols={2}
                 ></TextArea>
               </div>
@@ -304,7 +303,7 @@ export default function FAQAdmin() {
                   <AiOutlineEdit
                     className="cursor-pointer text-cyan-500"
                     style={{ height: "19px", width: "19px" }}
-                    onClick={()=>handleEditFAQ(item.id,item.cau_hoi,item.cau_tra_loi)}
+                    onClick={() => handleEditFAQ(item.id, item.cau_hoi, item.cau_tra_loi)}
                   ></AiOutlineEdit>
                   <CiCircleRemove
                     className="cursor-pointer ml-3 text-red-500"

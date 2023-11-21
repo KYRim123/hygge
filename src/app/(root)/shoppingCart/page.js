@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { api_delete_ProductCart, api_get_ChangeCart, api_get_MyCart } from "@/app/lib/api";
 
 export default function PagesShoppingCart() {
   const text_shopping_cart = "Shopping Cart";
@@ -19,7 +20,7 @@ export default function PagesShoppingCart() {
     if (session?.user?.id != null) {
       const fetchData = async () => {
         await axios
-          .post(`${process.env.HTTPS_URL}/api/cart/my-cart`, { id: session?.user?.id })
+          .post(api_get_MyCart, { id: session?.user?.id })
           .then((res) => {
             if (res.data.status == true) {
               set_data(res.data.data.chi_tiet_gio_hang);
@@ -66,7 +67,7 @@ export default function PagesShoppingCart() {
 
   const changeNumberItemCard = async (id, number) => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/cart/change-cart`, { id: id, so_luong: number })
+      .post(api_get_ChangeCart, { id: id, so_luong: number })
       .then((res) => {
         if (res.data.status == true) {
         } else {
@@ -85,7 +86,7 @@ export default function PagesShoppingCart() {
     if (session?.user?.id != null) {
       const fetchData = async () => {
         await axios
-          .post(`${process.env.HTTPS_URL}/api/cart/remove`, { id: session?.user?.id, id_item: id })
+          .post(api_delete_ProductCart, { id: session?.user?.id, id_item: id })
           .then((res) => {
             if (res.data.status == true) {
               toast.success("Removed item");

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useParams } from "next/navigation";
+import { api_get_TrangThaiDonHang } from "@/app/lib/api";
 
 export default function StatusBill() {
   const [data, set_data] = useState();
@@ -11,7 +12,7 @@ export default function StatusBill() {
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get(`${process.env.HTTPS_URL}/api/hoa-don/trang-thai/` + PARAMS)
+        .get(api_get_TrangThaiDonHang + PARAMS)
         .then((res) => {
           if (res.data.status == true) {
             set_data(res.data.data);
