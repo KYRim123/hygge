@@ -10,7 +10,7 @@ export default function PageInvoice() {
   useEffect(() => {
     const getInvoice = async () => {
       await axios
-        .get(`${process.env.HTTPS_URL}/api/hoa-don/get/` + PARAMS)
+        .get(api_get_HoaDon)
         .then((res) => {
           if (res.data.status == true) {
             set_data_invoice(res.data.data);

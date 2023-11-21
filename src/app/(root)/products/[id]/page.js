@@ -29,6 +29,7 @@ import toast from "react-hot-toast";
 import { addItemCart, fetchCart } from "@/app/store/slide/cartSlide";
 import { useDispatch, useSelector } from "react-redux";
 import { getStatusCart } from "@/app/store/selector";
+import { api_get_ProductDetail } from "@/app/lib/api";
 
 function DetailProduct() {
   const [currentImage, setCurrentImage] = useState(0);
@@ -48,10 +49,7 @@ function DetailProduct() {
     const result = await res.data;
     return result;
   }
-  const { data: dataProduct, isLoading } = useSWR(
-    `${process.env.HTTPS_URL}/api/product/${idProduct}`,
-    fetchData,
-  );
+  const { data: dataProduct, isLoading } = useSWR(`${api_get_ProductDetail}${idProduct}`, fetchData);
   if (isLoading) {
     return <LoadingA />;
   }

@@ -7,6 +7,7 @@ import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { api_get_ChucVuList, api_post_NvCreate } from "@/app/lib/api";
 
 export default function CreateStaff() {
   const [name, set_name] = useState("");
@@ -47,7 +48,7 @@ export default function CreateStaff() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.HTTPS_URL}/api/chuc-vu/list`);
+        const response = await axios.get(api_get_ChucVuList);
         const originalData = response.data.data;
 
         const transformedData = originalData.map((item) => ({
@@ -109,7 +110,7 @@ export default function CreateStaff() {
 
   const handleClickAddNew = async () => {
     try {
-      const response = await axios.post(`${process.env.HTTPS_URL}/api/nhan-vien/create`, dataPost, {
+      const response = await axios.post(api_post_NvCreate, dataPost, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

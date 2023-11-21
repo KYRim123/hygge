@@ -10,6 +10,7 @@ import { AiOutlineProfile } from "react-icons/ai";
 import { IoLogOutOutline, IoNotifications } from "react-icons/io5";
 import styles from "./input.module.css";
 import axios from "axios";
+import { api_get_ThongBaoAdmin } from "@/app/lib/api";
 
 export default function HeaderAdmin() {
   const [showMenu, setShowMenu] = useState(false);
@@ -32,7 +33,7 @@ export default function HeaderAdmin() {
   useEffect(() => {
     const getNotifications = async () => {
       try {
-        const response = await axios.get(`${process.env.HTTPS_URL}/api/thong-bao/admin`);
+        const response = await axios.get(api_get_ThongBaoAdmin);
         if (response.data.status == true) {
           setNotifications(response.data.data);
         }

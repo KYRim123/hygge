@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import ItemPurchase from "@/app/components/ItemPurchase";
+import { api_post_ListHdComplete } from "@/app/lib/api";
 
 const ProductReviews = () => {
   const tabAll = 0;
@@ -21,7 +22,7 @@ const ProductReviews = () => {
     if (session?.user?.id != null) {
       const fetchData = async () => {
         await axios
-          .post(`${process.env.HTTPS_URL}/api/hoa-don/list-completed`, { id: session?.user?.id, status: tabAll })
+          .post(api_post_ListHdComplete, { id: session?.user?.id, status: tabAll })
           .then((res) => {
             if (res.data.status == true) {
               set_data(res.data.data);

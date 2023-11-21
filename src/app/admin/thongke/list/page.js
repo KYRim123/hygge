@@ -13,6 +13,7 @@ dayjs.extend(customParseFormat);
 
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { api_get_HoaDonThongKe, api_get_ListProductAdmin } from "@/app/lib/api";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -101,7 +102,7 @@ export default function ListStatistics() {
   };
   const fetchDataProduct = async () => {
     await axios
-      .get(`${process.env.HTTPS_URL}/api/product/all`)
+      .get(api_get_ListProductAdmin)
       .then((res) => {
         const formattedData = res.data.data.map((item) => ({
           id: item.id,
@@ -114,7 +115,7 @@ export default function ListStatistics() {
 
   const fetchDataThongKe = useCallback(async () => {
     await axios
-      .post(`${process.env.HTTPS_URL}/api/hoa-don/thong-ke`, {
+      .post(api_get_HoaDonThongKe, {
         id_product: choose_id_product,
         day_from: date_from,
         day_to: date_to,

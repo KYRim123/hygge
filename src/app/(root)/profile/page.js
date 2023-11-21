@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import LoadingA from "@/app/components/LoadingA";
+import { api_get_UserProfile, api_post_UserUpdate } from "@/app/lib/api";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if (idUser !== null) {
       axios
-        .post(`${process.env.HTTPS_URL}/api/user/profile`, { id: idUser })
+        .post(api_get_UserProfile, { id: idUser })
         .then((res) => setData(res.data.data));
     }
   }, [idUser]);
@@ -44,7 +45,7 @@ const ProfilePage = () => {
   };
 
   async function postProfile(newData) {
-    const res = await axios.post(`${process.env.HTTPS_URL}/api/user/update`, newData, {
+    const res = await axios.post(api_post_UserUpdate, newData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

@@ -29,6 +29,7 @@ import BoxCategory from "./components/BoxCategory";
 import { useDispatch } from "react-redux";
 import { fetchCart } from "./store/slide/cartSlide";
 import { useEffect } from "react";
+import { api_get_ListProduct } from "./lib/api";
 
 //  home page
 export default function HomePage() {
@@ -67,7 +68,7 @@ export default function HomePage() {
     const result = await res.data;
     return result.data;
   };
-  const { data: fetchData } = useSWR(`${process.env.HTTP_URL}/api/product/list`, fetchProducts);
+  const { data: fetchData } = useSWR(api_get_ListProduct, fetchProducts);
   const handleViewAll = () => {
     router.push("/products");
   };

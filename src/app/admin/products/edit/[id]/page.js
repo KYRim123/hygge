@@ -9,6 +9,7 @@ import Editor from "@/app/components/hook/Editor";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { api_get_Category, api_get_ProductEdit, api_post_ProductUpdate } from "@/app/lib/api";
 
 export default function EditProduct() {
   const [name_product, set_name_product] = useState("");
@@ -33,7 +34,7 @@ export default function EditProduct() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.HTTPS_URL}/api/product/${PARAMS}/edit`);
+        const response = await axios.get(`${api_get_ProductEdit}${PARAMS}/edit`);
         if (response.data.status == true) {
           const product = response.data.data;
           set_name_product(product.ten_san_pham);
@@ -82,7 +83,7 @@ export default function EditProduct() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.HTTPS_URL}/api/category-types/list`);
+        const response = await axios.get(api_get_Category);
         const originalData = response.data.data;
 
         const transformedData = originalData.map((item) => ({
@@ -141,7 +142,7 @@ export default function EditProduct() {
 
   const handleClickEdit = async () => {
     try {
-      const response = await axios.post(`${process.env.HTTPS_URL}/api/product/update`, dataPost, {
+      const response = await axios.post(api_post_ProductUpdate, dataPost, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
