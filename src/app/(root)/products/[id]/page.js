@@ -86,6 +86,7 @@ function DetailProduct() {
     },
   ];
   const listProductRelated = dataProduct?.sanPhamPhu?.map((item) => ({
+    id: item?.id,
     name: item?.ten_san_pham,
     img: "",
     sale: item?.khuyen_mai,
@@ -93,7 +94,6 @@ function DetailProduct() {
     price: item?.gia,
     img: item?.hinh_anh[0]?.hinh_anh_san_pham,
   }));
-  console.log(listProductRelated);
   // handle
   const handleChangeCurrentImg = (index) => {
     setCurrentImage(index);

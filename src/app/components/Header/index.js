@@ -21,8 +21,6 @@ import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { getDataCart } from "@/app/store/selector";
 import { delItemCart } from "@/app/store/slide/cartSlide";
-import io from "socket.io-client";
-import Echo from "laravel-echo";
 import axios from "axios";
 
 export default function Header() {

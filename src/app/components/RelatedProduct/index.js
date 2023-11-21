@@ -1,16 +1,11 @@
 // icons
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 // aa
-import { useRouter } from "next/navigation";
 import ProductItem from "../ProductItem";
 import WrapperSwiper from "../WrapperSwiper";
 import { SwiperSlide } from "swiper/react";
 
 export default function RelatedProduct({ listProduct }) {
-  const router = useRouter();
-  const handleClickProductRelated = () => {
-    router.push("/");
-  };
   return (
     <div className="mt-20">
       <div className="mb-10 ">
@@ -27,8 +22,12 @@ export default function RelatedProduct({ listProduct }) {
           </div>
         </div>
       </div>
-      
-      <WrapperSwiper>
+
+      <WrapperSwiper
+        prevClass=".btn-prev--relatedProduct"
+        nextClass=".btn-next--relatedProduct"
+        slidesPerView={4}
+      >
         {listProduct.map((item, index) => (
           <SwiperSlide key={index}>
             <ProductItem {...item} />
