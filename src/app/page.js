@@ -29,7 +29,7 @@ import BoxCategory from "./components/BoxCategory";
 import { useDispatch } from "react-redux";
 import { fetchCart } from "./store/slide/cartSlide";
 import { useEffect } from "react";
-import { api_get_ListProduct, api_get_TypeProduct } from "./lib/api";
+import { api_get_ListProduct } from "./lib/api";
 import { updateSearch } from "./store/slide/searchSlide";
 
 //  home page
