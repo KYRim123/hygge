@@ -9,14 +9,16 @@ import Image from "next/image";
 import { avaReview1 } from "../../../../public/assets";
 import { AiOutlineClose } from "react-icons/ai";
 import { api_get_ChatUser, api_get_Message } from "@/app/lib/api";
+import { useDispatch } from "react-redux";
+import { setShowChat } from "@/app/store/slide/showItemSlide";
 
-export default function Chatbox({ showChatBox }) {
+export default function Chatbox() {
   const { data: session } = useSession();
   const [username, set_username] = useState("Hygge User");
   const [user_id, set_user_id] = useState();
   const [messages, set_messages] = useState([]);
   const [message, set_message] = useState("");
-
+  const dispatch = useDispatch();
   let allMessage = [];
   useEffect(() => {
     set_username(session?.user?.name);
@@ -97,7 +99,7 @@ export default function Chatbox({ showChatBox }) {
         <span className="flex-grow text-start">Hygge Shop</span>
         <AiOutlineClose
           className="text-white hover:text-gray-300 cursor-pointer"
-          onClick={showChatBox}
+          onClick={() => dispatch(setShowChat())}
         />
       </div>
       <div className={style.list_chat}>

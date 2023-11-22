@@ -61,7 +61,7 @@ export const addItemCart = createAsyncThunk(
   async ({ idUser, idProduct, totalProduct }) => {
     await axios.post(api_post_CartAdd, {
       id: idUser,
-      id_san_pham: idProduct,
+      id_san_pham: idProduct.toString(),
       so_luong: totalProduct,
     });
   },

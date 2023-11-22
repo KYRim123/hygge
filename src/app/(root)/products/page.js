@@ -12,17 +12,20 @@ export default function ProductPage() {
   const [fetchData, setFetchData] = useState();
   const [productTypes, setProductTypes] = useState();
   const [category, setCategory] = useState({ id_category: "", price: "", gia_tien: [] });
-
   useEffect(() => {
-    axios
+    const fetchData = axios
       .post(api_get_ListProduct, { page: currentPage, ...category })
-      .then((res) => setFetchData(res.data.data));
-    axios.get(api_get_TypeProduct).then((res) => {
+      .then((res) => res.data.data);
+    const fetchCategory = axios.get(api_get_TypeProduct).then((res) => {
       const formattedData = res.data.data.map((item) => ({
         id: item.id,
         name: item.ten_dong_san_pham,
       }));
-      setProductTypes(formattedData);
+      return formattedData;
+    });
+    Promise.all([fetchData, fetchCategory]).then(([data, category]) => {
+      setFetchData(data);
+      setProductTypes(category);
     });
   }, [currentPage, category]);
 
@@ -31,6 +34,7 @@ export default function ProductPage() {
     return <LoadingA />;
   }
 
+ 
   // pagination
   const count_product = fetchData?.total;
   const pageCount = Math.ceil(count_product / 12);

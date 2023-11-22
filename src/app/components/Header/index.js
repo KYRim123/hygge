@@ -12,22 +12,22 @@ import Image from "next/image";
 import { avaReview1 } from "../../../../public/assets";
 import { AiOutlineProfile, AiOutlineShoppingCart } from "react-icons/ai";
 import { IoClose, IoLogOutOutline, IoNotifications } from "react-icons/io5";
-import styles from "./input.module.css";
 import { useRouter } from "next/navigation";
 import { MdOutlineRateReview } from "react-icons/md";
 import { BiMessageRounded } from "react-icons/bi";
 import Chatbox from "../chatbox";
 import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
-import { getDataCart } from "@/app/store/selector";
+import { getDataCart, getShowChat } from "@/app/store/selector";
 import { delItemCart } from "@/app/store/slide/cartSlide";
 import axios from "axios";
 import { api_post_UserThongBao } from "@/app/lib/api";
+import { setShowChat } from "@/app/store/slide/showItemSlide";
+import IconHoverModal from "../IconHoverModal";
+import { updateSearch } from "@/app/store/slide/searchSlide";
 
 export default function Header() {
   const [showInput, setShowInput] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
-  const [showChatBox, setShowChatBox] = useState(false);
   const [inputSearch, setInputSearch] = useState("");
   const { data: session } = useSession();
   const router = useRouter();
@@ -35,29 +35,27 @@ export default function Header() {
   const dispatch = useDispatch();
   const header_cart = useSelector(getDataCart);
   const [notifications, setNotifications] = useState([]);
-  const CountNewNotifi = notifications.filter(
-    (notification) => notification.trang_thai_thong_bao == 0,
-  ).length;
+  const showChatBox = useSelector(getShowChat);
+  const CountNewNotifi =
+    notifications.filter((notification) => notification.trang_thai_thong_bao == 0).length || 0;
+  const countProductInCart = header_cart?.length || 0;
   const menuBtn = [
     { nameMenu: "profile", url: "/profile", Icon: AiOutlineProfile },
     { nameMenu: "my purchase", url: "/purchase", Icon: AiOutlineShoppingCart },
-    { nameMenu: "chat hygee", Icon: BiMessageRounded, onClick: () => setShowChatBox(!showChatBox) },
+    { nameMenu: "chat hygee", Icon: BiMessageRounded, onClick: () => dispatch(setShowChat()) },
     { nameMenu: "product reviews", url: "/product_reviews", Icon: MdOutlineRateReview },
     { nameMenu: "sign out", Icon: IoLogOutOutline, onClick: () => signOut() },
   ];
-
   const handleShowInput = () => {
     setShowInput(!showInput);
-  };
-  const handleShowMenu = () => {
-    setShowMenu(!showMenu);
   };
 
   const handleClickSearch = () => {
     if (inputSearch !== "") {
-      localStorage.setItem("search", inputSearch);
+      dispatch(updateSearch(inputSearch));
       router.push("/search");
       router.refresh();
+      setShowInput(!showInput);
     } else {
       setShowInput(!showInput);
     }
@@ -70,7 +68,7 @@ export default function Header() {
     router.push("/checkout");
   };
 
-  const RemoveItemCard = async (idItem) => {
+  const removeItemCard = async (idItem) => {
     const idUser = session?.user?.id;
     dispatch(delItemCart({ idUser, idItem }));
   };
@@ -93,11 +91,9 @@ export default function Header() {
   useEffect(() => {
     if (session?.user?.id) {
       Pusher.logToConsole = true;
-
       const pusher = new Pusher("186ee310c9ca72d2af51", {
         cluster: "ap1",
       });
-
       const channel = pusher.subscribe("notifications");
       channel.bind("notification", function (event) {
         if (event?.id_user == session?.user?.id) {
@@ -114,7 +110,6 @@ export default function Header() {
       });
     }
   }, [session?.user?.id]);
-
   // useEffect(() => {
   //   if (session?.user?.id) {
   //     const socket = io("https://xuantuyen1207.website:6001", {
@@ -181,78 +176,61 @@ export default function Header() {
           )}
         </div>
         {/* thong bao */}
-        <div className={`${"cursor-pointer relative"} ${styles.icon_shopping_cart}`}>
-          <div
-            href={"/shoppingCart"}
-            className={styles.link_shopping_cart}
-          >
-            <span
-              className="absolute -right-1 bg-pink-500 rounded-full"
-              style={{
-                fontSize: "12px",
-                width: "18px",
-                height: "18px",
-                color: "white",
-                textAlign: "center",
-                lineHeight: "18px",
-              }}
+        <IconHoverModal
+          countItem={CountNewNotifi}
+          Icon={IoNotifications}
+        >
+          {notifications?.length === 0 && (
+            <h1 className="text-xl font-semibold text-center w-full">Notification is empty!</h1>
+          )}
+          {notifications?.map((item, index) => (
+            <Link
+              href={"/purchase"}
+              key={index}
+              className="flex gap-4 items-center"
             >
-              {CountNewNotifi}
-            </span>
-            <IoNotifications size={25} />
-          </div>
-          <div className={styles.list_product_cart}>
-            <div className={"flex flex-col gap-3 max-h-[250px] overflow-auto"}>
-              {notifications?.length === 0 && (
-                <h1 className="text-xl font-semibold text-center w-full">Notification is empty!</h1>
-              )}
-              {notifications?.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex gap-4 items-center"
-                >
-                  <p style={item?.trang_thai_thong_bao == 0 ? { color: "blue" } : { color: "#ccc" }}>
-                    {item?.thong_bao}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+              <p className={`${item?.trang_thai_thong_bao == 0 ? "text-main-100" : "text-gray-500"}`}>
+                {item?.thong_bao}
+              </p>
+              <span>{item?.ngay_thong_bao}</span>
+            </Link>
+          ))}
+        </IconHoverModal>
         {/* cart */}
-        <div className={`${"cursor-pointer relative"} ${styles.icon_shopping_cart}`}>
-          <Link
-            href={"/shoppingCart"}
-            className={styles.link_shopping_cart}
-          >
-            <span className="absolute -right-1 bg-pink-500 p-[6.5px] rounded-full"></span>
-            <LuShoppingCart size={25} />
-          </Link>
-          <div className={styles.list_product_cart}>
-            <div className={"flex flex-col gap-3"}>
+        <IconHoverModal
+          countItem={countProductInCart}
+          Icon={LuShoppingCart}
+        >
+          <div>
+            <div>
               {header_cart?.length === 0 && (
                 <h1 className="text-xl font-semibold text-center w-full">Cart is empty!</h1>
               )}
-              {header_cart?.map((item, index) => (
+              {header_cart?.slice(0, 4).map((item, index) => (
                 <div
                   key={index}
-                  className="flex gap-4 items-center"
+                  className="flex gap-4 items-center justify-between  mb-3"
                 >
-                  <div className="bg-gray-100 w-[80px] h-[80px] rounded-xl overflow-hidden flex items-center justify-center">
-                    <Image
-                      className="object-cover"
-                      width={80}
-                      height={80}
-                      alt="img"
-                      src={`${process.env.HTTPS_URL}/upload/${item?.san_pham?.hinh_anh[0]?.hinh_anh_san_pham}`}
-                    />
-                  </div>
-                  <div className={"flex-grow pr-8"}>
-                    <h1 className="font-semibold text-xl">{item?.san_pham?.ten_san_pham}</h1>
-                    <span>{item?.san_pham?.gia} $</span>
-                  </div>
+                  <Link
+                    href={`/products/${item.id_san_pham}`}
+                    className="flex gap-4 items-center hover:opacity-50"
+                  >
+                    <div className="bg-gray-100 w-[80px] h-[80px] rounded-xl overflow-hidden flex items-center justify-center">
+                      <Image
+                        className="object-cover"
+                        width={80}
+                        height={80}
+                        alt="img"
+                        src={`${process.env.HTTPS_URL}/upload/${item?.san_pham?.hinh_anh[0]?.hinh_anh_san_pham}`}
+                      />
+                    </div>
+                    <div className={"flex-grow pr-8"}>
+                      <h1 className="font-semibold text-xl">{item?.san_pham?.ten_san_pham}</h1>
+                      <span>{item?.san_pham?.gia} $</span>
+                    </div>
+                  </Link>
                   <div
-                    onClick={() => RemoveItemCard(item?.id)}
+                    onClick={() => removeItemCard(item?.id)}
                     className="p-3 bg-gray-100 hover:bg-gray-300 rounded-full"
                   >
                     <IoClose />
@@ -260,6 +238,14 @@ export default function Header() {
                 </div>
               ))}
             </div>
+            {header_cart?.length > 4 && (
+              <Link
+                href={"/shoppingCart"}
+                className="text-center text-main-100 w-full block py-2 font-semibold"
+              >
+                View more product
+              </Link>
+            )}
             <div className="mt-6 flex gap-3 justify-center">
               <Button
                 onClick={handleClickCheckout}
@@ -275,14 +261,11 @@ export default function Header() {
               </Button>
             </div>
           </div>
-        </div>
+        </IconHoverModal>
         {/* account */}
         <div>
           {session ? (
-            <div
-              className="group flex items-center w-12 h-12 cursor-pointer relative"
-              onClick={handleShowMenu}
-            >
+            <div className="group flex items-center w-12 h-12 cursor-pointer relative">
               <Image
                 src={avaReview1}
                 width={35}
@@ -292,7 +275,7 @@ export default function Header() {
                 priority={true}
               />
 
-              <div className="hidden group-hover:block w-max absolute top-full shadow-lg rounded-2xl overflow-hidden py-2  bg-gray-100 text-black-100">
+              <div className="hidden group-hover:block w-max absolute top-full shadow-lg rounded-2xl overflow-hidden py-2  bg-white text-black-100 border-[1px] border-gray-100">
                 {menuBtn.length > 0 &&
                   menuBtn.map((item, index) =>
                     item.url ? (
@@ -325,8 +308,8 @@ export default function Header() {
         </div>
       </div>
       {showChatBox && (
-        <div className="fixed bottom-0 right-0 z-10">
-          <Chatbox showChatBox={() => setShowChatBox(!showChatBox)} />
+        <div className="fixed  bottom-0 right-0 z-10 ">
+          <Chatbox />
         </div>
       )}
     </header>
