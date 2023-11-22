@@ -6,16 +6,15 @@ import axios from "axios";
 import Pagination from "@/app/components/Pagination";
 import LoadingA from "@/app/components/LoadingA";
 import { api_get_search } from "@/app/lib/api";
+import { useSelector } from "react-redux";
+import { getSearch } from "@/app/store/selector";
 
 export default function ProductPage() {
-  let valueSearch;
+  let valueSearch = useSelector(getSearch);
   const [currentPage, setCurrentPage] = useState(1);
   const [fetchData, setFetchData] = useState();
   const [price, setPrice] = useState({ gia_tien: [] });
 
-  if (typeof window !== "undefined") {
-    valueSearch = localStorage.getItem("search");
-  }
   useEffect(() => {
     axios.post(api_get_search, { search: valueSearch, gia_tien: price }).then((res) => {
       setFetchData(res.data.data);
@@ -89,7 +88,7 @@ export default function ProductPage() {
 
   return (
     <div>
-      <span className="label-1">- Search result -</span>
+      <span className="label-1">- Search result for {valueSearch} -</span>
       <div>
         <h1 className="title-1">Eye Care Products for Tired Eyes</h1>
         <div className="my-14">

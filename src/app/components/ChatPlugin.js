@@ -1,7 +1,10 @@
 "use client";
 import { Fragment, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { getShowChat } from "../store/selector";
 
 export default function ChatPlugin() {
+  const hiddenMessage = useSelector(getShowChat);
   useEffect(() => {
     var chatbox = document.getElementById("fb-customer-chat");
     chatbox.setAttribute("page_id", "157307710793077");
@@ -26,7 +29,10 @@ export default function ChatPlugin() {
   }, []);
   return (
     <Fragment>
-      <div id="fb-root"></div>
+      <div
+        id="fb-root"
+        className={`${hiddenMessage ? "hidden" : ""}`}
+      ></div>
       <div
         id="fb-customer-chat"
         className="fb-customerchat"

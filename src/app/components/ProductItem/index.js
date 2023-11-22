@@ -1,15 +1,38 @@
 import TypeProduct from "../TypeProduct";
-import Link from "next/link";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { addItemCart, fetchCart } from "@/app/store/slide/cartSlide";
+import { useSession } from "next-auth/react";
+import { getStatusCart } from "@/app/store/selector";
+import toast from "react-hot-toast";
+import Link from "next/link";
 
-export default function ProductItem({ id, name, img, sale, price, loai_sp }) {
+export default function ProductItem({ id: idProduct, name, img, sale, price, loai_sp }) {
   const priceNew = price - (price * sale) / 100;
   const { ten_loai_san_pham } = loai_sp;
+  const { data: session } = useSession();
+  const idUser = session?.user?.id;
+  const dispatch = useDispatch();
+  const getStatus = useSelector(getStatusCart);
+
+  const handleAddCart = () => {
+    const totalProduct = 1;
+    if (idUser != null) {
+      dispatch(addItemCart({ idUser, idProduct, totalProduct }));
+    } else {
+      toast.error("Yêu Cầu Đăng Nhập");
+    }
+  };
+
+  if (getStatus === "successed_add") {
+    dispatch(fetchCart(idUser));
+    toast.success("Add to cart successfully!");
+  }
 
   return (
-    <div className="w-[250px] mt-10 border-[2px] border-gray-200 rounded-3xl">
+    <div className="group relative w-[250px] mt-10 border-[2px] border-gray-200 rounded-3xl shadow-lg">
       <Link
-        href={`/products/${id}`}
+        href={`/products/${idProduct}`}
         className="relative block bg-gray-100 w-full rounded-3xl hover:opacity-80"
       >
         <Image
@@ -20,12 +43,19 @@ export default function ProductItem({ id, name, img, sale, price, loai_sp }) {
           alt="mm"
         />
         {sale !== 0 && (
-          <span className="absolute top-11 -right-10 bg-red-500 text-white font-semibold text-lg py-2 px-4 rounded-full">
-            {sale}% off
+          <span className="absolute top-5 -right-10 bg-red-500 text-white font-semibold text-base py-1 px-3 rounded-full">
+            {sale}% OFF
           </span>
         )}
       </Link>
-
+      <div
+        className="hidden group-hover:block absolute top-1/3 inset-x-0 z-10 cursor-pointer"
+        onClick={handleAddCart}
+      >
+        <div className="text-white w-max bg-main-100 font-bold text-lg p-2 rounded-3xl mx-auto">
+          Add to Cart
+        </div>
+      </div>
       <div className="flex flex-col gap-3 p-2">
         <div className="text-lg font-bold capitalize">{name}</div>
         <div className="flex gap-2 justify-between items-center">

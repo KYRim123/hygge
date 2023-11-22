@@ -29,14 +29,14 @@ import BoxCategory from "./components/BoxCategory";
 import { useDispatch } from "react-redux";
 import { fetchCart } from "./store/slide/cartSlide";
 import { useEffect } from "react";
-import { api_get_ListProduct } from "./lib/api";
+import { api_get_ListProduct, api_get_TypeProduct } from "./lib/api";
+import { updateSearch } from "./store/slide/searchSlide";
 
 //  home page
 export default function HomePage() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { data: session } = useSession();
-
   // redux
   useEffect(() => {
     if (session?.user) {
@@ -45,21 +45,21 @@ export default function HomePage() {
   }, [dispatch]);
 
   const handleShopNow = () => {
-    router.push("/cart");
+    router.push("/products");
   };
 
   const listCategory = [
-    { link: "/", icon: FaShoppingBag, text: "On sale" },
-    { link: "/", icon: SlGraph, text: "Featured" },
-    { link: "/", icon: MdOutlineMasks, text: "Masks" },
-    { link: "/", icon: GiEyelashes, text: "Eye Care" },
-    { link: "/", icon: IoWaterOutline, text: "Moisturizers" },
-    { link: "/", icon: AiFillSafetyCertificate, text: "Treatments" },
-    { link: "/", icon: BiSolidMoon, text: "Night Care" },
-    { link: "/", icon: BsSun, text: "Sun Care" },
-    { link: "/", icon: AiFillSafetyCertificate, text: "Treatments" },
-    { link: "/", icon: BiSolidMoon, text: "Night Care" },
-    { link: "/", icon: BsSun, text: "Sun Care" },
+    { icon: FaShoppingBag, text: "On sale" },
+    { icon: SlGraph, text: "Featured" },
+    { icon: MdOutlineMasks, text: "Mask" },
+    { icon: GiEyelashes, text: "Eye Care" },
+    { icon: IoWaterOutline, text: "Moisturizer" },
+    { icon: AiFillSafetyCertificate, text: "Treatment" },
+    { icon: BiSolidMoon, text: "Night Care" },
+    { icon: BsSun, text: "Sun Care" },
+    { icon: AiFillSafetyCertificate, text: "Treatment" },
+    { icon: BiSolidMoon, text: "Night Care" },
+    { icon: BsSun, text: "Sun Care" },
   ];
 
   // fetch listProduct
@@ -73,7 +73,10 @@ export default function HomePage() {
     router.push("/products");
   };
   //
-
+  const handleClickCate = (text) => {
+    dispatch(updateSearch(text));
+    router.push("/search");
+  };
   return (
     <>
       {/* // slider */}
@@ -105,7 +108,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      {/* // categories */}
       <div className="mt-10 overflow-hidden">
         <span className="label-1">- The Categories</span>
         <div className="flex items-center justify-between">
@@ -130,7 +132,7 @@ export default function HomePage() {
               <BoxCategory
                 Icon={item.icon}
                 text={item.text}
-                link={item.link}
+                onClick={() => handleClickCate(item.text)}
               />
             </SwiperSlide>
           ))}
@@ -139,7 +141,7 @@ export default function HomePage() {
         <MarginY>
           <span className="label-1">- our products</span>
           <h1 className="title-1">Explore out Products</h1>
-          {fetchData?.data && <ListProduct prop_items={fetchData.data}></ListProduct>}
+          {fetchData?.data && <ListProduct prop_items={fetchData?.data.slice(0, 8)}></ListProduct>}
           <div className="w-full text-center mt-10">
             <Button
               className={"bg-main-100 text-white"}

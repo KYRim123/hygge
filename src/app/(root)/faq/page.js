@@ -180,18 +180,6 @@ export default function FaqPage() {
         <p>Questions</p>
       </div>
       <div className="mb-[72px] flex justify-between">
-        <div className="flex">
-          <SelectDropdown
-            items={list_color}
-            title_select="Color"
-            handleSelect={handleSelectColor}
-          ></SelectDropdown>
-          <SelectDropdown
-            items={list_color}
-            title_select="Color"
-            handleSelect={handleSelectColor}
-          ></SelectDropdown>
-        </div>
         <SelectDropdown
           items={list_color}
           title_select="Color"

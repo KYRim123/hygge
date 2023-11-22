@@ -1,10 +1,8 @@
-import Link from "next/link";
-
-export default function BoxCategory({ text, link, Icon }) {
+export default function BoxCategory({ text, Icon, onClick }) {
   return (
-    <Link
-      href={link}
-      className="w-[150px] p-5 bg-gray-100 rounded-lg block hover:translate-y-1"
+    <div
+      onClick={onClick}
+      className="w-[150px] p-5 bg-gray-100 rounded-lg block hover:translate-y-1 cursor-pointer"
     >
       <div className="flex flex-col items-center gap-1">
         <Icon
@@ -13,6 +11,6 @@ export default function BoxCategory({ text, link, Icon }) {
         />
         <p className="capitalize font-medium">{text}</p>
       </div>
-    </Link>
+    </div>
   );
 }

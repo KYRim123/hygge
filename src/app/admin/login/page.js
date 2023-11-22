@@ -12,7 +12,7 @@ const LoginPage = () => {
   const router = useRouter();
 
   const [data, setData] = useState({
-    tai_khoan: "luong12345",
+    tai_khoan: "xuantuyen",
     mat_khau: "123456aA",
     role: "admin",
   });
