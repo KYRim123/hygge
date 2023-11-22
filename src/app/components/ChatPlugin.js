@@ -26,7 +26,7 @@ export default function ChatPlugin() {
   }, []);
   return (
     <Fragment>
-      <div id="fb-root" className="hidden"></div>
+      <div id="fb-root"></div>
       <div
         id="fb-customer-chat"
         className="fb-customerchat"
