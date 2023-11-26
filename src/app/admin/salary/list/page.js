@@ -19,7 +19,6 @@ export default function ListSalary() {
   const [month, set_month] = useState("");
 
   const [data, set_data] = useState();
-  console.log(list_staff);
   const fetchDataStaff = async () => {
     await axios
       .get(api_get_Nv)
@@ -73,7 +72,6 @@ export default function ListSalary() {
     });
     pdf.save(`quan_ly_luong.pdf`);
   };
-  console.log(data);
   //
   const handleDateChange = (date, dateString) => {
     set_month(dateString);
@@ -136,13 +134,16 @@ export default function ListSalary() {
                       {choose_id_staff != null ? "" : <td>{item.id_nhan_vien}</td>}
                       <td>{item.nhan_vien?.ten_nhan_vien}</td>
                       <td className={style.price}>${item.nhan_vien?.luong_co_ban}</td>
-                      <td className={style.price}>{item.cham_cong}</td>
+                      <td className={style.price}>{JSON.parse(item?.cham_cong).length}</td>
                       <td className={style.price}>{item.he_so}</td>
                       <td className={style.price}>${item.thuong}</td>
                       <td className={style.price}>
                         $
                         {(
-                          item.nhan_vien?.luong_co_ban * 1 * (item.he_so * 1) * ((item.cham_cong * 1) / 28) +
+                          item.nhan_vien?.luong_co_ban *
+                            1 *
+                            (item.he_so * 1) *
+                            ((JSON.parse(item?.cham_cong).length * 1) / 28) +
                           item.thuong * 1
                         ).toFixed(2)}
                       </td>

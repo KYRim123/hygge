@@ -7,11 +7,11 @@ const Input = (props) => {
   function validateInput(name, value) {
     switch (name) {
       case NAME_TK: {
-        const re = /[A-Za-z0-9]{3,16}$/;
+        const re = /^[a-z0-9]{3,16}$/;
         return re.test(value).toString();
       }
       case NAME_TND: {
-        const re1 = /\S/;
+        const re1 = /^[a-zA-Z0-9\sÀ-ỹ]{8,50}$/;
         return re1.test(value).toString();
       }
       case NAME_EMAIL: {
@@ -19,7 +19,7 @@ const Input = (props) => {
         return re.test(value).toString();
       }
       case NAME_MK: {
-        const re1 = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        const re1 = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,20}$/;
         return re1.test(value).toString();
       }
       case NAME_DC: {
