@@ -1,8 +1,9 @@
-.body_order {
-    border: 1px solid #ccc;
+.btn_review {
+    background-color: #00cc98;
+    float: right;
+    padding: 8px 16px;
     border-radius: 12px;
-    margin-top: 6px;
-    margin-bottom: 6px;
-    padding: 12px;
-    display: flex;
+    color: white;
+    box-shadow: 0px 0px 3px #ccc;
+    cursor: pointer;
 }
