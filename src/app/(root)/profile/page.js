@@ -6,11 +6,11 @@ import Input from "@/app/components/Input";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import LoadingA from "@/app/components/LoadingA";
-import { api_get_UserProfile, api_post_UserUpdate } from "@/app/lib/api";
+import { api_get_UserProfile, api_post_PwProfile, api_post_UserUpdate } from "@/app/lib/api";
+import Modal from "@/app/components/Modal";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -18,12 +18,12 @@ const ProfilePage = () => {
   const idUser = session?.user?.id;
   const [newImg, setNewImg] = useState("");
   const [data, setData] = useState();
+  const [showMdPw, setShowMdPw] = useState(false);
+  const [newPw, setNewPw] = useState();
 
   useEffect(() => {
     if (idUser !== null) {
-      axios
-        .post(api_get_UserProfile, { id: idUser })
-        .then((res) => setData(res.data.data));
+      axios.post(api_get_UserProfile, { id: idUser }).then((res) => setData(res.data.data));
     }
   }, [idUser]);
 
@@ -73,6 +73,22 @@ const ProfilePage = () => {
         }
       });
     }
+  };
+
+  const handleShowMdPw = () => {
+    setShowMdPw(true);
+  };
+
+  const handleChagePw = () => {
+    console.log(newPw);
+    axios
+      .post(api_post_PwProfile, { id: idUser, mat_khau: newPw })
+      .then((res) => {
+        toast.success("Password changed successfully!");
+      })
+      .catch((err) => {
+        toast.error("Password change failed!");
+      });
   };
 
   const handleCancel = () => {
@@ -139,12 +155,12 @@ const ProfilePage = () => {
           name="dia_chi"
           onChange={onChange}
         />
-        <Link
-          className="underline text-xl hover:text-main-100"
-          href={"/"}
+        <div
+          className="hover:text-main-100 cursor-pointer text-lg border-[1px] border-white-300 py-1 px-1 rounded-xl w-max bg-gray-300"
+          onClick={handleShowMdPw}
         >
           Change password
-        </Link>
+        </div>
       </div>
       <div className="mt-5 flex gap-2 justify-center">
         <Button
@@ -160,6 +176,23 @@ const ProfilePage = () => {
           Save
         </Button>
       </div>
+      {/* quen mat khau */}
+      {showMdPw && (
+        <Modal
+          setShowModal={setShowMdPw}
+          title="Do you want to change your password ?"
+          nameButton="Change"
+          handleOnClick={handleChagePw}
+        >
+          <Input
+            label="New Password"
+            type="text"
+            value={newPw}
+            name="password"
+            onChange={(e) => setNewPw(e.target.value)}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

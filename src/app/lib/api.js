@@ -83,7 +83,11 @@ export const api_get_Check = `${URL}/api/luong/check-cham-cong`;
 export const api_get_ChamCong = `${URL}/api/luong/cham-cong`;
 // kho
 export const api_get_Kho = `${URL}/api/kho/product`;
+// faq client
+export const api_get_faq = `${URL}/api/faq/list`;
 // danh gia
 export const api_post_ListReview = `${URL}/api/danh-gia/list-review`;
 export const api_post_WaitReview = `${URL}/api/danh-gia/wait-review`;
 export const api_post_Review = `${URL}/api/danh-gia/review`;
+// change password profile
+export const api_post_PwProfile = `${URL}/api/user/change-password`;
