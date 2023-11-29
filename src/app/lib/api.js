@@ -64,7 +64,7 @@ export const api_post_PayMent = "https://api.vietqr.io/v2/generate";
 export const api_get_ChatAdmin = `${URL}/api/chat/admin`;
 export const api_get_Message = `${URL}/api/message`;
 export const api_get_ChatUser = `${URL}/api/chat/user`;
-// faq
+// faq admin
 export const api_get_FaqTitleList = `${URL}/api/chu-de-faq/list`;
 export const api_post_FaqTitleCreate = `${URL}/api/chu-de-faq/create`;
 export const api_post_FaqList = `${URL}/api/faq/list-faq`;
@@ -81,3 +81,5 @@ export const api_post_ChucVuQuyenHan = `${URL}/api/chuc-vu/quyen-han`;
 export const api_get_Luong = `${URL}/api/luong/select`;
 // kho
 export const api_get_Kho = `${URL}/api/kho/product`;
+// faq client
+export const api_get_faq = `${URL}/api/faq/list`;

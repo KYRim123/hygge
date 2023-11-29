@@ -1,9 +1,12 @@
 "use client";
 import BreadcrumbsList from "@/app/components/BreadcrumbsList";
-import { useState } from "react";
-import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import NewLetter from "@/app/components/Newletter";
 import SelectDropdown from "@/app/components/SelectDropdown";
+import axios from "axios";
+import { api_get_FaqTitleList, api_get_faq } from "@/app/lib/api";
+import LoadingA from "@/app/components/LoadingA";
+import QuestionFaq from "./QuestionFaq";
+import { useEffect, useState } from "react";
 
 const breadcrumbsList = [
   {
@@ -20,226 +23,85 @@ const breadcrumbsList = [
   },
 ];
 
-const FAQ = [
-  {
-    title: "General",
-    content: [
-      {
-        id: 1,
-        title: "How do I place an order on your website?",
-        answer:
-          "All you need to do to place an order on our wesbite is to choose the product that you would like to buy, then add it to cart and pay for it using any of the supported payment methods.",
-        isHidden: true,
-      },
-      {
-        id: 2,
-        title: "What is your return policy?",
-        answer:
-          "All you need to do to place an order on our wesbite is to choose the product that you would like to buy, then add it to cart and pay for it using any of the supported payment methods.",
-        isHidden: true,
-      },
-      {
-        id: 3,
-        title: "Do you offer an option to send a product as a gift?",
-        answer:
-          "All you need to do to place an order on our wesbite is to choose the product that you would like to buy, then add it to cart and pay for it using any of the supported payment methods.",
-        isHidden: true,
-      },
-    ],
-  },
-  {
-    title: "Checkout",
-    content: [
-      {
-        id: 1,
-        title: "What payment methods do you accept?",
-        answer:
-          "All you need to do to place an order on our wesbite is to choose the product that you would like to buy, then add it to cart and pay for it using any of the supported payment methods.",
-        isHidden: true,
-      },
-      {
-        id: 2,
-        title: "Do you offer an option to pay for the product over time?",
-        answer: "Yes, we do. We have partnered with a few companies that offer such option.",
-        isHidden: true,
-      },
-    ],
-  },
-  {
-    title: "Shipping",
-    content: [
-      {
-        id: 1,
-        title: "Do I have to pay for the shipping?",
-        answer: "Yes, we do. We have partnered with a few companies that offer such option.",
-        isHidden: true,
-      },
-      {
-        id: 2,
-        title: "How long does it take for you to dispatch my order?",
-        answer: "Yes, we do. We have partnered with a few companies that offer such option.",
-        isHidden: true,
-      },
-      {
-        id: 3,
-        title: "What shipping company do you use?",
-        answer: "Yes, we do. We have partnered with a few companies that offer such option.",
-        isHidden: true,
-      },
-      {
-        id: 4,
-        title: "How long does it usually take for my order to arrive?",
-        answer: "Yes, we do. We have partnered with a few companies that offer such option.",
-        isHidden: true,
-      },
-    ],
-  },
-  {
-    title: "Discounts",
-    content: [
-      {
-        id: 1,
-        title: "Do you offer any discounts on your website?",
-        answer: "Yes, we do. We have partnered with a few companies that offer such option.",
-        isHidden: true,
-      },
-    ],
-  },
-  {
-    title: "Other",
-    content: [
-      {
-        id: 1,
-        title: "Where can I find the reviews?",
-        answer: "Please visit our reviews page to find out more about that.",
-        isHidden: true,
-      },
-      {
-        id: 2,
-        title: " How do I contact you?",
-        answer: "Yes, we do. We have partnered with a few companies that offer such option.",
-        isHidden: true,
-      },
-    ],
-  },
-];
-
-const list_color = [
-  {
-    id: 1,
-    name: "Red",
-  },
-  {
-    id: 2,
-    name: "Blue",
-  },
-  {
-    id: 3,
-    name: "Green",
-  },
-  {
-    id: 4,
-    name: "Black",
-  },
-];
-
 export default function FaqPage() {
-  const [data, setData] = useState(FAQ);
-  const [firstLoadPage, setFirstLoadPage] = useState(true);
+  const [listFaq, setListFaq] = useState([]);
+  const [listTitle, setListTile] = useState();
+  const [crIdtitle, setCrIdTitle] = useState();
 
-  const showData = (index, contentIndex) => {
-    setData((prev) => {
-      const newData = [...prev];
-      newData[index].content[contentIndex].isHidden = false;
-      setFirstLoadPage(false);
+  useEffect(() => {
+    const fetchFAQ = axios
+      .get(api_get_faq)
+      .then((res) => res?.data.data)
+      .catch((err) => err);
+    const fetchSelect = axios
+      .get(api_get_FaqTitleList)
+      .then((res) => res?.data.data)
+      .catch((err) => err);
 
-      return newData;
-    });
-  };
+    Promise.all([fetchFAQ, fetchSelect])
+      .then(([listFaq, listSelect]) => {
+        setListFaq(listFaq);
+        const newListTitle = listSelect.map((item) => {
+          return { id: item.id, name: item.ten_chu_de };
+        });
+        newListTitle.push({ id: null, name: "All" });
+        setListTile(newListTitle);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-  const hiddenData = (index, contentIndex) => {
-    setData((prev) => {
-      const newData = [...prev];
-      newData[index].content[contentIndex].isHidden = true;
-      setFirstLoadPage(false);
-
-      return newData;
-    });
-  };
+  if (listFaq.length === 0) {
+    return <LoadingA />;
+  }
 
   const handleSelectColor = (id, name) => {
-    console.log(id, name);
+    setCrIdTitle(id);
   };
 
+  function findArrayInTitle(array, targetId) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id === targetId) {
+        return [array[i]];
+      }
+    }
+    return array;
+  }
+
   return (
-    <div className="">
+    <div>
       <BreadcrumbsList arr={breadcrumbsList} />
       <p className="text-blue-500 text-base italic font-semibold mb-2">- Find the Answers</p>
       <div className="text-[40px] font-bold leading-[56px] mb-[72px]">
         <p>Frequently Asked </p>
         <p>Questions</p>
       </div>
-      <div className="mb-[72px] flex justify-between">
+      <div className="w-full ml-[100%]">
         <SelectDropdown
-          items={list_color}
-          title_select="Color"
+          items={listTitle}
+          title_select="All"
           handleSelect={handleSelectColor}
         ></SelectDropdown>
       </div>
-      {data.map((item, index) => {
-        return (
-          <div
-            className="mb-36"
-            key={index}
-          >
-            <p className="text-[32px] font-bold leading-[48px] mb-12">{item.title}</p>
-            <div className="grid grid-cols-2 ">
-              {item.content.map((contentItem, contentIndex) => {
-                return (
-                  <div
-                    className={`${contentIndex % 2 !== 0 ? "pl-12" : "pr-6"}
-                    ${contentIndex > 1 ? "mt-[72px]" : null}
-                    `}
+      {listFaq &&
+        findArrayInTitle(listFaq, crIdtitle).map((item, index) => {
+          return (
+            <div
+              className="mb-36"
+              key={index}
+            >
+              <h1 className="text-[32px] font-bold leading-[48px] mb-12">{item?.ten_chu_de}</h1>
+              <div className="flex gap-8 justify-between flex-wrap">
+                {item?.f_a_q.map((contentItem, contentIndex) => (
+                  <QuestionFaq
                     key={contentIndex}
-                  >
-                    <div className="flex justify-between items-start">
-                      <p className="text-2xl font-semibold max-w-lg leading-10">
-                        {contentIndex + 1}.{contentItem.title}
-                      </p>
-
-                      <button
-                        className="border-inherit border-[1px] w-12 h-12 flex justify-center items-center rounded-full"
-                        onClick={() => {
-                          contentItem.isHidden
-                            ? showData(index, contentIndex)
-                            : hiddenData(index, contentIndex);
-                        }}
-                      >
-                        {contentItem.isHidden ? (
-                          <BiChevronDown
-                            size={34}
-                            className={firstLoadPage || "animate-spin0to180"}
-                          />
-                        ) : (
-                          <BiChevronUp
-                            size={34}
-                            className={"animate-spin180to0"}
-                          />
-                        )}
-                      </button>
-                    </div>
-                    {contentItem.isHidden ? null : (
-                      <p className="max-w-lg pt-[10px] text-[18px] leading-8 animate-fade-down animate-once animate-ease-out">
-                        {contentItem.answer}
-                      </p>
-                    )}
-                  </div>
-                );
-              })}
+                    contentItem={contentItem}
+                    contentIndex={contentIndex}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
 
       <NewLetter />
     </div>
