@@ -74,7 +74,7 @@ export default function ListStatistics() {
     labels?.forEach((el) => {
       const sum = items?.reduce(
         (accumulator, currentItem) =>
-          el == currentItem.Date ? accumulator + currentItem.Count : accumulator,
+          el == currentItem.Date ? accumulator * 1 + currentItem.Count * 1 : accumulator * 1,
         0,
       );
       data.push(sum);
@@ -90,7 +90,7 @@ export default function ListStatistics() {
     labels?.forEach((el) => {
       const sum = items?.reduce(
         (accumulator, currentItem) =>
-          el == currentItem.Date ? accumulator + currentItem.Price : accumulator,
+          el == currentItem.Date ? accumulator * 1 + currentItem.Price * 1 : accumulator * 1,
         0,
       );
       data.push(sum);

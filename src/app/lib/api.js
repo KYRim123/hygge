@@ -79,7 +79,11 @@ export const api_post_ChucVuCreate = `${URL}/api/chuc-vu/create`;
 export const api_post_ChucVuQuyenHan = `${URL}/api/chuc-vu/quyen-han`;
 // luong
 export const api_get_Luong = `${URL}/api/luong/select`;
+export const api_get_Check = `${URL}/api/luong/check-cham-cong`;
+export const api_get_ChamCong = `${URL}/api/luong/cham-cong`;
 // kho
 export const api_get_Kho = `${URL}/api/kho/product`;
-// faq client
-export const api_get_faq = `${URL}/api/faq/list`;
+// danh gia
+export const api_post_ListReview = `${URL}/api/danh-gia/list-review`;
+export const api_post_WaitReview = `${URL}/api/danh-gia/wait-review`;
+export const api_post_Review = `${URL}/api/danh-gia/review`;
