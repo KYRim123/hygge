@@ -19,7 +19,8 @@ const ProfilePage = () => {
   const [newImg, setNewImg] = useState("");
   const [data, setData] = useState();
   const [showMdPw, setShowMdPw] = useState(false);
-  const [newPw, setNewPw] = useState();
+  const [newPw, setNewPw] = useState("");
+  const disabledBtChangePw = newPw === "" ? true : false;
 
   useEffect(() => {
     if (idUser !== null) {
@@ -80,7 +81,6 @@ const ProfilePage = () => {
   };
 
   const handleChagePw = () => {
-    console.log(newPw);
     axios
       .post(api_post_PwProfile, { id: idUser, mat_khau: newPw })
       .then((res) => {
@@ -183,6 +183,7 @@ const ProfilePage = () => {
           title="Do you want to change your password ?"
           nameButton="Change"
           handleOnClick={handleChagePw}
+          disabled={disabledBtChangePw}
         >
           <Input
             label="New Password"

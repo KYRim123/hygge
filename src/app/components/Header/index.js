@@ -180,21 +180,35 @@ export default function Header() {
           countItem={CountNewNotifi}
           Icon={IoNotifications}
         >
-          {notifications?.length === 0 && (
-            <h1 className="text-xl font-semibold text-center w-full">Notification is empty!</h1>
-          )}
-          {notifications?.map((item, index) => (
-            <Link
-              href={"/purchase"}
-              key={index}
-              className="flex gap-4 items-center"
-            >
-              <p className={`${item?.trang_thai_thong_bao == 0 ? "text-main-100" : "text-gray-500"}`}>
-                {item?.thong_bao}
-              </p>
-              <span>{item?.ngay_thong_bao}</span>
-            </Link>
-          ))}
+          <div className="h-60 overflow-y-hidden">
+            {notifications?.length === 0 && (
+              <h1 className="text-xl font-semibold text-center w-full">Notification is empty!</h1>
+            )}
+            {notifications?.map((item, index) => (
+              <Link
+                href={"/purchase"}
+                key={index}
+                className="flex gap-4 justify-between hover:underline"
+              >
+                <p
+                  className={`${
+                    item?.trang_thai_thong_bao == 0 ? "text-main-100" : "text-gray-500"
+                  } basis-[70%]`}
+                >
+                  {item?.thong_bao}
+                </p>
+                <span className="w-max">{item?.ngay_thong_bao}</span>
+              </Link>
+            ))}
+            {notifications?.length > 10 && (
+              <Link
+                href={"/purchase"}
+                className="absolute bottom-0 inset-x-0 text-center cursor-pointer hover:text-main-100 hover:underline"
+              >
+                View more
+              </Link>
+            )}
+          </div>
         </IconHoverModal>
         {/* cart */}
         <IconHoverModal

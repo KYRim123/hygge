@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import ClickOutSide from "../hook/ClickOutSide";
 
-export default function Modal({ setShowModal, title, children, nameButton, handleOnClick }) {
+export default function Modal({ setShowModal, title, children, nameButton, handleOnClick, ...modalProps }) {
   const selectRef = useRef(null);
   const handleCloseBox = () => {
     setShowModal(false);
@@ -46,7 +46,10 @@ export default function Modal({ setShowModal, title, children, nameButton, handl
                     Close
                   </button>
                   <button
-                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    disabled={modalProps.disabled}
+                    className={`${
+                      modalProps.disabled ? "cursor-no-drop" : "hover:shadow-lg active:bg-emerald-600"
+                    } bg-emerald-500 text-white font-bold uppercase text-sm px-6 py-3 rounded shadow outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`}
                     type="button"
                     onClick={() => {
                       setShowModal(false);

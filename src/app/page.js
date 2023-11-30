@@ -75,7 +75,6 @@ export default function HomePage() {
   //
   const handleClickCate = (text) => {
     dispatch(updateSearch(text));
-    router.push("/search");
   };
   return (
     <>
