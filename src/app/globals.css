@@ -6,6 +6,17 @@
 }
 @tailwind components;
 @tailwind utilities;
+html {
+  scroll-behavior: smooth;
+}
+/* scroll */
+::-webkit-scrollbar {
+  @apply bg-gray-200 rounded-lg w-3;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-main-100 hover:bg-gray-800 hover:border-[1px] hover:border-white  rounded-lg;
+}
 
 .label-1 {
   @apply text-blue-500 italic font-semibold capitalize;

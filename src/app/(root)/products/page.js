@@ -34,10 +34,10 @@ export default function ProductPage() {
     return <LoadingA />;
   }
 
- 
   // pagination
   const count_product = fetchData?.total;
-  const pageCount = Math.ceil(count_product / 12);
+  const displayNP = 12;
+  const pageCount = Math.ceil(count_product / displayNP);
   // handle change page
   const onPageChange = (e) => {
     setCurrentPage(e.selected + 1);

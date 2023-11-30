@@ -1,6 +1,9 @@
+import Link from "next/link";
+
 export default function BoxCategory({ text, Icon, onClick }) {
   return (
-    <div
+    <Link
+      href={"/search"}
       onClick={onClick}
       className="w-[150px] p-5 bg-gray-100 rounded-lg block hover:translate-y-1 cursor-pointer"
     >
@@ -11,6 +14,6 @@ export default function BoxCategory({ text, Icon, onClick }) {
         />
         <p className="capitalize font-medium">{text}</p>
       </div>
-    </div>
+    </Link>
   );
 }
