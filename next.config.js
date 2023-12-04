@@ -14,6 +14,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "xuantuyen1207.website",
       },
+       {
+        protocol: "https",
+        hostname: "api.vietqr.io",
+      },
     ],
   },
 };
