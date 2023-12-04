@@ -1,6 +1,5 @@
 "use client";
 import BreadcrumbsList from "@/app/components/BreadcrumbsList";
-import NewLetter from "@/app/components/Newletter";
 import Input from "@/app/components/Input";
 import { useState } from "react";
 import Button from "@/app/components/Button";

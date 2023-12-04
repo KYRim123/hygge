@@ -3,7 +3,6 @@ import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
 import { NAME_MK, NAME_TK } from "@/app/lib/constants";
 import { signIn } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
