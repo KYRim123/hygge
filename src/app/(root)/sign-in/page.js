@@ -10,11 +10,12 @@ import { api_get_UserCreate } from "@/app/lib/api";
 
 const SignInPage = () => {
   const router = useRouter();
+  const emailInLocalStore = localStorage.getItem("email");
   const [data, setData] = useState({
     tai_khoan: "",
     mat_khau: "",
     ten_nguoi_dung: "",
-    email: "",
+    email: emailInLocalStore,
     dia_chi: "",
     so_dien_thoai: "",
   });

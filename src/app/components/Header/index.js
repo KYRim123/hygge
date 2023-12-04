@@ -46,6 +46,8 @@ export default function Header() {
     { nameMenu: "product reviews", url: "/product_reviews", Icon: MdOutlineRateReview },
     { nameMenu: "sign out", Icon: IoLogOutOutline, onClick: () => signOut() },
   ];
+  const avatarUser = session?.user.avatar;
+
   const handleShowInput = () => {
     setShowInput(!showInput);
   };
@@ -281,11 +283,11 @@ export default function Header() {
           {session ? (
             <div className="group flex items-center w-12 h-12 cursor-pointer relative">
               <Image
-                src={avaReview1}
+                src={avatarUser ? `${process.env.HTTPS_URL}/upload/${avatarUser}` : avaReview1}
                 width={35}
                 height={35}
                 alt="avatar"
-                className="object-cover rounded-full"
+                className="object-cover rounded-full w-[35px] h-[35px] border-[1px] border-main-100"
                 priority={true}
               />
 
