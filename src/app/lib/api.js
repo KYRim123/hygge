@@ -83,6 +83,8 @@ export const api_get_Check = `${URL}/api/luong/check-cham-cong`;
 export const api_get_ChamCong = `${URL}/api/luong/cham-cong`;
 // kho
 export const api_get_Kho = `${URL}/api/kho/product`;
+export const api_post_WarehouseCreate = `${URL}/api/kho/create`;
+export const api_get_Warehouse = `${URL}/api/kho/kho`;
 // faq client
 export const api_get_faq = `${URL}/api/faq/list`;
 // danh gia
