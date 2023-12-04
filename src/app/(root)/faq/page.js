@@ -69,7 +69,7 @@ export default function FaqPage() {
 
   return (
     <div>
-      <BreadcrumbsList arr={breadcrumbsList} />
+      {/* <BreadcrumbsList arr={breadcrumbsList} /> */}
       <p className="text-blue-500 text-base italic font-semibold mb-2">- Find the Answers</p>
       <div className="text-[40px] font-bold leading-[56px] mb-[72px]">
         <p>Frequently Asked </p>

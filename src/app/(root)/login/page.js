@@ -1,7 +1,6 @@
 "use client";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
-import { NAME_MK, NAME_TK } from "@/app/lib/constants";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,30 +11,32 @@ const LoginPage = () => {
   const router = useRouter();
 
   const [data, setData] = useState({
-    tai_khoan: "luong12345",
-    mat_khau: "123456aA",
+    tai_khoan: "",
+    mat_khau: "",
   });
 
   const inputs = [
     {
       id: "1",
-      name: NAME_TK,
+      name: "",
+      ten_input: "tai_khoan",
       type: "text",
-      errorMessage: "Please User Name!",
-      label: "User name",
+      errorMessage: "Please Username!",
+      label: "Username",
       value: data.tai_khoan,
     },
     {
       id: "2",
-      name: NAME_MK,
+      name: "",
+      ten_input: "mat_khau",
       type: "password",
       errorMessage: "Please Enter Your Password!",
       label: "Password",
       value: data.mat_khau,
     },
   ];
-  const onChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+  const onChange = (e, ten_input) => {
+    setData({ ...data, [ten_input]: e.target.value });
   };
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -64,7 +65,7 @@ const LoginPage = () => {
                 key={input.id}
                 width={"w-[350px]"}
                 {...input}
-                onChange={onChange}
+                onChange={(e) => onChange(e, input.ten_input)}
               />
             ))}
           </div>
@@ -85,7 +86,7 @@ const LoginPage = () => {
           </Button>
           <Link
             className="underline text-xl hover:text-main-100"
-            href={"/"}
+            href={"/forgot_pw"}
           >
             Forgot Password ?
           </Link>

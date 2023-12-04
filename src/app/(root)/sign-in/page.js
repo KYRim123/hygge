@@ -11,13 +11,14 @@ import { api_get_UserCreate } from "@/app/lib/api";
 const SignInPage = () => {
   const router = useRouter();
   const [data, setData] = useState({
-    tai_khoan: "luong12345",
-    mat_khau: "123456aA",
-    ten_nguoi_dung: "nguyen thanh luong",
-    email: "luong7002351@gmail.com",
-    dia_chi: "dien hoa, dien ban, quang nam",
-    so_dien_thoai: "0378925111",
+    tai_khoan: "",
+    mat_khau: "",
+    ten_nguoi_dung: "",
+    email: "",
+    dia_chi: "",
+    so_dien_thoai: "",
   });
+  const checkInputEmpt = Object.values(data).includes("");
 
   const handleOnLogin = (e) => {
     e.preventDefault();
@@ -47,7 +48,7 @@ const SignInPage = () => {
       name: NAME_TK,
       type: "text",
       errorMessage: "User name must be 3-16 characters and only lowercase letters!",
-      label: "User Name",
+      label: "Username",
       value: data.tai_khoan,
     },
     {
@@ -117,6 +118,7 @@ const SignInPage = () => {
             className={"bg-main-100 text-white w-[250px] hover:bg-red-600"}
             onClick={handleSubmit}
             type={"submit"}
+            disabled={checkInputEmpt}
           >
             Create Account
           </Button>

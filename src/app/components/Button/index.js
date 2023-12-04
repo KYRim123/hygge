@@ -1,9 +1,11 @@
-const Button = ({ className, children, onClick, props }) => {
+const Button = ({ className, children, onClick, ...buttonProps }) => {
   return (
     <button
-      className={`text-center font-bold cursor-pointer rounded-full px-[30px] py-[15px] ${className}`}
+      className={`${
+        buttonProps.disabled ? "cursor-no-drop" : "cursor-pointer"
+      } text-center font-bold rounded-full px-[30px] py-[15px] ${className}`}
       onClick={onClick || null}
-      {...props}
+      {...buttonProps}
     >
       {children}
     </button>
