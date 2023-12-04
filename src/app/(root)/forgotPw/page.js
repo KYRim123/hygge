@@ -60,4 +60,4 @@ const ForgotPwPage = () => {
   );
 };
 
-export default page;
+export default ForgotPwPage;
