@@ -7,7 +7,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { api_get_CategoryLSP, api_get_Kho, api_get_ProductListId, api_get_TypeProduct } from "@/app/lib/api";
 
-export default function ListUser() {
+export default function ListInputWareHouse() {
   const [list_dsp, set_list_dsp] = useState([]);
   const [list_lsp, set_list_lsp] = useState([]);
   const [list_sp, set_list_sp] = useState([]);

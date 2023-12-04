@@ -33,7 +33,15 @@ const Sidebar = () => {
       child: [{ name: "Thêm Nhân Viên", link: "/admin/staff/create", Icon: GrFormNextLink }],
     },
     { name: "Quản lý chức vụ", link: "/admin/position", Icon: RiAdminFill },
-    { name: "Quản lý kho", link: "/admin/warehouse", Icon: BsFillInboxFill },
+    {
+      name: "Quản lý kho",
+      link: "/admin/warehouse/list",
+      Icon: BsFillInboxFill,
+      child: [
+        { name: "Quản lý nhập kho", link: "/admin/warehouse/warehouse", Icon: GrFormNextLink },
+        { name: "Nhập kho", link: "/admin/warehouse/create", Icon: GrFormNextLink },
+      ],
+    },
     { name: "Quản lý người dùng", link: "/admin/user/list", Icon: BsFillPersonFill },
     { name: "Thống kê", link: "/admin/thongke/list", Icon: GiNotebook },
     { name: "Tin nhắn", link: "/admin/chat", Icon: AiFillMessage },
