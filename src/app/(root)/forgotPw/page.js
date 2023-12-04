@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const page = () => {
+const ForgotPwPage = () => {
   const [username, setUsername] = useState("");
   const router = useRouter();
   const handleSendUn = async () => {
