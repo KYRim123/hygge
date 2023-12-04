@@ -27,7 +27,13 @@ const SignInPage = () => {
     e.preventDefault();
     axios
       .post(api_get_UserCreate, data)
-      .then((res) => toast.success("Create Anaccount is successfull !"))
+      .then((res) => {
+        if (res?.data?.status == true) {
+          toast.success("Create Anaccount is successfull !");
+        } else {
+          toast.error(res?.data?.message);
+        }
+      })
       .catch((err) => toast.error("Create Anaccount is failure !"));
   };
 
