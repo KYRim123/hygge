@@ -14,7 +14,7 @@ const LoginPage = () => {
     tai_khoan: "",
     mat_khau: "",
   });
-
+  const checkInputEmpt = Object.values(data).includes("");
   const inputs = [
     {
       id: "1",
@@ -73,6 +73,7 @@ const LoginPage = () => {
             className={"bg-main-100 text-white w-full hover:bg-red-600"}
             onClick={handleLogin}
             type={"submit"}
+            disabled={checkInputEmpt}
           >
             Login
           </Button>
