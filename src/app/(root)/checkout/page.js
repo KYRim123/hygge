@@ -520,10 +520,12 @@ export default function PageCheckOut() {
                                 checked={selected_option == bank.bin}
                                 onChange={() => handleRadioChange(bank.bin)}
                               />
-                              <img
+                             <Image
+                                width={100}
+                                height={50}
                                 src={bank.logo}
                                 alt={bank.short_name}
-                                width="100"
+                                className="object-cover w-[100px] h-[50px]"
                               />
                             </div>
                           </label>
