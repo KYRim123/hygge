@@ -14,7 +14,12 @@ const NewLetter = () => {
   const onChageInput = (e) => {
     setEmail(e.target.value);
   };
-   return (
+  
+  if (window !== "undefine") {
+    localStorage.setItem("email", email);
+  }
+
+  return (
     <div className="p-20 text-center bg-gray-100 mt-20 rounded-3xl">
       <span className="label-1">- Our Newsletter</span>
       <h1 className="title-1">Sign Up to our Newsletter</h1>
