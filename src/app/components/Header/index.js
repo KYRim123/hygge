@@ -19,7 +19,7 @@ import Chatbox from "../chatbox";
 import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { getDataCart, getShowChat } from "@/app/store/selector";
-import { delItemCart } from "@/app/store/slide/cartSlide";
+import { delItemCart, fetchCart } from "@/app/store/slide/cartSlide";
 import axios from "axios";
 import { api_post_UserThongBao } from "@/app/lib/api";
 import { setShowChat } from "@/app/store/slide/showItemSlide";
@@ -47,6 +47,12 @@ export default function Header() {
     { nameMenu: "sign out", Icon: IoLogOutOutline, onClick: () => signOut() },
   ];
   const avatarUser = session?.user.avatar;
+  // redux
+  useEffect(() => {
+    if (session?.user) {
+      dispatch(fetchCart(session?.user.id));
+    }
+  }, [dispatch]);
 
   const handleShowInput = () => {
     setShowInput(!showInput);

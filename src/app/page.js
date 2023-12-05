@@ -38,11 +38,11 @@ export default function HomePage() {
   const dispatch = useDispatch();
   const { data: session } = useSession();
   // redux
-  useEffect(() => {
-    if (session?.user) {
-      dispatch(fetchCart(session?.user.id));
-    }
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (session?.user) {
+  //     dispatch(fetchCart(session?.user.id));
+  //   }
+  // }, [dispatch]);
 
   const handleShopNow = () => {
     router.push("/products");
