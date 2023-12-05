@@ -520,11 +520,7 @@ export default function PageCheckOut() {
                                 checked={selected_option == bank.bin}
                                 onChange={() => handleRadioChange(bank.bin)}
                               />
-<<<<<<< Updated upstream
-                             <Image
-=======
                               <Image
->>>>>>> Stashed changes
                                 width={100}
                                 height={50}
                                 src={bank.logo}
