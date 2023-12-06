@@ -46,7 +46,7 @@ export default function Header() {
     { nameMenu: "product reviews", url: "/product_reviews", Icon: MdOutlineRateReview },
     { nameMenu: "sign out", Icon: IoLogOutOutline, onClick: () => signOut() },
   ];
-  const avatarUser = session?.user.avatar;
+  const avatarUser = session?.user?.avatar;
   // redux
   useEffect(() => {
     if (session?.user) {
