@@ -87,7 +87,7 @@ const LoginPage = () => {
           </Button>
           <Link
             className="underline text-xl hover:text-main-100"
-            href={"/forgot_pw"}
+            href={"/forgotPw"}
           >
             Forgot Password ?
           </Link>
