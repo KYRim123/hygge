@@ -34,7 +34,6 @@ export default function ListWareHouse() {
       });
       if (response.data.status == true) {
         set_data(response.data.data);
-        set_search("");
         set_pre_search(search);
       }
     } catch (error) {

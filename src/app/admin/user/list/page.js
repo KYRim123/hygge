@@ -52,7 +52,6 @@ export default function ListUser() {
       const response = await axios.post(url, { pre_page: pre_page, search: search });
       if (response.data.status == true) {
         set_data(response.data.data);
-        set_search("");
         set_pre_search(search);
       }
     } catch (error) {
