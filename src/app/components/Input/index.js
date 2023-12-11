@@ -32,13 +32,12 @@ const Input = (props) => {
         const re1 = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
         return re1.test(value).toString();
       }
-      case "": {
-        return value === "" ? "false" : "true";
+      default: {
+        return value === "" ? "true" : "false";
       }
     }
   }
 
-  validateInput(name, value);
   return (
     <div className={`${styles.formInput} flex flex-col flex-grow ${width}`}>
       <label htmlFor="email">{label}</label>
@@ -47,7 +46,7 @@ const Input = (props) => {
         value={value}
         className="outline-main-100 border-2 border-gray-200 py-3 px-4  rounded-full text-xl"
         onChange={onChange}
-        onBlur={() => setShowError(true)}
+        onBlur={() => setShowError(!showError)}
         show={showError ? validateInput(name, value) : false}
         {...inputProps}
       />
