@@ -14,6 +14,8 @@ import { GrClose } from "react-icons/gr";
 import { AiOutlinePlus } from "react-icons/ai";
 import { IoRemove } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { fetchCart } from "@/app/store/slide/cartSlide";
 import {
   api_get_HoaDon,
   api_get_MyCart,
@@ -47,6 +49,7 @@ export default function PageCheckOut() {
   const [data_invoice, set_data_invoice] = useState();
   const [validate_step2, set_validate_step2] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (session?.user?.id != null) {
@@ -209,12 +212,14 @@ export default function PageCheckOut() {
   const handleAccuracy = async (id) => {
     await axios
       .post(api_post_XacThucInfor, {
+        id_user: session?.user?.id,
         id: id,
         status: true,
       })
       .then((res) => {
         if (res.data.status == true) {
           set_step(4);
+          dispatch(fetchCart(session?.user.id));
         } else {
           return toast.error("Wrong Information");
         }
@@ -228,12 +233,14 @@ export default function PageCheckOut() {
     const id_invoice_local = localStorage.getItem("id_invoice");
     await axios
       .post(api_post_XacThucHoaDon, {
+        id_user: session?.user?.id,
         id: id_invoice_local,
         thanh_toan: key_list_tab == 2 ? "Chờ Xác Nhận Thanh Toán" : "Chưa Thanh Toán",
       })
       .then((res) => {
         if (res.data.status == true) {
           set_step(4);
+          dispatch(fetchCart(session?.user.id));
         } else {
           return toast.error("Wrong Information");
         }
