@@ -91,7 +91,9 @@ export const api_get_faq = `${URL}/api/faq/list`;
 export const api_post_ListReview = `${URL}/api/danh-gia/list-review`;
 export const api_post_WaitReview = `${URL}/api/danh-gia/wait-review`;
 export const api_post_Review = `${URL}/api/danh-gia/review`;
-// change password 
+// change password
 export const api_post_PwProfile = `${URL}/api/user/change-password`;
 export const api_post_getEmail = `${URL}/api/user/get-email`;
 export const api_post_sendPwToEmail = `${URL}/api/user/forgot-password`;
+export const api_post_vertiCode = `${URL}/api/user/check-code`;
+export const api_post_changePass = `${URL}/api/user/change-pass`;
