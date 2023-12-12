@@ -13,7 +13,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 const ForgotPwPage = () => {
-  const [index, setIndex] = useState(0);
+  const [crIndex, setCrIndex] = useState(0);
   const [idUser, setIdUser] = useState();
   const router = useRouter();
   const [data, setData] = useState({
@@ -21,8 +21,12 @@ const ForgotPwPage = () => {
     code: "",
     newPassword: "",
   });
-  const inputs = [
+  const objectPW = [
     {
+      btnName: "Send new password to email",
+      clickBtn: () => {
+        handleSendCode();
+      },
       id: "1",
       name: "username",
       type: "text",
@@ -31,6 +35,10 @@ const ForgotPwPage = () => {
       value: data.username,
     },
     {
+      btnName: "send",
+      clickBtn: () => {
+        handleVertiCode();
+      },
       id: "2",
       name: "code",
       type: "text",
@@ -39,32 +47,17 @@ const ForgotPwPage = () => {
       value: data.code,
     },
     {
-      id: "3",
-      name: "newPassword",
-      type: "text",
-      errorMessage: "Please enter new password!",
-      label: "Change password",
-      value: data.newPassword,
-    },
-  ];
-  const objectPW = [
-    {
-      btnName: "Send new password to email",
-      clickBtn: () => {
-        handleSendCode();
-      },
-    },
-    {
-      btnName: "send",
-      clickBtn: () => {
-        handleVertiCode();
-      },
-    },
-    {
       btnName: "change",
       clickBtn: () => {
         handleChangePass();
       },
+      id: "3",
+      name: "newPassword",
+      type: "text",
+      errorMessage:
+        "Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!",
+      label: "Change password",
+      value: data.newPassword,
     },
   ];
 
@@ -78,7 +71,7 @@ const ForgotPwPage = () => {
         setIdUser(resultGetEmail?.data.id);
         if (sendPw.status) {
           const role = 1;
-          setIndex(role);
+          setCrIndex(role);
           toast.success("Code is sent to " + resultGetEmail?.data?.email);
         } else {
           toast.success("The email was not found!");
@@ -95,7 +88,7 @@ const ForgotPwPage = () => {
       const result = await verti.data;
       if (result?.status) {
         const role = 2;
-        setIndex(role);
+        setCrIndex(role);
         toast.success("Confirmation code is correct!");
       } else {
         toast.error("Confirmation code is incorrect!");
@@ -106,7 +99,6 @@ const ForgotPwPage = () => {
     if (data.code !== "") {
       const code = data.code;
       const password = data.newPassword;
-      console.log({ id: idUser, code, password });
       const changePw = await axios.post(api_post_changePass, { id: idUser, code, password });
       const result = await changePw?.data;
       if (result?.status) {
@@ -121,23 +113,31 @@ const ForgotPwPage = () => {
   const onChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
-
   return (
     <>
       <span className="label-1">-forgot password -</span>
-      <div className="max-w-md mx-auto">
-        <Input
-          {...inputs[index]}
-          onChange={onChange}
-        />
-        <Button
-          onClick={objectPW[index].clickBtn}
-          className={"bg-main-100 text-white hover:bg-red-600 mt-2"}
-          disabled={data[inputs[index].name] === "" ? true : false}
-        >
-          {objectPW[index]?.btnName}
-        </Button>
-      </div>
+      {objectPW.map(
+        (item, index) =>
+          crIndex === index && (
+            <div className="max-w-md mx-auto">
+              <Input
+                name={item.name}
+                onChange={onChange}
+                type={item.type}
+                errorMessage={item.errorMessage}
+                label={item.label}
+                value={item.value}
+              />
+              <Button
+                onClick={item.clickBtn}
+                className={"bg-main-100 text-white hover:bg-red-600 mt-2"}
+                disabled={item.value === "" ? true : false}
+              >
+                {item?.btnName}
+              </Button>
+            </div>
+          ),
+      )}
     </>
   );
 };
