@@ -16,7 +16,7 @@ export default function LogoLink() {
           height={100}
           alt="logo"
           className="object-cover"
-          priority={false}
+          priority={true}
         />
       </Link>
     </div>
