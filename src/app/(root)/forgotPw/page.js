@@ -119,7 +119,7 @@ const ForgotPwPage = () => {
       {objectPW.map(
         (item, index) =>
           crIndex === index && (
-            <div className="max-w-md mx-auto">
+            <div key={item.id} className="max-w-md mx-auto">
               <Input
                 name={item.name}
                 onChange={onChange}
