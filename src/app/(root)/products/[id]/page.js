@@ -184,8 +184,9 @@ function DetailProduct() {
                     width={300}
                     height={300}
                     src={`${process.env.HTTPS_URL}/upload/${item.hinh_anh_san_pham}`}
-                    className="object-cover w-full h-40 rounded-3xl"
+                    className="object-cover w-auto h-auto rounded-3xl"
                     alt="imgProduct"
+                    priority={true}
                   />
                 </div>
               </SwiperSlide>
@@ -197,11 +198,12 @@ function DetailProduct() {
           onClick={handleZoomImg}
         >
           <Image
-            src={`${process.env.HTTPS_URL}/upload/${listImages[currentImage].hinh_anh_san_pham}`}
+            src={`${process.env.HTTPS_URL}/upload/${listImages[currentImage]?.hinh_anh_san_pham}`}
             width={500}
             height={500}
             alt="imgProduct"
             className="object-cover p-5"
+            priority={true}
           />
         </div>
         {/* zoom image */}
@@ -216,11 +218,12 @@ function DetailProduct() {
               }`}
             >
               <Image
-                src={`${process.env.HTTPS_URL}/upload/${listImages[currentImage].hinh_anh_san_pham}`}
+                src={`${process.env.HTTPS_URL}/upload/${listImages[currentImage]?.hinh_anh_san_pham}`}
                 width={700}
                 height={500}
                 alt="imgProduct"
                 className="object-cover w-[500px] h-[500px]"
+                priority={true}
               />
               <div
                 className="absolute right-0 top-0 p-4 cursor-pointer hover:opacity-70"
