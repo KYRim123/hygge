@@ -312,6 +312,7 @@ export default function EditProduct() {
             </label>
             <Editor
               name="description"
+              value={description}
               onChange={(data) => {
                 set_description(data);
               }}

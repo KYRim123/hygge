@@ -133,7 +133,7 @@ export default function Chatbox() {
         ></input>
         <BsFillSendCheckFill
           className={style.icon_send}
-          onSubmit={submit}
+          onClick={submit}
         ></BsFillSendCheckFill>
       </form>
     </div>
