@@ -2,8 +2,8 @@ import React from "react";
 import style from "./index.module.css";
 import { AiOutlineRise } from "react-icons/ai";
 import { BsStar, BsPerson } from "react-icons/bs";
-import Button from "@/app/components/Button";
 import Image from "next/image";
+import { giayChungNhan } from "../../../../public/assets";
 
 const page = () => {
   return (
@@ -12,26 +12,19 @@ const page = () => {
         <p className={style.stage}>- Learn More</p>
         <p className={style.title}>All About Us</p>
       </div>
-      <div className={style.images_banner}>
+      <div className="w-[600px] mx-auto">
         <Image
           className="w-full h-full rounded-[64px] object-cover"
-          width={300}
-          height={250}
+          width={600}
+          height={1000}
           alt="aa"
-          src={`${process.env.HTTPS_URL}/upload/${"img"}`}
+          src={giayChungNhan}
         />
       </div>
       <div className={style.content_body_1}>
         <div className={style.content_body_left}>
           <p className={style.stage}>- How it has Started</p>
           <p className={`${style.title} mb-24`}>How and When it has All Started</p>
-          <Image
-            className=" object-cover rounded-[56px] w-full h-[560px]"
-            width={300}
-            height={250}
-            src={`${process.env.HTTPS_URL}/upload/${"img"}`}
-            alt="aa"
-          />
         </div>
         <div className={style.content_body_right}>
           <li className={`${style.text_right_top_1} ${style.text_right}`}>Natural Ingredients Only</li>
@@ -79,9 +72,6 @@ const page = () => {
             We believe that being a successful company is all about being a team.
           </p>
         </div>
-      </div>
-      <div className="flex justify-center">
-        <Button className=" bg-main-100 text-button text-[15px]">View Jobs</Button>
       </div>
     </div>
   );
