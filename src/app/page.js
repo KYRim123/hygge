@@ -1,6 +1,4 @@
 "use client";
-import Image from "next/image";
-import { imageSlide } from "../../public/assets";
 import Button from "./components/Button";
 import { useRouter } from "next/navigation";
 // icons
@@ -31,6 +29,7 @@ import { fetchCart } from "./store/slide/cartSlide";
 import { useEffect } from "react";
 import { api_get_ListProduct } from "./lib/api";
 import { updateSearch } from "./store/slide/searchSlide";
+import Slide from "./components/Slide";
 
 //  home page
 export default function HomePage() {
@@ -43,10 +42,6 @@ export default function HomePage() {
       dispatch(fetchCart(session?.user.id));
     }
   }, [dispatch]);
-
-  const handleShopNow = () => {
-    router.push("/products");
-  };
 
   const listCategory = [
     { icon: FaShoppingBag, text: "On sale" },
@@ -79,34 +74,7 @@ export default function HomePage() {
   return (
     <>
       {/* // slider */}
-      <div className=" bg-gray-100 rounded-3xl">
-        <div className="grid grid-cols-2 grid-rows-1 py-14 px-40 center">
-          <div className="my-auto">
-            <span className="label-1">- Skincare Products</span>
-            <h1 className="title-1">
-              We Offer the Best <br /> Products for your Skin
-            </h1>
-            <div className="w-[165px]">
-              <Button
-                className=" bg-main-100 text-button text-[15px]"
-                onClick={handleShopNow}
-              >
-                Shop Now
-              </Button>
-            </div>
-          </div>
-          <div>
-            <Image
-              src={imageSlide}
-              width={500}
-              height={500}
-              alt="imageSlide"
-              style={{ objectFit: "cover" }}
-              priority={true}
-            />
-          </div>
-        </div>
-      </div>
+      <Slide />
       <div className="mt-10 overflow-hidden">
         <span className="label-1">- The Categories</span>
         <div className="flex items-center justify-between">

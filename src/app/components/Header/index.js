@@ -297,7 +297,7 @@ export default function Header() {
                 priority={true}
               />
 
-              <div className="hidden group-hover:block w-max absolute top-full shadow-lg rounded-2xl overflow-hidden py-2  bg-white text-black-100 border-[1px] border-gray-100">
+              <div className="hidden z-20 group-hover:block w-max absolute top-full shadow-lg rounded-2xl overflow-hidden py-2  bg-white text-black-100 border-[1px] border-gray-100">
                 {menuBtn.length > 0 &&
                   menuBtn.map((item, index) =>
                     item.url ? (
