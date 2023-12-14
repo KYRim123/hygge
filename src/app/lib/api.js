@@ -101,3 +101,7 @@ export const api_post_changePass = `${URL}/api/user/change-pass`;
 export const api_get_listSlide = `${URL}/api/tin-tuc/list`;
 // news
 export const api_get_news = `${URL}/api/tin-tuc/view/`;
+export const api_post_createNews = `${URL}/api/tin-tuc/create`;
+export const api_get_editNews = `${URL}/api/tin-tuc/edit/`;
+export const api_post_updateNews = `${URL}/api/tin-tuc/update`;
+export const api_get_listNews = `${URL}/api/tin-tuc/list`;
