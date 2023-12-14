@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import LoadingA from "@/app/components/LoadingA";
 import { api_get_UserProfile, api_post_PwProfile, api_post_UserUpdate } from "@/app/lib/api";
 import Modal from "@/app/components/Modal";
+import { NAME_DC, NAME_EMAIL, NAME_MK, NAME_SDT, NAME_TK, NAME_TND } from "@/app/lib/constants";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -95,6 +96,33 @@ const ProfilePage = () => {
     router.push("/");
   };
 
+  const inputs = [
+    {
+      id: "1",
+      name: NAME_TK,
+      type: "text",
+      errorMessage: "User name must be 3-16 characters and only lowercase letters!",
+      label: "Username",
+      value: data.tai_khoan,
+    },
+    {
+      id: "2",
+      name: NAME_TND,
+      type: "text",
+      errorMessage: "Full name must be 9-50 characters and shouldn't include any special character!",
+      label: "Full Name",
+      value: data.ten_nguoi_dung,
+    },
+    {
+      id: "3",
+      name: NAME_EMAIL,
+      type: "email",
+      errorMessage: "It should be a valid email address!",
+      label: "Email",
+      value: data.email,
+    },
+  ];
+
   return (
     <div>
       <div className="w-full">
@@ -130,6 +158,7 @@ const ProfilePage = () => {
             value={data?.ten_nguoi_dung}
             name="ten_nguoi_dung"
             onChange={onChange}
+            errorMessage="It should be a valid email address!"
           />
         </div>
       </div>
@@ -138,22 +167,25 @@ const ProfilePage = () => {
           label="Email"
           type="email"
           value={data?.email}
-          name="email"
+          name={NAME_EMAIL}
           onChange={onChange}
+          errorMessage="It should be a valid email address!"
         />
         <Input
           label="Phone number"
           type="text"
           value={data?.so_dien_thoai}
-          name="so_dien_thoai"
+          name={NAME_SDT}
           onChange={onChange}
+          errorMessage="Please enter phone number!"
         />
         <Input
           label="Address"
           type="text"
           value={data?.dia_chi}
-          name="dia_chi"
+          name={NAME_DC}
           onChange={onChange}
+          errorMessage="Please enter address!"
         />
         <div
           className="hover:text-main-100 cursor-pointer text-lg border-[1px] border-white-300 py-1 px-1 rounded-xl w-max bg-gray-300"
@@ -189,8 +221,9 @@ const ProfilePage = () => {
             label="New Password"
             type="text"
             value={newPw}
-            name="password"
+            name={NAME_MK}
             onChange={(e) => setNewPw(e.target.value)}
+            errorMessage="Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!"
           />
         </Modal>
       )}

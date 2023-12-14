@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { avaReview1 } from "../../../../public/assets";
-import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Review() {
@@ -35,7 +34,7 @@ export default function Review() {
   ];
   const lengthdbReviews = dbReviews?.length - 1;
   const delaySlideReview = 6000;
-  
+
   useEffect(() => {
     refTimeOut.current = setTimeout(() => {
       setCrCmt(crCmt === lengthdbReviews ? 0 : crCmt + 1);

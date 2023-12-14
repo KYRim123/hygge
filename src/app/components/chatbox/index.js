@@ -11,6 +11,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { api_get_ChatUser, api_get_Message } from "@/app/lib/api";
 import { useDispatch } from "react-redux";
 import { setShowChat } from "@/app/store/slide/showItemSlide";
+import useSWR from "swr";
 
 export default function Chatbox() {
   const { data: session } = useSession();

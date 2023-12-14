@@ -32,10 +32,12 @@ const Input = (props) => {
         const re1 = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
         return re1.test(value).toString();
       }
+      
       case "newPassword": {
         const re1 = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,20}$/;
         return re1.test(value).toString();
       }
+
       default: {
         return value === "" ? "false" : "true";
       }
