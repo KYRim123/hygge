@@ -99,3 +99,5 @@ export const api_post_vertiCode = `${URL}/api/user/check-code`;
 export const api_post_changePass = `${URL}/api/user/change-pass`;
 // list slide
 export const api_get_listSlide = `${URL}/api/tin-tuc/list`;
+// news
+export const api_get_news = `${URL}/api/tin-tuc/view/`;
