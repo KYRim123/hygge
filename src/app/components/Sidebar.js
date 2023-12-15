@@ -47,7 +47,14 @@ const Sidebar = () => {
     { name: "Tin nhắn", link: "/admin/chat", Icon: AiFillMessage },
     { name: "Bảng lương", link: "/admin/salary/list", Icon: FaMoneyCheck },
     { name: "Quản lý FAQ", link: "/admin/faq", Icon: BsQuestionDiamond },
-    { name: "Tin tức", link: "/admin/news", Icon: PiNewspaperFill },
+    {
+      name: "Tin tức",
+      link: "/admin/news/list",
+      Icon: PiNewspaperFill,
+      child: [
+        { name: "Thêm Tin Tức", link: "/admin/news/create", Icon: GrFormNextLink },
+      ],
+    },
     { name: "Thoát", link: "/admin/signOut", Icon: BiLogOut },
   ];
   const [is_show, set_is_show] = useState(false);
