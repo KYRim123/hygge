@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { api_get_listNews } from "@/app/lib/api";
+import { api_get_listNews, api_post_deleteNews } from "@/app/lib/api";
 
 export default function EditNew() {
   const [data, set_data] = useState([]);
@@ -26,7 +26,16 @@ export default function EditNew() {
     fetchData();
   }, []);
 
-  const handleRemoveNews = (id) => {};
+  const handleRemoveNews = async (id) => {
+    axios.post(api_post_deleteNews, { id: id }).then((res) => {
+      if (res?.data?.status == true) {
+        set_data(res?.data?.data);
+        toast.success("Removed News Success");
+      } else {
+        toast.error("Removed News Error");
+      }
+    });
+  };
   return (
     <div className="px-6">
       {data?.map((item, index) => (
@@ -51,7 +60,7 @@ export default function EditNew() {
             </Link>
             <div
               className={style.button_new}
-              onChange={() => handleRemoveNews(id)}
+              onClick={() => handleRemoveNews(item?.id)}
             >
               Remove
             </div>

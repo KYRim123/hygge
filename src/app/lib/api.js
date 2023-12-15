@@ -105,3 +105,4 @@ export const api_post_createNews = `${URL}/api/tin-tuc/create`;
 export const api_get_editNews = `${URL}/api/tin-tuc/edit/`;
 export const api_post_updateNews = `${URL}/api/tin-tuc/update`;
 export const api_get_listNews = `${URL}/api/tin-tuc/list`;
+export const api_post_deleteNews = `${URL}/api/tin-tuc/destroy`;

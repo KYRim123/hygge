@@ -179,7 +179,7 @@ export default function CreateNew() {
               }}
               editorLoaded={editorLoaded}
             />
-            {validate && news == "" && <p style={{ color: "red" }}>* Please Input First Title</p>}
+            {validate && news == "" && <p style={{ color: "red" }}>* Please Input News</p>}
           </div>
         </div>
       </div>
