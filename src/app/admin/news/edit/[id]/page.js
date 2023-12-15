@@ -18,6 +18,7 @@ export default function EditNew() {
   const [image_news, set_image_news] = useState();
   const [image_pre, set_image_pre] = useState("");
   const [editorLoaded, setEditorLoaded] = useState(false);
+  const [validate, set_validate] = useState(false);
   const router = useRouter();
   const PARAMS = useParams().id;
 
@@ -83,6 +84,11 @@ export default function EditNew() {
 
   const handleClickEdit = async () => {
     try {
+      if (first_title == "" || last_title == "" || description == "" || news == "") {
+        set_validate(true);
+        return;
+      }
+      set_validate(false);
       const response = await axios.post(api_post_updateNews, dataPost, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -117,6 +123,7 @@ export default function EditNew() {
               value={first_title}
               onChange={(e) => set_first_title(e.target.value)}
             />
+            {validate && first_title == "" && <p style={{ color: "red" }}>* Please Input First Title</p>}
           </div>
           <div>
             <label
@@ -132,6 +139,7 @@ export default function EditNew() {
               value={last_title}
               onChange={(e) => set_last_title(e.target.value)}
             />
+            {validate && last_title == "" && <p style={{ color: "red" }}>* Please Input Last Title</p>}
           </div>
         </div>
         <div>
@@ -149,6 +157,7 @@ export default function EditNew() {
               value={description}
               onChange={(e) => set_description(e.target.value)}
             />
+            {validate && description == "" && <p style={{ color: "red" }}>* Please Input Description</p>}
           </div>
         </div>
         <div>
@@ -198,6 +207,7 @@ export default function EditNew() {
               }}
               editorLoaded={editorLoaded}
             />
+            {validate && news == "" && <p style={{ color: "red" }}>* Please Input News</p>}
           </div>
         </div>
       </div>
