@@ -9,6 +9,8 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { DatePicker, Space } from "antd";
 import { api_get_Luong, api_get_Nv } from "@/app/lib/api";
+import { useSession } from "next-auth/react";
+
 dayjs.extend(customParseFormat);
 
 const monthFormat = "YYYY/MM";
@@ -17,8 +19,17 @@ export default function ListSalary() {
   const [list_staff, set_list_staff] = useState([]);
   const [choose_id_staff, set_choose_id_staff] = useState();
   const [month, set_month] = useState("");
-
+  const { data: session } = useSession();
   const [data, set_data] = useState();
+  const [role, set_role] = useState([]);
+
+  useEffect(() => {
+    if (session?.admin?.chucvu) {
+      const array_role = JSON.parse(session?.admin?.chucvu);
+      set_role(array_role);
+    }
+  }, [session?.admin?.chucvu]);
+
   const fetchDataStaff = async () => {
     await axios
       .get(api_get_Nv)
@@ -37,12 +48,17 @@ export default function ListSalary() {
       .post(api_get_Luong, { id: choose_id_staff, month: month })
       .then((res) => {
         if (res.data.status == true) {
-          set_data(res.data.data);
+          if (role.includes(25)) {
+            set_data(res?.data?.data);
+          } else {
+            const filter = res?.data?.data.filter((item) => item.id_nhan_vien == session?.admin?.id);
+            set_data(filter);
+          }
         } else {
         }
       })
       .catch((res) => {});
-  }, [choose_id_staff, month]);
+  }, [choose_id_staff, month, role, session?.admin?.id]);
 
   useEffect(() => {
     fetchDataStaff();
@@ -89,14 +105,16 @@ export default function ListSalary() {
             onChange={handleDateChange}
           />
         </div>
-        <div className="w-[250px] ml-14">
-          <label>Chọn Nhân Viên</label>
-          <SelectDropdownAdmin
-            title_select="Chọn Nhân Viên"
-            items={list_staff}
-            handleSelect={handleSelectStaff}
-          ></SelectDropdownAdmin>
-        </div>
+        {role.includes(25) && (
+          <div className="w-[250px] ml-14">
+            <label>Chọn Nhân Viên</label>
+            <SelectDropdownAdmin
+              title_select="Chọn Nhân Viên"
+              items={list_staff}
+              handleSelect={handleSelectStaff}
+            ></SelectDropdownAdmin>
+          </div>
+        )}
       </div>
       <div>
         <div>
