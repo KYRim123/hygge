@@ -66,7 +66,7 @@ const Slide = () => {
               key={index}
               onClick={() => onClikBtnCmt(index)}
               className={`cursor-pointer w-3 h-3  rounded-full transition-colors ${
-                crSlide !== index ? "bg-white border-[1px] border-gray-600" : "bg-main-100"
+                crSlide !== index ? "bg-white border-[1px] border-gray-600" : "bg-gray-300"
               }`}
             ></span>
           ))}
