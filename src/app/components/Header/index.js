@@ -42,7 +42,7 @@ export default function Header() {
   const menuBtn = [
     { nameMenu: "profile", url: "/profile", Icon: AiOutlineProfile },
     { nameMenu: "my purchase", url: "/purchase", Icon: AiOutlineShoppingCart },
-    { nameMenu: "chat hygee", Icon: BiMessageRounded, onClick: () => dispatch(setShowChat()) },
+    { nameMenu: "chat", Icon: BiMessageRounded, onClick: () => dispatch(setShowChat()) },
     { nameMenu: "product reviews", url: "/product_reviews", Icon: MdOutlineRateReview },
     { nameMenu: "sign out", Icon: IoLogOutOutline, onClick: () => signOut() },
   ];
