@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { api_get_Category, api_get_ProductEdit, api_post_ProductUpdate } from "@/app/lib/api";
-import Editor from "@/app/components/EditorQuill/Editor";
+import Editor from "@/app/components/hook/Editor";
 
 export default function EditProduct() {
   const [name_product, set_name_product] = useState("");
@@ -311,10 +311,12 @@ export default function EditProduct() {
               Description
             </label>
             <Editor
+              name="description"
               value={description}
               onChange={(data) => {
                 set_description(data);
               }}
+              editorLoaded={editorLoaded}
             />
           </div>
         </div>
