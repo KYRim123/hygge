@@ -10,6 +10,10 @@ export const api_post_UserThongBao = `${URL}/api/thong-bao/user`;
 export const api_get_Nv = `${URL}/api/nhan-vien/list-name`;
 export const api_get_NvList = `${URL}/api/nhan-vien/list`;
 export const api_post_NvCreate = `${URL}/api/nhan-vien/create`;
+export const api_post_NvUpdate = `${URL}/api/nhan-vien/update`;
+export const api_get_NvEdit = `${URL}/api/nhan-vien/edit/`;
+export const api_post_NvRemove = `${URL}/api/nhan-vien/destroy`;
+
 // admin
 export const api_get_ThongBaoAdmin = `${URL}/api/thong-bao/admin`;
 export const api_get_TrangThaiAdmin = `${URL}/api/trang-thai/list-r`;
