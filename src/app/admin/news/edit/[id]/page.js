@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api_get_editNews, api_post_updateNews } from "@/app/lib/api";
 import { useParams } from "next/navigation";
-import Editor from "@/app/components/EditorQuill/Editor";
+import Editor from "@/app/components/hook/Editor";
 
 export default function EditNew() {
   const [first_title, set_first_title] = useState("");
@@ -201,9 +201,11 @@ export default function EditNew() {
             </label>
             <Editor
               value={news}
+              name="description"
               onChange={(data) => {
                 set_news(data);
               }}
+              editorLoaded={editorLoaded}
             />
             {validate && news == "" && <p style={{ color: "red" }}>* Please Input News</p>}
           </div>

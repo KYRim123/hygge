@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api_post_createNews } from "@/app/lib/api";
-import Editor from "@/app/components/EditorQuill/Editor";
+import Editor from "@/app/components/hook/Editor";
 
 export default function CreateNew() {
   const [first_title, set_first_title] = useState("");
@@ -174,9 +174,11 @@ export default function CreateNew() {
             </label>
             <Editor
               value={news}
+              name="description"
               onChange={(data) => {
                 set_news(data);
               }}
+              editorLoaded={editorLoaded}
             />
             {validate && news == "" && <p style={{ color: "red" }}>* Please Input News</p>}
           </div>
