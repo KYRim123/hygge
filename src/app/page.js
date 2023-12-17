@@ -18,7 +18,6 @@ import Review from "./components/Reviews";
 // others
 import NewLetter from "./components/Newletter";
 import { SwiperSlide } from "swiper/react";
-//
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import axios from "axios";
