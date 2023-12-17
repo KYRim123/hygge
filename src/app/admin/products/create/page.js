@@ -6,10 +6,10 @@ import toast from "react-hot-toast";
 import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Image from "next/image";
-import Editor from "@/app/components/hook/Editor";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api_get_Category, api_post_ProductCreate } from "@/app/lib/api";
+import Editor from "@/app/components/EditorQuill/Editor";
 
 export default function CreateProduct() {
   const [name_product, set_name_product] = useState("");
@@ -244,11 +244,10 @@ export default function CreateProduct() {
               Description
             </label>
             <Editor
-              name="description"
+              value={description}
               onChange={(data) => {
                 set_description(data);
               }}
-              editorLoaded={editorLoaded}
             />
           </div>
         </div>

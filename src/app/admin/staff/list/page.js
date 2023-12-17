@@ -5,7 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { BiFirstPage, BiLastPage } from "react-icons/bi";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import { AiOutlineFileSearch } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineFileSearch } from "react-icons/ai";
 import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import { BsSearch } from "react-icons/bs";
 import jsPDF from "jspdf";
@@ -13,7 +13,8 @@ import autoTable from "jspdf-autotable";
 import Link from "next/link";
 import Image from "next/image";
 import ShowImage from "@/app/components/ShowImage";
-import { api_get_NvList } from "@/app/lib/api";
+import { api_get_NvList, api_post_NvRemove } from "@/app/lib/api";
+import { MdDeleteForever } from "react-icons/md";
 
 const list_size = [
   { id: 1, name: 10 },
@@ -52,9 +53,11 @@ export default function ListStaff() {
   const [pre_search, set_pre_search] = useState("");
   const [is_show, set_is_show] = useState(false);
   const [img_show, set_img_show] = useState("");
+  const [pre_url, set_pre_url] = useState("");
 
   const fetchData = async (url) => {
     try {
+      set_pre_url(url);
       const response = await axios.post(url, { pre_page: pre_page, search: search });
       if (response.data.status == true) {
         set_data(response.data.data);
@@ -65,7 +68,7 @@ export default function ListStaff() {
     }
   };
   useEffect(() => {
-     fetchData(api_get_NvList);
+    fetchData(api_get_NvList);
   }, [pre_page]);
 
   const handleChangePage = (url) => {
@@ -90,6 +93,18 @@ export default function ListStaff() {
   const handleShowImage = (img) => {
     set_is_show(true);
     set_img_show(img);
+  };
+
+  const handleDeleteStaff = async (id) => {
+    try {
+      const response = await axios.post(api_post_NvRemove, { id: id });
+      if (response.data.status === true) {
+        fetchData(pre_url);
+      } else {
+      }
+    } catch (error) {
+      console.error("Lỗi xóa sản phẩm:", error);
+    }
   };
 
   return (
@@ -194,9 +209,13 @@ export default function ListStaff() {
               </td>
               <td className="remove-column">
                 <div className={style.actions}>
-                  <Link href={`${"/admin/nhan-vien/detail/" + item.id}`}>
-                    <AiOutlineFileSearch className={style.action}></AiOutlineFileSearch>
+                  <Link href={`${"/admin/staff/edit/" + item.id}`}>
+                    <AiOutlineEdit className={style.action}></AiOutlineEdit>{" "}
                   </Link>
+                  <MdDeleteForever
+                    className={style.action}
+                    onClick={() => handleDeleteStaff(item.id)}
+                  ></MdDeleteForever>
                 </div>
               </td>
             </tr>

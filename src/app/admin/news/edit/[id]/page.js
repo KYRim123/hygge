@@ -4,11 +4,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Image from "next/image";
-import Editor from "@/app/components/hook/Editor";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api_get_editNews, api_post_updateNews } from "@/app/lib/api";
 import { useParams } from "next/navigation";
+import Editor from "@/app/components/EditorQuill/Editor";
 
 export default function EditNew() {
   const [first_title, set_first_title] = useState("");
@@ -200,12 +200,10 @@ export default function EditNew() {
               News
             </label>
             <Editor
-              name="description"
               value={news}
               onChange={(data) => {
                 set_news(data);
               }}
-              editorLoaded={editorLoaded}
             />
             {validate && news == "" && <p style={{ color: "red" }}>* Please Input News</p>}
           </div>
