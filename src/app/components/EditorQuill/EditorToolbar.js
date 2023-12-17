@@ -1,3 +1,4 @@
+"client"
 import React from "react";
 import { Quill } from "react-quill";
 
