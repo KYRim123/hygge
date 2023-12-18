@@ -6,11 +6,12 @@ import { api_post_PayMent } from "@/app/lib/api";
 
 const VietQR = ({ bin, amount, accountNo, id_invoice }) => {
   const [data, set_data] = useState("");
+  const amount2 = (amount * 24000).toFixed(0);
   const dataPost = {
     accountNo: accountNo * 1,
     accountName: "BUY PRODUCT AT HYGGE",
     acqId: bin * 1,
-    amount: amount * 100,
+    amount: amount2 * 1,
     addInfo: `Number Invoice : ${id_invoice}`,
     format: "text",
     template: "compact",
