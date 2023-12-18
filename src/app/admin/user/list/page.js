@@ -35,7 +35,6 @@ const generatePDF = () => {
       { header: "Account", dataKey: "tai_khoan" },
       { header: "Phone", dataKey: "so_dien_thoai" },
       { header: "Email", dataKey: "email" },
-      { header: "Completed", dataKey: "completed" },
     ],
   });
 
@@ -128,13 +127,6 @@ export default function ListUser() {
             <th>Account</th>
             <th>Phone</th>
             <th>Email</th>
-            <th>Completed</th>
-            <th
-              dataKey="action"
-              className="remove-column"
-            >
-              View
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -146,14 +138,6 @@ export default function ListUser() {
               <td>{item.tai_khoan}</td>
               <td>{item.so_dien_thoai}</td>
               <td>{item.email}</td>
-              <td className={style.price}>$500</td>
-              <td className="remove-column">
-                <div className={style.actions}>
-                  <Link href={`${"/admin/user/detail/" + item.id}`}>
-                    <AiOutlineFileSearch className={style.action}></AiOutlineFileSearch>
-                  </Link>
-                </div>
-              </td>
             </tr>
           ))}
         </tbody>

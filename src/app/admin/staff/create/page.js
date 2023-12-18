@@ -19,6 +19,7 @@ export default function CreateStaff() {
   const [avatar, set_avatar] = useState();
   const [img_CCCD, set_img_CCCD] = useState([]);
   const [list_position, set_list_position] = useState([]);
+  const [validate, set_validate] = useState(false);
   const router = useRouter();
 
   const dataPost = {
@@ -110,6 +111,18 @@ export default function CreateStaff() {
 
   const handleClickAddNew = async () => {
     try {
+      if (
+        name == "" ||
+        account == "" ||
+        password == "" ||
+        phone == "" ||
+        salary == "" ||
+        id_position == null
+      ) {
+        set_validate(true);
+        return;
+      }
+      set_validate(false);
       const response = await axios.post(api_post_NvCreate, dataPost, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -118,6 +131,7 @@ export default function CreateStaff() {
       if (response.data.status == true) {
         router.push("/admin/staff/list");
       } else {
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.error("Lỗi khi gửi dữ liệu: ", error);
@@ -142,6 +156,7 @@ export default function CreateStaff() {
               value={name}
               onChange={(e) => set_name(e.target.value)}
             />
+            {validate && name == "" && <p style={{ color: "red" }}>* Please Input Name Staff</p>}
           </div>
         </div>
         <div className="grid md:grid-cols-2 md:gap-4">
@@ -159,6 +174,7 @@ export default function CreateStaff() {
               value={account}
               onChange={(e) => set_account(e.target.value)}
             />
+            {validate && account == "" && <p style={{ color: "red" }}>* Please Input Name Account</p>}
           </div>
           <div>
             <label
@@ -174,6 +190,7 @@ export default function CreateStaff() {
               value={password}
               onChange={(e) => set_password(e.target.value)}
             />
+            {validate && password == "" && <p style={{ color: "red" }}>* Please Input Password</p>}
           </div>
         </div>
 
@@ -192,6 +209,7 @@ export default function CreateStaff() {
               value={phone}
               onChange={(e) => set_phone(e.target.value)}
             />
+            {validate && phone == "" && <p style={{ color: "red" }}>* Please Input Number Phone</p>}
           </div>
           <div>
             <label
@@ -207,6 +225,7 @@ export default function CreateStaff() {
               value={salary}
               onChange={(e) => set_salary(e.target.value)}
             />
+            {validate && salary == "" && <p style={{ color: "red" }}>* Please Input Salary</p>}
           </div>
           <div>
             <label
@@ -221,6 +240,7 @@ export default function CreateStaff() {
               title_select="Chức Vụ"
               handleSelect={handleSelectPosition}
             ></SelectDropdownAdmin>
+            {validate && id_position == null && <p style={{ color: "red" }}>* Please Choose Position</p>}
           </div>
         </div>
 

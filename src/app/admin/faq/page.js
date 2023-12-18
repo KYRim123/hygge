@@ -8,7 +8,15 @@ import Modal from "@/app/components/Modal";
 import TextArea from "antd/es/input/TextArea";
 import { AiOutlineEdit } from "react-icons/ai";
 import { CiCircleRemove } from "react-icons/ci";
-import { api_get_FaqTitleList, api_post_FaqList, api_post_FaqListCreate, api_post_FaqListDelete, api_post_FaqListUpdate, api_post_FaqTitleCreate } from "@/app/lib/api";
+import {
+  api_get_FaqTitleList,
+  api_post_FaqList,
+  api_post_FaqListCreate,
+  api_post_FaqListDelete,
+  api_post_FaqListUpdate,
+  api_post_FaqTitleCreate,
+  api_post_FaqTitleDelete,
+} from "@/app/lib/api";
 
 export default function FAQAdmin() {
   const [data, set_data] = useState();
@@ -144,9 +152,26 @@ export default function FAQAdmin() {
     set_data_edit(item_pre);
   };
 
-  const handleRemoveTitleFAQ = () => {};
+  const handleRemoveTitleFAQ = async () => {
+    if (id_title_faq != "") {
+      await axios
+        .post(api_post_FaqTitleDelete, {
+          id: id_title_faq,
+        })
+        .then((res) => {
+          if (res.data.status == true) {
+            toast.success("Xoá Thành Công!");
+            dataChuDeFAQ();
+          } else {
+            toast.error("");
+          }
+        })
+        .catch((err) => {
+          toast.success(err);
+        });
+    }
+  };
 
-  console.log(data_edit);
   return (
     <div className="px-6">
       {show_modal_add ? (
