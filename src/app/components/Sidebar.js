@@ -13,7 +13,7 @@ import { PiNewspaperFill } from "react-icons/pi";
 import { iconLogo } from "../../../public/assets";
 import { Fragment, useState, useEffect } from "react";
 import { GrFormNextLink } from "react-icons/gr";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 const Sidebar = () => {
   const { data: session } = useSession();
   const [role, set_role] = useState([]);
@@ -99,17 +99,32 @@ const Sidebar = () => {
           (item, index) =>
             (role.includes(item?.role) || item?.role == 0) && (
               <Fragment key={index}>
-                <Link
-                  href={item.link}
-                  className={`flex gap-2 items-center capitalize px-3 py-2 text-lg ${
-                    pathname == item.link
-                      ? "text-main-100 font-semibold bg-slate-300 border-l-4 border-main-100"
-                      : ""
-                  }`}
-                >
-                  <item.Icon style={!is_show && { margin: "auto" }} />
-                  {is_show && <span className="hover:text-[#00cc98]">{item.name}</span>}
-                </Link>
+                {item?.name == "Thoát" ? (
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() => signOut()}
+                    className={`flex gap-2 items-center capitalize px-3 py-2 text-lg ${
+                      pathname == item.link
+                        ? "text-main-100 font-semibold bg-slate-300 border-l-4 border-main-100"
+                        : ""
+                    }`}
+                  >
+                    <item.Icon style={!is_show && { margin: "auto" }} />
+                    {is_show && <span className="hover:text-[#00cc98]">{item.name}</span>}
+                  </div>
+                ) : (
+                  <Link
+                    href={item.link}
+                    className={`flex gap-2 items-center capitalize px-3 py-2 text-lg ${
+                      pathname == item.link
+                        ? "text-main-100 font-semibold bg-slate-300 border-l-4 border-main-100"
+                        : ""
+                    }`}
+                  >
+                    <item.Icon style={!is_show && { margin: "auto" }} />
+                    {is_show && <span className="hover:text-[#00cc98]">{item.name}</span>}
+                  </Link>
+                )}
                 <div>
                   {is_show &&
                     item?.child?.map(
