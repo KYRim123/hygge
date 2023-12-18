@@ -46,7 +46,7 @@ export default function Home() {
         <div className="capitalize">Hey, {session?.admin?.name}</div>
         <div className="w-[50px] h-[50px] ">
           <Image
-            src={avaReview1}
+            src={`${process.env.HTTPS_URL}/upload/${session?.admin?.avatar}`}
             width={100}
             height={100}
             className="object-cover"

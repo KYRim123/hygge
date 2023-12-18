@@ -73,8 +73,9 @@ export const api_get_FaqTitleList = `${URL}/api/chu-de-faq/list`;
 export const api_post_FaqTitleCreate = `${URL}/api/chu-de-faq/create`;
 export const api_post_FaqList = `${URL}/api/faq/list-faq`;
 export const api_post_FaqListCreate = `${URL}/api/faq/create`;
-export const api_post_FaqListUpdate = `${URL}/api/faq/create`;
+export const api_post_FaqListUpdate = `${URL}/api/faq/update`;
 export const api_post_FaqListDelete = `${URL}/api/faq/destroy`;
+export const api_post_FaqTitleDelete = `${URL}/api/chu-de-faq/destroy`;
 // quyen
 export const api_get_QuyenHanList = `${URL}/api/quyen-han/list`;
 export const api_get_ChucVuList = `${URL}/api/chuc-vu/list`;
