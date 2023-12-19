@@ -64,8 +64,11 @@ export default function ProductItem({ id: idProduct, name, img, sale, price, loa
             price={price}
           />
           <div>
-            <span className="text-gray-500 line-through mr-5 text-base">${price}</span> <br />
-            <span className="font-bold text-xl">$ {priceNew}</span>
+            <span className="text-gray-500 line-through mr-5 text-base">
+              $ {(price * 1).toFixed(2).replace(/\.?0+$/, "")}
+            </span>{" "}
+            <br />
+            <span className="font-bold text-xl">$ {priceNew.toFixed(2).replace(/\.?0+$/, "")}</span>
           </div>
         </div>
       </div>
