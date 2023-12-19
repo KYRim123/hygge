@@ -9,7 +9,7 @@ import MiddleWareUser from "./components/middleware/middlewareuser";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Hygee",
+  title: "KB&H",
   description: "website Hygee",
 };
 
