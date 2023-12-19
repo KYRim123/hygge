@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import SelectDropdownAdmin from "@/app/components/SelectDropdownAdmin";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { api_get_CategoryLSP, api_get_ProductListId, api_get_TypeProduct } from "@/app/lib/api";
+import { api_get_CategoryLSP, api_get_ProductListId, api_get_TypeProduct ,api_post_WarehouseCreate} from "@/app/lib/api";
 import { useSession } from "next-auth/react";
 
 export default function CreateNhapKho() {
@@ -101,7 +101,7 @@ export default function CreateNhapKho() {
       return;
     } else {
       await axios
-        .post("http://xuantuyen1207.website/api/kho/create", {
+        .post(api_post_WarehouseCreate, {
           id: session?.admin?.id,
           id_item: choose_id_sp,
           quantity: quantity,
