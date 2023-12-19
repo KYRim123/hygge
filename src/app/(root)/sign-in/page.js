@@ -25,7 +25,7 @@ const SignInPage = () => {
     e.preventDefault();
     router.push("/login");
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -33,6 +33,7 @@ const SignInPage = () => {
       .then((res) => {
         if (res?.data?.status == true) {
           toast.success("Create Anaccount is successfull !");
+          router.push("/login");
         } else {
           toast.error(res?.data?.message);
         }

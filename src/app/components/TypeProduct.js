@@ -1,4 +1,3 @@
- 
 export default function TypeProduct({ text, price }) {
   const bgColor =
     price <= 50
@@ -19,7 +18,7 @@ export default function TypeProduct({ text, price }) {
       : "text-purple-600";
 
   return (
-    <div className={`${bgColor} rounded-full text-center px-3 py-2`}>
+    <div className={`${bgColor} rounded-full max-w-[137px] text-center px-3 py-2`}>
       <span className={`${textColor} font-bold`}>{text}</span>
     </div>
   );
