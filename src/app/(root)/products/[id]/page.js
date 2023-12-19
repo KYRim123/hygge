@@ -11,7 +11,6 @@ import { SlGraph } from "react-icons/sl";
 // lb
 import axios from "axios";
 import useSWR from "swr";
-
 // cp
 import TypeProduct from "@/app/components/TypeProduct";
 import Review from "@/app/components/Reviews";
