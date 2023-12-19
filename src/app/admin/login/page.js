@@ -11,8 +11,8 @@ const LoginPage = () => {
   const router = useRouter();
 
   const [data, setData] = useState({
-    tai_khoan: "xuantuyen",
-    mat_khau: "123456aA",
+    tai_khoan: "",
+    mat_khau: "",
     role: "admin",
   });
 
