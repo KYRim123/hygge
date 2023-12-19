@@ -8,7 +8,8 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 
 export default function ProductItem({ id: idProduct, name, img, sale, price, loai_sp }) {
-  const priceNew = (price - (price * sale) / 100).toFixed(2);
+  const priceNew = (price - (price * sale) / 100).toFixed(2).replace(/\.?0+$/, "");
+  const priceFormat = (price * 1).toFixed(2).replace(/\.?0+$/, "");
   const { ten_loai_san_pham } = loai_sp;
   const { data: session } = useSession();
   const idUser = session?.user?.id;
@@ -64,11 +65,8 @@ export default function ProductItem({ id: idProduct, name, img, sale, price, loa
             price={price}
           />
           <div>
-            <span className="text-gray-500 line-through mr-5 text-base">
-              $ {(price * 1).toFixed(2).replace(/\.?0+$/, "")}
-            </span>{" "}
-            <br />
-            <span className="font-bold text-xl">$ {priceNew.toFixed(2).replace(/\.?0+$/, "")}</span>
+            <span className="text-gray-500 line-through mr-5 text-base">$ {priceFormat}</span> <br />
+            <span className="font-bold text-xl">$ {priceNew}</span>
           </div>
         </div>
       </div>
