@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 
 export default function ProductItem({ id: idProduct, name, img, sale, price, loai_sp }) {
-  const priceNew = (price - (price * sale) / 100).toFixed(2);
+  const priceNew = (price - (price * sale) / 100).toFixed(2).replace(/\.?0+$/, "");
   const { ten_loai_san_pham } = loai_sp;
   const { data: session } = useSession();
   const idUser = session?.user?.id;
