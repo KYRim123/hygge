@@ -42,7 +42,7 @@ export default function ProductItem({ id: idProduct, name, img, sale, price, loa
           className="w-full h-[250px] object-cover rounded-3xl"
           alt="mm"
         />
-        {sale !== 0 && sale !== null && (
+        {sale != 0 && sale !== null && (
           <span className="absolute top-5 -right-10 bg-red-500 text-white font-semibold text-base py-1 px-3 rounded-full">
             {sale}% OFF
           </span>
@@ -57,7 +57,7 @@ export default function ProductItem({ id: idProduct, name, img, sale, price, loa
         </div>
       </div>
       <div className="flex flex-col gap-3 p-2">
-        <div className="text-lg font-bold capitalize">{name}</div>
+        <div className="text-lg font-bold capitalize line-clamp-2">{name}</div>
         <div className="flex gap-2 justify-between items-center">
           <TypeProduct
             text={ten_loai_san_pham}
