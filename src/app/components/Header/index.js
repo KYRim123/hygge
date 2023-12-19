@@ -231,23 +231,23 @@ export default function Header() {
               {header_cart?.slice(0, 4).map((item, index) => (
                 <div
                   key={index}
-                  className="flex gap-4 items-center justify-between  mb-3"
+                  className="flex gap-4 items-center justify-between mb-3"
                 >
                   <Link
                     href={`/products/${item.id_san_pham}`}
                     className="flex gap-4 items-center hover:opacity-50"
                   >
-                    <div className="bg-gray-100 w-[80px] h-[80px] rounded-xl overflow-hidden flex items-center justify-center">
+                    <div className="bg-gray-100 w-[90px] h-[90px] rounded-xl overflow-hidden flex items-center justify-center">
                       <Image
                         className="object-cover"
-                        width={80}
-                        height={80}
+                        width={90}
+                        height={90}
                         alt="img"
                         src={`${process.env.HTTPS_URL}/upload/${item?.san_pham?.hinh_anh[0]?.hinh_anh_san_pham}`}
                       />
                     </div>
-                    <div className={"flex-grow pr-8"}>
-                      <h1 className="font-semibold text-xl">{item?.san_pham?.ten_san_pham}</h1>
+                    <div className={"w-[200px]"}>
+                      <h1 className="font-semibold text-xl line-clamp-1">{item?.san_pham?.ten_san_pham}</h1>
                       <span>{item?.san_pham?.gia} $</span>
                     </div>
                   </Link>
