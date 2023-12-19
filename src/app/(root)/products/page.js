@@ -25,6 +25,8 @@ export default function ProductPage() {
     });
     Promise.all([fetchData, fetchCategory]).then(([data, category]) => {
       setFetchData(data);
+      let newObject = { id: 0, name: "All" };
+      category.unshift(newObject);
       setProductTypes(category);
     });
   }, [currentPage, category]);
@@ -45,6 +47,10 @@ export default function ProductPage() {
 
   // category
   const list_price_range = [
+    {
+      id: 0,
+      name: "All",
+    },
     {
       id: 1,
       name: "$0 - $10",
@@ -85,6 +91,9 @@ export default function ProductPage() {
     if (title_select === "Price Range") {
       let gia_tien = [];
       switch (id) {
+        case 0:
+          gia_tien = [];
+          break;
         case 1:
           gia_tien = [0, 10];
           break;
