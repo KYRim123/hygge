@@ -24,6 +24,7 @@ export default function EditProduct() {
   const [list_image_api, set_list_image_api] = useState([]);
   const [selected_category, set_selected_category] = useState("");
   const [editorLoaded, setEditorLoaded] = useState(false);
+  const [validate, set_validate] = useState(false);
 
   const PARAMS = useParams().id;
 
@@ -142,6 +143,19 @@ export default function EditProduct() {
 
   const handleClickEdit = async () => {
     try {
+      if (
+        name_product == "" ||
+        price_product <= 0 ||
+        sale < 0 ||
+        sale >= 100 ||
+        short_description == "" ||
+        id_category_product == "" ||
+        (image_product.length <= 0 && list_image_api.length <= 0)
+      ) {
+        set_validate(true);
+        return;
+      }
+      set_validate(false);
       const response = await axios.post(api_post_ProductUpdate, dataPost, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -175,6 +189,7 @@ export default function EditProduct() {
               value={name_product}
               onChange={(e) => set_name_product(e.target.value)}
             />
+            {validate && name_product == "" && <p style={{ color: "red" }}>* Please Input Name Product</p>}
           </div>
         </div>
         <div className="grid md:grid-cols-3 md:gap-4">
@@ -183,7 +198,7 @@ export default function EditProduct() {
               htmlFor="price_product"
               className="block mt-2 text-base font-medium text-gray-900 dark:text-white"
             >
-              Price
+              Price ($)
             </label>
             <input
               id="price_product"
@@ -192,13 +207,14 @@ export default function EditProduct() {
               value={price_product}
               onChange={(e) => set_price_product(e.target.value)}
             />
+            {validate && price_product <= 0 && <p style={{ color: "red" }}>* Please Input Price Product</p>}
           </div>
           <div>
             <label
               htmlFor="sale"
               className="block mt-2 text-base font-medium text-gray-900 dark:text-white"
             >
-              Sale
+              Sale (%)
             </label>
             <input
               id="sale"
@@ -207,6 +223,9 @@ export default function EditProduct() {
               value={sale}
               onChange={(e) => set_sale(e.target.value)}
             />
+            {validate && (sale < 0 || sale >= 100) && (
+              <p style={{ color: "red" }}>* Number Sale From 0 To 99</p>
+            )}
           </div>
           <div>
             <label
@@ -220,6 +239,9 @@ export default function EditProduct() {
               selectedItemProp={selected_category}
               handleSelect={handleSelectCategory}
             ></SelectDropdownAdmin>
+            {validate && id_category_product == "" && (
+              <p style={{ color: "red" }}>* Please Choose Category</p>
+            )}
           </div>
         </div>
         <div>
@@ -237,6 +259,9 @@ export default function EditProduct() {
               value={short_description}
               onChange={(e) => set_short_description(e.target.value)}
             ></textarea>
+            {validate && short_description == "" && (
+              <p style={{ color: "red" }}>* Please Input Short Description</p>
+            )}
           </div>
         </div>
         <div>
@@ -253,6 +278,9 @@ export default function EditProduct() {
               className={style.input_create}
               onChange={chooseImage}
             />
+            {validate && image_product.length <= 0 && list_image_api.length <= 0 && (
+              <p style={{ color: "red" }}>* Please Input File Image Product</p>
+            )}
             <div className={style.list_img}>
               {list_image_api.map((item, index) => (
                 <div
@@ -318,6 +346,7 @@ export default function EditProduct() {
               }}
               editorLoaded={editorLoaded}
             />
+            {validate && description == "" && <p style={{ color: "red" }}>* Please Input Description</p>}
           </div>
         </div>
       </div>

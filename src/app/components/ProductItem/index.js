@@ -42,7 +42,7 @@ export default function ProductItem({ id: idProduct, name, img, sale, price, loa
           className="w-full h-[250px] object-cover rounded-3xl"
           alt="mm"
         />
-        {sale !== 0 && (
+        {sale !== 0 && sale !== null && (
           <span className="absolute top-5 -right-10 bg-red-500 text-white font-semibold text-base py-1 px-3 rounded-full">
             {sale}% OFF
           </span>
