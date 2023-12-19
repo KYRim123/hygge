@@ -59,7 +59,8 @@ function DetailProduct() {
   const { ten_san_pham, khuyen_mai, gia } = dataProduct.data;
   const { ten_loai_san_pham } = dataProduct.data.loai_san_pham;
   const reviews = dataProduct.reviews;
-  const priceNew = gia - (gia * khuyen_mai) / 100;
+  const priceNew = (gia - (gia * khuyen_mai) / 100).toFixed(2).replace(/\.?0+$/, "");
+  const priceFormat = (gia * 1).toFixed(2).replace(/\.?0+$/, "");
   const nameTag = "- Selling Fast";
   const listImages = dataProduct.image;
 
@@ -244,7 +245,7 @@ function DetailProduct() {
               price={gia}
             />
             <div className="ml-5 ">
-              <span className="text-gray-400 line-through mr-5 text-xl">${gia}</span>
+              <span className="text-gray-400 line-through mr-5 text-xl">${priceFormat}</span>
               <span className="font-bold text-3xl">${priceNew}</span>
             </div>
           </div>
