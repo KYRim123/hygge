@@ -235,7 +235,7 @@ function DetailProduct() {
           </div>
         )}
         {/* detail */}
-        <div className="flex-grow">
+        <div className="max-w-sm">
           <span className="label-1">{nameTag}</span>
           <h1 className="title-1">{ten_san_pham}</h1>
           <div className="flex gap-2 justify-between items-center mt-5">
