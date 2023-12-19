@@ -98,7 +98,7 @@ export default function PageCheckOut() {
   };
 
   const handleRemoveItem = (id) => {
-    const updatedData = list_shopping_cart.filter((item) => item.id !== id);
+    const updatedData = list_shopping_cart.filter((item) => item.id != id);
     set_list_shopping_cart(updatedData);
   };
 

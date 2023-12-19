@@ -23,6 +23,19 @@ const ProfilePage = () => {
   const [newPw, setNewPw] = useState("");
   const disabledBtChangePw = newPw === "" ? true : false;
 
+  const type_img = [
+    "image/png",
+    "image/jpeg",
+    "image/webp",
+    "image/gif",
+    "image/tif",
+    "image/bmp",
+    "image/ico",
+    "image/psd",
+    "image/WebP",
+    "image/jpg",
+  ];
+
   useEffect(() => {
     if (idUser !== null) {
       axios.post(api_get_UserProfile, { id: idUser }).then((res) => setData(res.data.data));
@@ -39,10 +52,14 @@ const ProfilePage = () => {
 
   const uploadImg = (e) => {
     const file = e.target?.files[0];
-    const newUrl = URL.createObjectURL(file);
-    setNewImg(newUrl);
     if (file) {
-      setData({ ...data, anh_dai_dien: file });
+      if (type_img.includes(file.type)) {
+        const newUrl = URL.createObjectURL(file);
+        setNewImg(newUrl);
+        setData({ ...data, anh_dai_dien: file });
+      } else {
+        toast.error("Please Inout The Correct Style Format Image");
+      }
     }
   };
 

@@ -9,6 +9,8 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { fetchCart } from "@/app/store/slide/cartSlide";
 import { api_delete_ProductCart, api_get_ChangeCart, api_get_MyCart } from "@/app/lib/api";
 
 export default function PagesShoppingCart() {
@@ -16,6 +18,7 @@ export default function PagesShoppingCart() {
   const [data, set_data] = useState([]);
   const SHIP = 10;
   const { data: session } = useSession();
+  const dispatch = useDispatch();
   useEffect(() => {
     if (session?.user?.id != null) {
       const fetchData = async () => {
@@ -90,6 +93,7 @@ export default function PagesShoppingCart() {
           .then((res) => {
             if (res.data.status == true) {
               toast.success("Removed item");
+              dispatch(fetchCart(session?.user.id));
             } else {
             }
           })
