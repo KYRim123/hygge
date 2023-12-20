@@ -3,7 +3,7 @@ const IconHoverModal = ({ countItem, Icon, children }) => {
     <div className="group cursor-pointer relative">
       <div className="relative">
         {countItem > 0 && (
-          <span className="absolute -right-2 -top-2 bg-pink-500 rounded-full text-[12px] px-[1px] py-[2px] w-[25px] h-[25px] flex justify-items-center items-center text-white text-center leading-[20px]">
+          <span className="absolute -right-2 -top-2 bg-pink-500 rounded-full text-[12px] px-[1px] py-[2px] w-[25px] h-[25px] flex justify-center items-center text-white text-center leading-[20px]">
             {countItem}
           </span>
         )}
