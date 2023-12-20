@@ -146,7 +146,7 @@ const ProfilePage = () => {
         <div className="flex gap-4 items-center max-w-xl mx-auto">
           <label
             htmlFor="upImg"
-            className="block w-[250px] h-[250px] cursor-pointer"
+            className="block w-[250px] h-[250px] cursor-pointer border-[1px] boder-gray-100"
           >
             <Image
               src={
