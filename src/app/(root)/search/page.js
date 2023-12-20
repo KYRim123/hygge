@@ -90,7 +90,7 @@ export default function ProductPage() {
     <div>
       <span className="label-1">- Search result for {valueSearch} -</span>
       <div>
-        <h1 className="title-1">Eye Care Products for Tired Eyes</h1>
+        <h1 className="title-1">{valueSearch} Products for you</h1>
         <div className="my-14">
           <b>{count_product} products found</b>
         </div>
