@@ -50,7 +50,7 @@ export default function HomePage() {
     { icon: MdOutlineMasks, text: "Mask" },
     { icon: GiEyelashes, text: "Eye Care" },
     { icon: IoWaterOutline, text: "Moisturizer" },
-    { icon: AiFillSafetyCertificate, text: "Shower Gel" },
+    { icon: FaShower, text: "Shower Gel" },
     { icon: BiSolidMoon, text: "Moisturizer" },
     { icon: BsSun, text: "Sun Care" },
     { icon: FaFaceGrinTears, text: "Treatment" },
