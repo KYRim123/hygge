@@ -3,14 +3,15 @@ import Button from "./components/Button";
 import { useRouter } from "next/navigation";
 // icons
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import { FaShoppingBag } from "react-icons/fa";
-import { SlGraph } from "react-icons/sl";
+import { FaPen, FaShower } from "react-icons/fa";
 import { MdOutlineMasks, MdOutlinePolicy } from "react-icons/md";
-import { GiEyelashes } from "react-icons/gi";
+import { GiEyelashes, GiLips } from "react-icons/gi";
 import { IoWaterOutline } from "react-icons/io5";
-import { AiFillSafetyCertificate, AiOutlineStar } from "react-icons/ai";
+import { AiOutlineStar } from "react-icons/ai";
 import { BiSolidMoon } from "react-icons/bi";
 import { BsPerson, BsSun } from "react-icons/bs";
+import { FaFaceGrinTears } from "react-icons/fa6";
+import { SiBritishairways } from "react-icons/si";
 // component
 import ListProduct from "./components/ListProduct";
 import MarginY from "./components/MarginY";
@@ -30,6 +31,7 @@ import { api_get_ListProduct } from "./lib/api";
 import { updateSearch } from "./store/slide/searchSlide";
 import Slide from "./components/Slide";
 
+
 //  home page
 export default function HomePage() {
   const router = useRouter();
@@ -43,16 +45,16 @@ export default function HomePage() {
   }, [dispatch]);
 
   const listCategory = [
-    { icon: FaShoppingBag, text: "On sale" },
-    { icon: SlGraph, text: "Featured" },
+    { icon: FaPen, text: "Eyeliner" },
+    { icon: GiLips, text: "Lipstick" },
     { icon: MdOutlineMasks, text: "Mask" },
     { icon: GiEyelashes, text: "Eye Care" },
     { icon: IoWaterOutline, text: "Moisturizer" },
-    { icon: AiFillSafetyCertificate, text: "Treatment" },
-    { icon: BiSolidMoon, text: "Night Care" },
+    { icon: AiFillSafetyCertificate, text: "Shower Gel" },
+    { icon: BiSolidMoon, text: "Moisturizer" },
     { icon: BsSun, text: "Sun Care" },
-    { icon: AiFillSafetyCertificate, text: "Treatment" },
-    { icon: BiSolidMoon, text: "Night Care" },
+    { icon: FaFaceGrinTears, text: "Treatment" },
+    { icon: SiBritishairways, text: "Hair Care" },
     { icon: BsSun, text: "Sun Care" },
   ];
 
