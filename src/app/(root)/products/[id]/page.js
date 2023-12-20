@@ -222,11 +222,11 @@ function DetailProduct() {
                 width={700}
                 height={700}
                 alt="imgProduct"
-                className="object-cover w-full h-full"
+                className="object-contain w-full h-full"
                 priority={true}
               />
               <div
-                className="absolute right-0 top-0 p-4 cursor-pointer hover:opacity-70"
+                className="absolute right-0 -top-4 cursor-pointer hover:opacity-70"
                 onClick={handleClose}
               >
                 <GrClose size={25} />
