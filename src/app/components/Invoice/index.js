@@ -76,7 +76,8 @@ export default function Invoice({ data }) {
             <div>
               <b>Invoice Writer</b>
             </div>
-            <div className="my-2 text-[#00cc98]">Hygge Shop</div>
+            <div className="my-2 text-[#00cc98] text-xl">KB&H</div>
+            <span className="my-2 text-gray-100">KoreaBeauty&Healthy </span>
           </div>
           <div></div>
           <div>
