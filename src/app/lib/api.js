@@ -56,6 +56,7 @@ export const api_post_CreateHoaDon = `${URL}/api/hoa-don/create`;
 export const api_post_XacThucInfor = `${URL}/api/hoa-don/xac-thuc`;
 export const api_post_XacThucHoaDon = `${URL}/api/hoa-don/xac-thuc-hoa-don`;
 export const api_get_HoaDonThongKe = `${URL}/api/hoa-don/thong-ke`;
+export const api_post_bestSell = `${URL}/api/hoa-don/best-sell`;
 // search
 export const api_get_search = `${URL}/api/product/search`;
 // don hang
