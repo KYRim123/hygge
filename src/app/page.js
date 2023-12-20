@@ -52,8 +52,6 @@ export default function HomePage() {
     { icon: IoWaterOutline, text: "Moisturizer" },
     { icon: FaShower, text: "Shower Gel" },
     { icon: BiSolidMoon, text: "Moisturizer" },
-    { icon: BsSun, text: "Sun Care" },
-    { icon: FaFaceGrinTears, text: "Treatment" },
     { icon: SiBritishairways, text: "Hair Care" },
     { icon: BsSun, text: "Sun Care" },
   ];
