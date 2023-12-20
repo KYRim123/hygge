@@ -222,7 +222,7 @@ function DetailProduct() {
                 width={700}
                 height={700}
                 alt="imgProduct"
-                className="object-contain w-full h-full"
+                className="object-contain w-full h-full rounded-md"
                 priority={true}
               />
               <div
