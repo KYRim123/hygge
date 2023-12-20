@@ -237,7 +237,7 @@ function DetailProduct() {
         {/* detail */}
         <div className="max-w-sm">
           <span className="label-1">{nameTag}</span>
-          <h1 className="title-1">{ten_san_pham}</h1>
+          <h1 className="title-1 font-2xl">{ten_san_pham}</h1>
           <div className="flex gap-2 justify-between items-center mt-5">
             <TypeProduct
               text={ten_loai_san_pham}
