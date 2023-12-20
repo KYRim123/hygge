@@ -75,7 +75,7 @@ export default function FaqPage() {
         <p>Frequently Asked </p>
         <p>Questions</p>
       </div>
-      <div className="w-full ml-[100%]">
+      <div className="w-full flex justify-end">
         <SelectDropdown
           items={listTitle}
           title_select="All"
