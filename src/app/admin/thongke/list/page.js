@@ -10,12 +10,20 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { DatePicker, Space } from "antd";
 import { Tabs } from "antd";
 dayjs.extend(customParseFormat);
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  ArcElement,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar, Pie } from "react-chartjs-2";
+import { api_get_HoaDonThongKe, api_get_ListProductAdmin, api_post_bestSell } from "@/app/lib/api";
 
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { api_get_HoaDonThongKe, api_get_ListProductAdmin } from "@/app/lib/api";
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, ArcElement, BarElement, Title, Tooltip, Legend);
 
 const dateFormat = "YYYY/MM/DD";
 
@@ -54,6 +62,22 @@ const preDayFormat = formatDate(preDay);
 const list_tab = [
   { label: "Số Lượng Đặt Hàng", key: 1 },
   { label: "Xem Doanh Thu", key: 2 },
+  { label: "Sản Phẩm Bán Chạy Nhất", key: 3 },
+];
+
+const backgroundColor = [
+  "rgba(255, 99, 132, 0.2)",
+  "rgba(54, 162, 235, 0.2)",
+  "rgba(255, 206, 86, 0.2)",
+  "rgba(75, 192, 192, 0.2)",
+  "rgba(153, 102, 255, 0.2)",
+];
+const borderColor = [
+  "rgba(255, 99, 132, 1)",
+  "rgba(54, 162, 235, 1)",
+  "rgba(255, 206, 86, 1)",
+  "rgba(75, 192, 192, 1)",
+  "rgba(153, 102, 255, 1)",
 ];
 
 export default function ListStatistics() {
@@ -65,9 +89,11 @@ export default function ListStatistics() {
   const [data, set_data] = useState();
   const [data_chart, set_data_chart] = useState();
   const [data_chart2, set_data_chart2] = useState();
+  const [data_chart3, set_data_chart3] = useState();
   const [date_from, set_date_from] = useState(preDayFormat);
   const [date_to, set_date_to] = useState(dayFormat);
   const [price, set_price] = useState();
+  const [month2, set_month2] = useState();
 
   const dataChart = (items, labels) => {
     let data = [];
@@ -82,6 +108,31 @@ export default function ListStatistics() {
     return {
       labels: labels,
       datasets: [{ label: "Số Sản Phẩm", data: data, backgroundColor: "rgb(255, 99, 132)" }],
+    };
+  };
+
+  const dataChart3 = (items) => {
+    let data = [];
+    let labels = [];
+    let backgroundColor2 = [];
+    let borderColor2 = [];
+    items?.forEach((item, index) => {
+      labels.push(item?.Item);
+      data.push(item?.Count);
+      backgroundColor2.push(backgroundColor[index]);
+      borderColor2.push(borderColor[index]);
+    });
+    return {
+      labels: labels,
+      datasets: [
+        {
+          label: "# of Votes",
+          data: data,
+          backgroundColor: backgroundColor2,
+          borderColor: borderColor2,
+          borderWidth: 1,
+        },
+      ],
     };
   };
 
@@ -113,6 +164,19 @@ export default function ListStatistics() {
       .catch((res) => {});
   };
 
+  const fetchDataBestSell = useCallback(async () => {
+    await axios
+      .post(api_post_bestSell, { month: month2 })
+      .then((res) => {
+        if (res?.data?.status == true) {
+          const data_chart_pre3 = dataChart3(res?.data?.data);
+          set_data_chart3(data_chart_pre3);
+        } else {
+        }
+      })
+      .catch((res) => {});
+  }, [month2]);
+
   const fetchDataThongKe = useCallback(async () => {
     await axios
       .post(api_get_HoaDonThongKe, {
@@ -138,6 +202,10 @@ export default function ListStatistics() {
   useEffect(() => {
     fetchDataProduct();
   }, []);
+
+  useEffect(() => {
+    fetchDataBestSell();
+  }, [fetchDataBestSell]);
 
   useEffect(() => {
     fetchDataThongKe();
@@ -169,27 +237,44 @@ export default function ListStatistics() {
   const onChangeListTab = (key) => {
     set_key_list_tab(key);
   };
+
+  const handleMonthChange = (date, dateString) => {
+    set_month2(dateString);
+  };
   return (
     <div className="px-6 mb-8">
-      <div className="flex justify-start">
-        <div className="w-[250px]">
-          <label>Chọn Sản Phẩm</label>
-          <SelectDropdownAdmin
-            title_select="Chọn Sản Phẩm"
-            items={list_product}
-            handleSelect={handleSelectProduct}
-          ></SelectDropdownAdmin>
+      {key_list_tab != 3 && (
+        <div className="flex justify-start">
+          <div className="w-[250px]">
+            <label>Chọn Sản Phẩm</label>
+            <SelectDropdownAdmin
+              title_select="Chọn Sản Phẩm"
+              items={list_product}
+              handleSelect={handleSelectProduct}
+            ></SelectDropdownAdmin>
+          </div>
+          <div className={`${"w-[300px] ml-14"}`}>
+            <label>Chọn Thời Gian : </label>
+            <RangePicker
+              className={style.custom_daytime}
+              defaultValue={[dayjs(preDayFormat, dateFormat), dayjs(dayFormat, dateFormat)]}
+              format={dateFormat}
+              onChange={handleDateChange}
+            />
+          </div>
         </div>
-        <div className={`${"w-[300px] ml-14"}`}>
-          <label>Chọn Thời Gian : </label>
-          <RangePicker
-            className={style.custom_daytime}
-            defaultValue={[dayjs(preDayFormat, dateFormat), dayjs(dayFormat, dateFormat)]}
-            format={dateFormat}
-            onChange={handleDateChange}
-          />
+      )}
+      {key_list_tab == 3 && (
+        <div className="flex justify-start">
+          <div className={`${"w-[300px] ml-14"}`}>
+            <label>Chọn Tháng : </label>
+            <DatePicker
+              onChange={handleMonthChange}
+              picker="month"
+            />
+          </div>
         </div>
-      </div>
+      )}
       <div className="mt-5">
         <Tabs
           onChange={onChangeListTab}
@@ -307,6 +392,19 @@ export default function ListStatistics() {
                       ))}
                     </tbody>
                   </table>
+                </Fragment>
+              )
+            : ""}
+          {key_list_tab == 3
+            ? data != null && (
+                <Fragment>
+                  {data_chart3 != null ? (
+                    <div className="w-[800px] m-auto">
+                      <Pie data={data_chart3} />
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </Fragment>
               )
             : ""}
