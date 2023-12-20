@@ -213,16 +213,16 @@ function DetailProduct() {
             onClick={handleClose}
           >
             <div
-              className={`relative bg-white w-full h-full mx-[25%] max-h-[600px] flex items-center justify-center rounded-2xl ${
+              className={`relative w-full h-full mx-[25%] max-h-[600px] flex items-center justify-center rounded-2xl ${
                 zoomImg ? "animate-fadeIn" : "animate-fadeOut"
               }`}
             >
               <Image
                 src={`${process.env.HTTPS_URL}/upload/${listImages[currentImage]?.hinh_anh_san_pham}`}
                 width={700}
-                height={500}
+                height={700}
                 alt="imgProduct"
-                className="object-cover w-[500px] h-[500px]"
+                className="object-cover w-full h-full"
                 priority={true}
               />
               <div
