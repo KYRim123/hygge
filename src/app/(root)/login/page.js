@@ -11,8 +11,8 @@ const LoginPage = () => {
   const router = useRouter();
 
   const [data, setData] = useState({
-    tai_khoan: "",
-    mat_khau: "",
+    tai_khoan: "luong12345",
+    mat_khau: "123456aA",
   });
   const checkInputEmpt = Object.values(data).includes("");
   const inputs = [
